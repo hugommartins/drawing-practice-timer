@@ -18,7 +18,8 @@
     "install:mac": "bash scripts/install-mac.sh",
     "mutate": "stryker run",
     "test:visual": "npm run build && playwright test --project=visual",
-    "test:visual:update": "npm run build && playwright test --project=visual --update-snapshots"
+    "test:visual:update": "npm run build && playwright test --project=visual --update-snapshots",
+    "mutate:ui": "stryker run stryker.ui.config.json"
   },
   "dependencies": {
     "@fontsource/dm-mono": "^5.1.0",
