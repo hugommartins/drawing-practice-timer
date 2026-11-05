@@ -128,6 +128,7 @@ const shot = (page: Page, name: string) =>
     threshold: 0.02, // default 0.2 hides low-contrast edges such as card corners
     maxDiffPixelRatio: 0.0001,
     mask: [page.locator('.col-path')], // temp-folder paths differ every run
+    stylePath: path.join(__dirname, 'screenshot.css'),
   });
 
 for (const theme of ['dark', 'light'] as const) {
