@@ -6,7 +6,7 @@ import type { ActiveSession } from '../appctx';
 import { api, bridge, imagePath } from '../bridge';
 import { ConfirmDialog } from '../components/Confirm';
 import { Dialog } from '../components/Dialog';
-import { IconChevronLeft, IconNext, IconPause, IconPlay, IconPrev } from '../components/icons';
+import { IconChevronLeft, IconNext, IconPause, IconPlay, IconPrev, IconMirror, IconFlip, IconGrey, IconGrid, IconFocus } from '../components/icons';
 import { MODE_LABEL, useStore } from '../store';
 
 interface Views {
@@ -180,8 +180,20 @@ export function Session({ active, onExit }: { active: ActiveSession; onExit(): v
         <button type="button" className="btn ghost" data-testid="end-session" onClick={openConfirm}>
           <IconChevronLeft /> End session
         </button>
-        <div className="muted small">
-          {collection.name} · {MODE_LABEL[setup.mode]}
+        <div className="muted small head-meta">
+          {collection.name} · {MODE_LABEL[setup.mode]} ·{' '}
+          <span data-testid="image-counter">
+            Image {snap.shown > 0 ? snap.position + 1 : 0}
+            {snap.planned > 0 ? ` of ${snap.planned}` : ''}
+          </span>{' '}
+          ·{' '}
+          <span data-testid="elapsed">
+            {hasCountdown ? `Drawn ${clock(snap.totalElapsed)}` : 'Elapsed'}
+            {paused ? ' · paused' : ''}
+          </span>
+        </div>
+        <div className="muted small hints">
+          <span className="kbd">space</span> pause · <span className="kbd">←</span> <span className="kbd">→</span> images · <span className="kbd">h</span> focus
         </div>
       </div>
       )}
@@ -223,11 +235,7 @@ export function Session({ active, onExit }: { active: ActiveSession; onExit(): v
 
         {!focus && (
         <aside className="rail" aria-label="Session controls">
-          <div className="rail-wide">
-            <div className="eyebrow" data-testid="image-counter">
-              Image {snap.shown > 0 ? snap.position + 1 : 0}
-              {snap.planned > 0 ? ` of ${snap.planned}` : ''}
-            </div>
+          <div className="rail-timer">
             <div className={`timer mono${low ? ' low' : ''}`} data-testid="timer" role="timer" aria-live="off">
               {clock(Math.ceil(shownTime))}
             </div>
@@ -236,57 +244,47 @@ export function Session({ active, onExit }: { active: ActiveSession; onExit(): v
                 <span style={{ width: `${pct}%` }} />
               </div>
             )}
-            <div className="muted small" style={{ marginTop: 8 }} data-testid="elapsed">
-              {hasCountdown ? `Drawn ${clock(snap.totalElapsed)}` : 'Elapsed'}
-              {paused ? ' · paused' : ''}
-            </div>
           </div>
 
-          <div className="ctrls rail-wide">
-            <button type="button" className="circ" aria-label="Previous image" data-testid="prev" disabled={snap.position === 0} onClick={() => update(r.prev())}>
+          <div className="ctrls">
+            <button type="button" className="circ" aria-label="Previous image" title="Previous image (←)" data-testid="prev" disabled={snap.position === 0} onClick={() => update(r.prev())}>
               <IconPrev />
             </button>
-            <button type="button" className="play" aria-label={paused ? 'Resume' : 'Pause'} data-testid="play-pause" onClick={() => update(r.toggle())}>
+            <button type="button" className="play" aria-label={paused ? 'Resume' : 'Pause'} title={paused ? 'Resume (space)' : 'Pause (space)'} data-testid="play-pause" onClick={() => update(r.toggle())}>
               {paused ? <IconPlay size={24} /> : <IconPause />}
             </button>
-            <button type="button" className="circ" aria-label="Next image" data-testid="next" onClick={() => update(r.next())}>
+            <button type="button" className="circ" aria-label="Next image" title="Next image (→)" data-testid="next" onClick={() => update(r.next())}>
               <IconNext />
             </button>
           </div>
 
           {hasCountdown && (
-            <div className="chip-row rail-wide" style={{ justifyContent: 'center' }}>
-              <button type="button" className="chip mono" data-testid="sub-15" onClick={() => update(r.addTime(-15))}>−15s</button>
-              <button type="button" className="chip mono" data-testid="add-15" onClick={() => update(r.addTime(15))}>+15s</button>
-              <button type="button" className="chip mono" data-testid="add-60" onClick={() => update(r.addTime(60))}>+1m</button>
+            <div className="adjust" role="group" aria-label="Adjust time">
+              <button type="button" className="chip mono" aria-label="Take off 15 seconds" title="−15 seconds" data-testid="sub-15" onClick={() => update(r.addTime(-15))}>−15</button>
+              <button type="button" className="chip mono" aria-label="Add 15 seconds" title="+15 seconds" data-testid="add-15" onClick={() => update(r.addTime(15))}>+15</button>
+              <button type="button" className="chip mono" aria-label="Add 1 minute" title="+1 minute" data-testid="add-60" onClick={() => update(r.addTime(60))}>+1m</button>
             </div>
           )}
 
-          <div className="rail-wide stack">
-            <div className="label-strong">View</div>
-            <div className="view-row">
-              <button type="button" aria-pressed={views.mirror} data-testid="view-mirror" onClick={() => toggleView('mirror')}>Mirror <span className="kbd">m</span></button>
-              <button type="button" aria-pressed={views.flip} data-testid="view-flip" onClick={() => toggleView('flip')}>Flip <span className="kbd">f</span></button>
-              <button type="button" aria-pressed={views.gray} data-testid="view-gray" onClick={() => toggleView('gray')}>Greyscale <span className="kbd">b</span></button>
-              <button type="button" aria-pressed={views.grid > 0} data-testid="view-grid" onClick={toggleGrid}>Grid <span className="kbd">g</span></button>
-            </div>
-            {views.grid > 0 && (
-              <label className="inline-field muted small">
-                Grid size
-                <select data-testid="grid-size" value={views.grid} onChange={(e) => setViews((v) => ({ ...v, grid: Number(e.target.value) }))}>
-                  {[2, 3, 4, 5, 6].map((n) => (
-                    <option key={n} value={n}>{n} × {n}</option>
-                  ))}
-                </select>
-              </label>
-            )}
+          <span className="rail-sep" aria-hidden="true" />
+
+          <div className="tools" role="group" aria-label="View">
+            <button type="button" className="tool" aria-label="Mirror" title="Mirror (m)" aria-pressed={views.mirror} data-testid="view-mirror" onClick={() => toggleView('mirror')}><IconMirror /></button>
+            <button type="button" className="tool" aria-label="Flip" title="Flip (f)" aria-pressed={views.flip} data-testid="view-flip" onClick={() => toggleView('flip')}><IconFlip /></button>
+            <button type="button" className="tool" aria-label="Greyscale" title="Greyscale (b)" aria-pressed={views.gray} data-testid="view-gray" onClick={() => toggleView('gray')}><IconGrey /></button>
+            <button type="button" className="tool" aria-label="Grid" title="Grid (g)" aria-pressed={views.grid > 0} data-testid="view-grid" onClick={toggleGrid}><IconGrid /></button>
           </div>
-          <button type="button" className="btn rail-wide" data-testid="focus-toggle" onClick={() => setFocus(true)}>
-            Focus on image <span className="kbd">h</span>
-          </button>
-          <p className="muted small rail-wide">
-            <span className="kbd">space</span> pause · <span className="kbd">←</span> <span className="kbd">→</span> images
-          </p>
+          {views.grid > 0 && (
+            <select className="grid-size" aria-label="Grid size" title="Grid size" data-testid="grid-size" value={views.grid} onChange={(e) => setViews((v) => ({ ...v, grid: Number(e.target.value) }))}>
+              {[2, 3, 4, 5, 6].map((n) => (
+                <option key={n} value={n}>{n}×{n}</option>
+              ))}
+            </select>
+          )}
+
+          <span className="rail-sep" aria-hidden="true" />
+
+          <button type="button" className="tool" aria-label="Focus on image" title="Focus on image (h)" data-testid="focus-toggle" onClick={() => setFocus(true)}><IconFocus /></button>
         </aside>
         )}
       </div>

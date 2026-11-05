@@ -95,3 +95,30 @@ export const IconDownload = () => (
     <path d="M12 3v12M7 10l5 5 5-5M5 21h14" />
   </Svg>
 );
+
+export const IconMirror = () => (
+  <Svg size={18}>
+    <path d="M12 3v18M8 7l-5 5 5 5zM16 7l5 5-5 5z" />
+  </Svg>
+);
+export const IconFlip = () => (
+  <Svg size={18}>
+    <path d="M3 12h18M7 8l5-5 5 5zM7 16l5 5 5-5z" />
+  </Svg>
+);
+export const IconGrey = () => (
+  <Svg size={18}>
+    <circle cx="12" cy="12" r="8" />
+    <path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor" />
+  </Svg>
+);
+export const IconGrid = () => (
+  <Svg size={18}>
+    <path d="M4 4h16v16H4zM4 9.3h16M4 14.7h16M9.3 4v16M14.7 4v16" />
+  </Svg>
+);
+export const IconFocus = () => (
+  <Svg size={18}>
+    <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" />
+  </Svg>
+);

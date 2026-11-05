@@ -158,7 +158,7 @@ test.describe('on screen', () => {
     await app.getByTestId('focus-toggle').click();
     await expect(app.getByRole('complementary', { name: 'Session controls' })).toHaveCount(0);
     const during = (await app.getByTestId('stage').boundingBox())!;
-    expect(during.width).toBeGreaterThan(before.width + 200);
+    expect(during.width).toBeGreaterThan(before.width + 60);
     expect(during.height).toBeGreaterThan(before.height);
     await expect(app.getByTestId('hud-timer')).toBeVisible();
     await app.getByTestId('hud-play-pause').click();
