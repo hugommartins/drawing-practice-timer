@@ -29,13 +29,13 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.55.0",
-    "@stryker-mutator/core": "^9.0.0",
-    "@stryker-mutator/typescript-checker": "^9.0.0",
+    "@stryker-mutator/core": "^10.1.1",
+    "@stryker-mutator/typescript-checker": "^10.1.1",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "electron": "^37.0.0",
-    "electron-builder": "^26.0.0",
+    "electron": "^45.2.3",
+    "electron-builder": "^26.18.0",
     "esbuild": "^0.25.0",
     "tsx": "^4.20.0",
     "typescript": "^5.9.0"
