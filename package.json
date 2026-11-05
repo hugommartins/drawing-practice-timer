@@ -1,0 +1,70 @@
+{
+  "name": "drawing-practice-timer",
+  "productName": "Plchldr",
+  "version": "0.1.0",
+  "description": "Drawing-reference practice timer. Local folders, per-type tracking, a heatmap of when you practiced.",
+  "private": true,
+  "main": "dist/main/index.cjs",
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "node scripts/dev.mjs",
+    "start": "npm run build && electron .",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run test:unit && npm run test:ui",
+    "test:unit": "tsx --test tests/unit/*.test.ts",
+    "test:ui": "npm run build && playwright test --project=ui",
+    "test:e2e": "npm run build && playwright test --project=electron",
+    "package": "npm run build && electron-builder --dir",
+    "install:mac": "bash scripts/install-mac.sh",
+    "mutate": "stryker run",
+    "test:visual": "npm run build && playwright test --project=visual",
+    "test:visual:update": "npm run build && playwright test --project=visual --update-snapshots"
+  },
+  "dependencies": {
+    "@fontsource/dm-mono": "^5.1.0",
+    "@fontsource/dm-sans": "^5.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "@stryker-mutator/core": "^9.0.0",
+    "@stryker-mutator/typescript-checker": "^9.0.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "electron": "^37.0.0",
+    "electron-builder": "^26.0.0",
+    "esbuild": "^0.25.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0"
+  },
+  "build": {
+    "appId": "dev.plchldr.app",
+    "productName": "Plchldr",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "category": "public.app-category.graphics-design",
+      "target": [
+        "dir"
+      ]
+    },
+    "win": {
+      "target": [
+        "dir"
+      ]
+    },
+    "linux": {
+      "target": [
+        "dir"
+      ],
+      "category": "Graphics"
+    }
+  }
+}
