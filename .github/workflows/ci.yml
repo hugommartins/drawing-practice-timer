@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CI: true
+
+jobs:
+  # Fast checks that need no Electron: types, logic, and the real UI in Chromium.
+  checks:
+    name: Types, unit, UI (Linux)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install
+        run: if [ -f package-lock.json ]; then npm ci; else npm install; fi
+      - run: npx playwright install --with-deps chromium
+      - run: npm run typecheck
+      - run: npm run test:unit
+      - run: npm run test:ui
+      - name: Upload traces and screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-failures
+          path: |
+            test-results
+            playwright-report
+          if-no-files-found: ignore
+
+  # The real Electron window. Visual baselines are per platform (-darwin), so this runs on macOS only.
+  electron:
+    name: Visual and e2e (macOS)
+    runs-on: macos-latest
+    needs: checks
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install
+        run: if [ -f package-lock.json ]; then npm ci; else npm install; fi
+      - run: npm run test:visual
+      - run: npm run test:e2e
+      - name: Upload diffs and traces
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: electron-failures
+          path: |
+            test-results
+            playwright-report
+          if-no-files-found: ignore
