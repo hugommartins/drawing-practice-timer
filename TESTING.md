@@ -35,7 +35,7 @@ What is pinned so the same code always renders the same pixels:
 | Random image order | `Math.random` replaced by a seeded generator |
 | Data | generated from the fixed date, deterministic gaps and sizes |
 | Theme | stored in the seeded settings (not "system") |
-| Window size | content size set exactly, and the test fails if the display can't fit it |
+| Window size | CSS viewport set exactly (1280×760 wide, 640×760 narrow), independent of display size |
 | Display scale | `--force-device-scale-factor=1`, so Retina and non-Retina screens produce the same pixels |
 | Animations, caret | disabled |
 | Temp folder paths | masked |

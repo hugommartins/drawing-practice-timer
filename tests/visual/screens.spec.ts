@@ -26,8 +26,8 @@ const root = path.resolve(__dirname, '../..');
 const NOW = new Date(2026, 9, 30, 12, 0, 0);
 
 /**
- * Window content size. Kept modest so it fits on a laptop screen; the app clamps taller windows
- * to the display, which would silently change the picture.
+ * CSS viewport sizes are set through Playwright so the desktop doesn't constrain screenshots
+ * on smaller CI displays.
  */
 const WIDE = { width: 1280, height: 760 };
 const NARROW = { width: 640, height: 760 };
@@ -91,9 +91,9 @@ const test = base.extend<{ launch(opts: Options): Promise<Page> }>({
       apps.push(app);
       const page = await app.firstWindow();
 
-      await app.evaluate(({ BrowserWindow }, s) => BrowserWindow.getAllWindows()[0]!.setContentSize(s.width, s.height), size);
+      await page.setViewportSize(size);
       await page.waitForFunction(([w, h]) => innerWidth === w && innerHeight === h, [size.width, size.height] as const, { timeout: 5000 }).catch(() => {
-        throw new Error(`The window could not be sized to ${size.width}x${size.height}. The display is too small for the visual tests.`);
+        throw new Error(`The viewport could not be set to ${size.width}x${size.height}.`);
       });
 
       // Deterministic "random" (same image order every run) and a frozen clock, then start the app over.
