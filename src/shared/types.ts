@@ -39,6 +39,8 @@ export interface SetupConfig {
   /** Number of images, 0 = until you stop. */
   count: number;
   collectionId: string | null;
+  /** Only draw these images (paths relative to the folder). Absent means the whole folder. */
+  images?: string[];
 }
 
 export interface LastSession {

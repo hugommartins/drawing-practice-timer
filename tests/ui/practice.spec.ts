@@ -47,3 +47,56 @@ test('theme cycles system, light, dark and persists', async ({ app }) => {
   await app.reload();
   await expect(html).toHaveAttribute('data-theme', 'dark');
 });
+
+test('choosing images: a session uses only those, and the choice survives a reload and Repeat', async ({ app, harness, makeFolder }) => {
+  await linkViaUi(app, harness, makeFolder('Figure', 6));
+  await expect(app.getByTestId('pick-summary')).toHaveText('All 6 images');
+  await app.getByTestId('pick-open').click();
+  await expect(app.getByTestId('picker-count')).toContainText('None picked');
+  await app.getByTestId('pick-tile').nth(1).click();
+  await app.getByTestId('pick-tile').nth(3).click();
+  await expect(app.getByTestId('picker-count')).toHaveText('2 of 6 picked');
+  await app.getByTestId('picker-done').click();
+  await expect(app.getByTestId('pick-summary')).toHaveText('2 chosen images');
+
+  await app.reload();
+  await expect(app.getByTestId('pick-summary')).toHaveText('2 chosen images');
+  await app.getByTestId('start-session').click();
+  await expect(app.getByTestId('image-counter')).toContainText('Image 1 of 2'); // 20 requested, capped by the choice
+});
+
+test('a single chosen image, then back to the whole folder', async ({ app, harness, makeFolder }) => {
+  await linkViaUi(app, harness, makeFolder('Figure', 5));
+  await app.getByTestId('pick-open').click();
+  await app.getByTestId('pick-tile').first().click();
+  await app.getByTestId('picker-done').click();
+  await expect(app.getByTestId('pick-summary')).toHaveText('1 chosen image');
+  await app.getByTestId('pick-clear').click();
+  await expect(app.getByTestId('pick-summary')).toHaveText('All 5 images');
+});
+
+test('picking every image, or none, means the whole folder; cancel changes nothing', async ({ app, harness, makeFolder }) => {
+  await linkViaUi(app, harness, makeFolder('Figure', 4));
+  await app.getByTestId('pick-open').click();
+  await app.getByTestId('picker-all').click();
+  await app.getByTestId('picker-done').click();
+  await expect(app.getByTestId('pick-summary')).toHaveText('All 4 images');
+  await app.getByTestId('pick-open').click();
+  await app.getByTestId('pick-tile').first().click();
+  await app.getByRole('button', { name: 'Cancel' }).click();
+  await expect(app.getByTestId('pick-summary')).toHaveText('All 4 images');
+});
+
+test('changing the folder drops the choice', async ({ app, harness, makeFolder }) => {
+  await linkViaUi(app, harness, makeFolder('Figure', 4));
+  harness.pickNext(makeFolder('Hands', 3));
+  await harness.api.linkFolder();
+  await app.reload();
+  await app.getByTestId('ref-select').selectOption({ label: 'Figure · 4 images' });
+  await app.getByTestId('pick-open').click();
+  await app.getByTestId('pick-tile').first().click();
+  await app.getByTestId('picker-done').click();
+  await expect(app.getByTestId('pick-summary')).toHaveText('1 chosen image');
+  await app.getByTestId('ref-select').selectOption({ label: 'Hands · 3 images' });
+  await expect(app.getByTestId('pick-summary')).toHaveText('All 3 images');
+});

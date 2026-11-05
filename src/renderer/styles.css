@@ -111,6 +111,16 @@ select { appearance: none; -webkit-appearance: none; padding-right: 36px; cursor
 .empty { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; padding: 44px 24px; }
 .empty .art { color: var(--mu); opacity: 0.7; }
 .empty p { max-width: 46ch; }
+.pick-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.dialog.wide { width: min(820px, calc(100vw - 32px)); }
+.picker-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.picker-bar-actions { display: inline-flex; gap: 4px; }
+.picker-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 8px; max-height: min(52vh, 480px); overflow: auto; padding: 2px; }
+.pick-tile { position: relative; aspect-ratio: 1; padding: 0; border-radius: 10px; border: 2px solid transparent; background: var(--sf2); overflow: hidden; }
+.pick-tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pick-tile::after { content: ''; position: absolute; top: 6px; right: 6px; width: 22px; height: 22px; border-radius: 50%; border: 2px solid #fffd; background: #0006; }
+.pick-tile[aria-pressed='true'] { border-color: var(--ac); }
+.pick-tile[aria-pressed='true']::after { content: '✓'; display: grid; place-items: center; background: var(--ac); border-color: var(--ac); color: var(--ink); font-size: 13px; font-weight: 700; }
 .hint { padding: 11px 14px; border-radius: 10px; background: var(--sf2); color: var(--mu); font-size: 13px; }
 .hint.warn { color: var(--tx); border: 1px solid color-mix(in srgb, var(--danger) 55%, var(--ln)); }
 

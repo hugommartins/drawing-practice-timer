@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { fmtMin, fmtSec, parseDuration } from '../../shared/format';
 import { relativeDay } from '../../shared/dates';
+import { imagesToDraw } from '../../shared/pick';
 import { minutesByDate, pastYear, tally } from '../../shared/stats';
 import { startOfWeek } from '../../shared/dates';
 import type { SetupConfig, TimerMode } from '../../shared/types';
@@ -8,6 +9,7 @@ import { useApp } from '../appctx';
 import { useLinkFolder } from '../actions';
 import { api } from '../bridge';
 import { Flash } from '../components/Flash';
+import { ImagePicker } from '../components/ImagePicker';
 import { IconFolder, IconPlay } from '../components/icons';
 import { LogDialog } from '../components/LogDialog';
 import { MODE_LABEL, useStore } from '../store';
@@ -22,6 +24,7 @@ export function Practice() {
   const { startSession } = useApp();
   const link = useLinkFolder();
   const [logOpen, setLogOpen] = useState(false);
+  const [pickOpen, setPickOpen] = useState(false);
   const [custom, setCustom] = useState('');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
@@ -53,9 +56,14 @@ export function Practice() {
     setBusy(true);
     setError('');
     try {
-      const images = await api().collectionImages(col.id);
-      if (images.length === 0) {
+      const all = await api().collectionImages(col.id);
+      if (all.length === 0) {
         setError(`"${col.name}" has no images right now.`);
+        return;
+      }
+      const images = imagesToDraw(all, cfg.images);
+      if (images.length === 0) {
+        setError(`None of the images you chose are in "${col.name}" any more. Choose again or use the whole folder.`);
         return;
       }
       startSession({ setup: { ...cfg, collectionId: col.id }, collection: col, images });
@@ -175,7 +183,7 @@ export function Practice() {
                 <select
                   data-testid="ref-select"
                   value={selected?.id ?? ''}
-                  onChange={(e) => set({ collectionId: e.target.value })}
+                  onChange={(e) => set({ collectionId: e.target.value, images: undefined })}
                 >
                   {collections.map((c) => (
                     <option key={c.id} value={c.id}>
@@ -184,6 +192,15 @@ export function Practice() {
                   ))}
                 </select>
               </label>
+              {selected && !blocker && (
+                <div className="pick-row">
+                  <span className="muted small" data-testid="pick-summary">
+                    {setup.images?.length ? `${setup.images.length} chosen image${setup.images.length === 1 ? '' : 's'}` : `All ${selected.count} images`}
+                  </span>
+                  <button type="button" className="btn" data-testid="pick-open" onClick={() => setPickOpen(true)}>Choose images…</button>
+                  {setup.images?.length ? <button type="button" className="btn ghost" data-testid="pick-clear" onClick={() => set({ images: undefined })}>Use whole folder</button> : null}
+                </div>
+              )}
               {blocker && <p className="hint warn" role="alert" data-testid="start-blocker">{blocker}</p>}
               {error && <p className="hint warn" role="alert">{error}</p>}
             </div>
@@ -227,6 +244,9 @@ export function Practice() {
         </div>
       )}
 
+      {selected && selected.reachable && selected.count > 0 && (
+        <ImagePicker open={pickOpen} collection={selected} chosen={setup.images} onApply={(images) => set({ images })} onClose={() => setPickOpen(false)} />
+      )}
       <LogDialog open={logOpen} onClose={() => setLogOpen(false)} />
     </>
   );

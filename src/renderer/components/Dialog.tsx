@@ -8,10 +8,11 @@ interface Props {
   onClose(): void;
   children: ReactNode;
   testId?: string;
+  wide?: boolean;
 }
 
 /** Native <dialog>: gives focus trapping, Esc to close and a backdrop for free. */
-export function Dialog({ open, title, description, onClose, children, testId }: Props) {
+export function Dialog({ open, title, description, onClose, children, testId, wide }: Props) {
   const ref = useRef<HTMLDialogElement>(null);
   const titleId = useId();
   useEffect(() => {
@@ -24,7 +25,7 @@ export function Dialog({ open, title, description, onClose, children, testId }: 
   return (
     <dialog
       ref={ref}
-      className="dialog"
+      className={wide ? 'dialog wide' : 'dialog'}
       aria-labelledby={titleId}
       data-testid={testId}
       onClose={onClose}

@@ -3,6 +3,7 @@
 Drawing-reference practice timer for the desktop. Point it at folders of reference images, pick a timer, draw, and watch a heatmap of the days you practiced fill in.
 
 - **Local references.** Link any folder. The folder name is the drawing type ("Figure", "Hands"); subfolders are included. Nothing is copied or uploaded.
+- **Pick your images.** Use the whole folder, or choose a single image or any set of them from a thumbnail picker. The choice is remembered, and "Repeat this setup" reuses it.
 - **Timers.** Per image, whole session, or none. Adjust on the fly with ±15 s / +1 m.
 - **Tracking.** Heatmap by month × day, past year or any single year, with streaks and per-type totals. Log practice you did away from the app.
 - **View tools.** Mirror, flip, greyscale and a grid overlay that always sits exactly on the image.
