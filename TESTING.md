@@ -25,6 +25,8 @@ How it fits together: `src/main/handlers.ts` holds everything that touches disk 
 
 Playwright's `toHaveScreenshot` launches the real app (`_electron`) for each screen and compares the window content with a baseline in `tests/visual/screens.spec.ts-snapshots/`. Screenshots come from Electron's own Chromium, so a baseline shows what the app really renders.
 
+Use Node.js 22 for Electron tests, matching CI. Electron downloads its platform binary during installation. If npm reports that Electron's install script was blocked, approve it with `npm install-scripts approve electron`, then reinstall Electron with `npm install`. The project allows this required script for npm versions that enforce install-script approvals.
+
 How each launch is prepared: the data folder is seeded by the same `createApi` the app uses, then the app starts against it with `PLCHLDR_DATA_DIR`.
 
 What is pinned so the same code always renders the same pixels:

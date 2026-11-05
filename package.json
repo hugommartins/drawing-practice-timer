@@ -67,5 +67,8 @@
       ],
       "category": "Graphics"
     }
+  },
+  "allowScripts": {
+    "electron": true
   }
 }
