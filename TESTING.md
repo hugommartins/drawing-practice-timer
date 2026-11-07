@@ -68,7 +68,6 @@ GitHub Actions, in `.github/workflows/`:
 |---|---|---|---|
 | `ci.yml` / checks | typecheck, unit, UI | Linux | every push to `main` and every pull request |
 | `ci.yml` / electron | visual, e2e | macOS | after checks pass |
-| `mutation.yml` | Stryker, logic layer | Linux | weekly, and on demand |
 | `visual-baselines.yml` | regenerate the `-ci` visual baselines and commit them | macOS | on demand, after an intended design change |
 
 - CI compares against `-ci` baselines made on the runner. Before the first green run, and after any intended design change: Actions > **Update visual baselines** > Run workflow. It commits the new images to that branch; review them in the diff before merging. A failing visual test on CI with no code change usually means the runner image changed: run the workflow and look at what moved.
