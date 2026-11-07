@@ -43,9 +43,9 @@ What is pinned so the same code always renders the same pixels:
 | Temp folder paths | masked |
 | Fonts, images | waited on (`document.fonts.ready`, image `complete`) |
 
-Comparison is strict on purpose: per-pixel `threshold: 0.02` and at most 0.01% differing pixels. Playwright's default per-pixel tolerance (0.2) hides low-contrast edges such as a card's corner radius changing from 16 px to 8 px.
+Comparison is strict on purpose: per-pixel `threshold: 0.02` and at most 0.01% differing pixels on your machine (0.05% on CI, where the runner image can change its text rendering between releases). Playwright's default per-pixel tolerance (0.2) hides low-contrast edges such as a card's corner radius changing from 16 px to 8 px.
 
-**No baselines are committed yet.** They are per platform (`-darwin`, `-linux`, `-win32`) and have to come from a real Electron run. On your Mac: `npm install`, then `npm run test:visual:update`, look at the images, and commit the `-darwin` files. After that, any change to a screen shows up as a failure with expected / actual / diff images in the report. An intended design change is handled the same way: update, review, commit.
+Baselines are per environment, because text is anti-aliased differently on a laptop and on a CI runner even with the same OS name. Your machine: `npm run test:visual:update`, look at the images, commit the `-darwin` files. CI: the baselines carry a `-ci` suffix (`-darwin-ci`) and are generated on the runner itself with the **Update visual baselines** workflow (below), never copied from a laptop. After that, any change to a screen shows up as a failure with expected / actual / diff images in the report. An intended design change is handled the same way: update, review, commit.
 
 ## Mutation testing (Stryker)
 
@@ -69,8 +69,9 @@ GitHub Actions, in `.github/workflows/`:
 | `ci.yml` / checks | typecheck, unit, UI | Linux | every push to `main` and every pull request |
 | `ci.yml` / electron | visual, e2e | macOS | after checks pass |
 | `mutation.yml` | Stryker, logic layer | Linux | weekly, and on demand |
+| `visual-baselines.yml` | regenerate the `-ci` visual baselines and commit them | macOS | on demand, after an intended design change |
 
-- Visual baselines are per platform, so that layer runs only where the baselines were generated (`-darwin`). Commit them before the first push, or the macOS job fails with no baseline to compare against.
+- CI compares against `-ci` baselines made on the runner. Before the first green run, and after any intended design change: Actions > **Update visual baselines** > Run workflow. It commits the new images to that branch; review them in the diff before merging. A failing visual test on CI with no code change usually means the runner image changed: run the workflow and look at what moved.
 - On failure, traces, screenshots and diffs are uploaded as artifacts; the HTML Playwright report is produced in CI.
 - Commit `package-lock.json` so installs are reproducible (`npm ci`). Until it exists the workflows fall back to `npm install`.
 - Mutation results are cached between runs (`incremental`), so a weekly run only re-tests what changed.

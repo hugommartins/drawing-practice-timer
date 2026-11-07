@@ -1,0 +1,45 @@
+name: Update visual baselines
+
+# Run this by hand (Actions > Update visual baselines > Run workflow) after an intended design change,
+# or the first time CI runs. It regenerates the CI-side screenshots on the same macOS runner image that
+# checks them, commits them to the branch you ran it on, and also uploads them as an artifact.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  CI: true
+
+jobs:
+  baselines:
+    name: Regenerate baselines (macOS)
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+          cache: npm
+      - name: Install
+        run: if [ -f package-lock.json ]; then npm ci; else npm install; fi
+      - run: npm run test:visual:update
+      - name: Upload baselines
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-baselines-ci
+          path: tests/visual/screens.spec.ts-snapshots/*-ci.png
+          if-no-files-found: error
+      - name: Commit baselines
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tests/visual/screens.spec.ts-snapshots
+          if git diff --cached --quiet; then
+            echo "Baselines already up to date."
+          else
+            git commit -m "test(visual): update CI baselines"
+            git push
+          fi

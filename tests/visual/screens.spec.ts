@@ -126,7 +126,8 @@ const shot = (page: Page, name: string) =>
     animations: 'disabled',
     caret: 'hide',
     threshold: 0.02, // default 0.2 hides low-contrast edges such as card corners
-    maxDiffPixelRatio: 0.0001,
+    // Strict on a developer machine. A CI runner image can change its text rendering between releases, so allow a little more there.
+    maxDiffPixelRatio: process.env['CI'] ? 0.0005 : 0.0001,
     mask: [page.locator('.col-path')], // temp-folder paths differ every run
     stylePath: path.join(__dirname, 'screenshot.css'),
   });
