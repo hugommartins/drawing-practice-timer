@@ -1,5 +1,6 @@
 // Static demo for GitHub Pages: the real renderer on a browser-only bridge. Output: dist-demo/
 import { build } from 'esbuild';
+import { execFileSync } from 'node:child_process';
 import { cpSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 
 rmSync('dist-demo', { recursive: true, force: true });
@@ -28,3 +29,5 @@ const html = readFileSync('src/renderer/index.html', 'utf8')
   .replace(/<meta http-equiv="Content-Security-Policy"[^>]*>/, '<meta http-equiv="Content-Security-Policy" content="default-src \'self\'; script-src \'self\'; style-src \'self\' \'unsafe-inline\'; img-src \'self\' data: blob:; font-src \'self\'">');
 writeFileSync('dist-demo/index.html', html);
 writeFileSync('dist-demo/.nojekyll', '');
+writeFileSync('dist-demo/strategy.css', readFileSync('src/demo/strategy.css', 'utf8'));
+execFileSync(process.execPath, ['scripts/build-strategy.mjs'], { stdio: 'inherit' });
