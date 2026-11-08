@@ -21,7 +21,7 @@ await build({
 // Reuse the renderer's static files and font handling by building the app first (npm run build).
 cpSync('dist/renderer/fonts', 'dist-demo/fonts', { recursive: true });
 cpSync('dist/renderer/fonts.css', 'dist-demo/fonts.css');
-writeFileSync('dist-demo/styles.css', readFileSync('src/renderer/styles.css', 'utf8'));
+writeFileSync('dist-demo/styles.css', readFileSync('src/renderer/styles.css', 'utf8') + '\n' + readFileSync('src/demo/demo.css', 'utf8'));
 
 const html = readFileSync('src/renderer/index.html', 'utf8')
   .replace('<title>Plchldr</title>', '<title>Plchldr · demo</title>')
