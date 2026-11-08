@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'">
+<meta name="description" content="A measured case study asking what screenshot tests catch that UI tests miss.">
+<title>What Screenshot Tests Catch That UI Tests Miss · plchldr</title>
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="./styles.css">
+<script src="./app.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="masthead">
+  <div class="masthead-inner">
+    <a class="wordmark" href="../" aria-label="plchldr demo">plchldr<span aria-hidden="true">.</span></a>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../">Demo</a>
+      <a href="../strategy.html">Test strategy</a>
+      <a href="./" aria-current="page">Case study</a>
+      <a href="https://github.com/hugommartins/drawing-practice-timer">Source</a>
+    </nav>
+  </div>
+</header>
+
+<header class="hero">
+  <div class="wide hero-grid">
+    <div>
+      <p class="eyebrow">Measured study <span aria-hidden="true">/</span> visual regression</p>
+      <h1>What do screenshot tests catch that UI tests miss?</h1>
+      <p class="lede">A controlled comparison of visual faults, functional UI tests, and screenshot thresholds in plchldr.</p>
+    </div>
+    <svg class="hero-art" viewBox="0 0 360 230" role="img" aria-label="Two overlapping outlines representing a screenshot and a changed layout" xmlns="http://www.w3.org/2000/svg">
+      <rect x="34" y="34" width="270" height="160" fill="none" stroke="#183940" stroke-width="4"/>
+      <path d="M56 166V83h92v83M170 166V60h112v106" fill="none" stroke="#bd4a08" stroke-width="4"/>
+      <path d="M56 106h92M170 91h112" stroke="#183940" stroke-width="2"/>
+    </svg>
+  </div>
+  <div class="wide">
+    <ul class="strip" id="hero-stats" aria-label="Study summary"></ul>
+  </div>
+</header>
+
+<div class="layout wide">
+  <nav class="rail" id="rail" aria-label="Study sections">
+    <span class="indicator" aria-hidden="true"></span>
+    <a href="#context">Context</a>
+    <a href="#outcome">Outcome</a>
+    <a href="#stages">Key stages</a>
+    <a href="#learning">Learning</a>
+    <a href="#next">Next steps</a>
+  </nav>
+
+  <main id="main">
+    <p class="load-status" id="load-status" role="status">Loading measured results…</p>
+    <section class="section" id="context" aria-labelledby="context-heading">
+      <h2 id="context-heading">Context</h2>
+      <p>Plchldr is a desktop drawing-practice timer. Its UI tests exercise behavior in Chromium; visual tests compare rendered screens with saved baselines.</p>
+      <h3>Why a visual layer at all</h3>
+      <p id="visual-rationale">The measured comparison is loading.</p>
+      <dl class="aside" id="study-settings"></dl>
+    </section>
+
+    <section class="section" id="outcome" aria-labelledby="outcome-heading">
+      <h2 id="outcome-heading">Outcome</h2>
+      <p class="lead">The aim was to learn which changes each test layer detects, and how the comparison responds to repeat-render and environment variation.</p>
+      <ul class="stats" id="outcome-stats"></ul>
+      <figure class="figure" id="corner-figure">
+        <div class="figure-trio">
+          <figure><img src="./images/corner-before.svg" alt="Card corner with a wider rounded radius"><figcaption id="corner-before-caption">Before</figcaption></figure>
+          <figure><img src="./images/corner-after.svg" alt="The same card corner with a tighter rounded radius"><figcaption id="corner-after-caption">After</figcaption></figure>
+          <figure><img src="./images/corner-changed.svg" alt="Orange marks show the changed part of the card corner"><figcaption>Changed pixels</figcaption></figure>
+        </div>
+        <figcaption id="corner-caption"></figcaption>
+      </figure>
+      <h3 class="subheading">Sensitivity by setting</h3>
+      <div class="table-wrap" id="setting-results" tabindex="0" aria-label="Sensitivity results by setting"></div>
+      <h3 class="subheading">Replayed repository changes</h3>
+      <div class="table-wrap" id="real-results" tabindex="0" aria-label="Results for replayed repository changes"></div>
+      <ul class="findings" id="findings"></ul>
+      <details class="matrix-details">
+        <summary>Show the full fault-by-screen matrix</summary>
+        <div class="table-wrap" id="fault-matrix" tabindex="0" aria-label="Full fault-by-screen matrix"></div>
+      </details>
+    </section>
+
+    <section class="section" id="stages" aria-labelledby="stages-heading">
+      <h2 id="stages-heading">Key stages</h2>
+      <ol class="stages" id="stage-list"></ol>
+    </section>
+
+    <section class="section" id="learning" aria-labelledby="learning-heading">
+      <h2 id="learning-heading">Learning</h2>
+      <ul class="learning" id="learning-list"></ul>
+    </section>
+
+    <section class="section" id="next" aria-labelledby="next-heading">
+      <h2 id="next-heading">Next steps</h2>
+      <ul class="next-steps" id="next-list"></ul>
+    </section>
+  </main>
+</div>
+
+<footer class="footer">
+  <div class="wide">
+    <p>Results are based on the local study data files. <a href="../strategy.html">Test strategy</a> · <a href="../">Demo</a> · <a href="https://github.com/hugommartins/drawing-practice-timer">Source</a></p>
+  </div>
+</footer>
+</body>
+</html>

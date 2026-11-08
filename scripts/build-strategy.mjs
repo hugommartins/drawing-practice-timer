@@ -140,7 +140,7 @@ const html = `<!doctype html>
   <nav aria-label="Site">
     <a href="./">Demo</a>
     <a href="./strategy.html" aria-current="page">Test strategy</a>
-    <a href="./case_study.html">Case study</a>
+    <a href="./study/">Case study</a>
     <a href="https://github.com/hugommartins/drawing-practice-timer">Source</a>
   </nav>
 </header>

@@ -2,6 +2,10 @@
 import { build } from 'esbuild';
 import { execFileSync } from 'node:child_process';
 import { cpSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
+import { dirname, join, relative, sep } from 'node:path';
+
+const require = createRequire(import.meta.url);
 
 rmSync('dist-demo', { recursive: true, force: true });
 mkdirSync('dist-demo', { recursive: true });
@@ -31,4 +35,22 @@ writeFileSync('dist-demo/index.html', html);
 writeFileSync('dist-demo/.nojekyll', '');
 writeFileSync('dist-demo/strategy.css', readFileSync('src/demo/strategy.css', 'utf8'));
 execFileSync(process.execPath, ['scripts/build-strategy.mjs'], { stdio: 'inherit' });
-cpSync('case_study.html', 'dist-demo/case_study.html');
+cpSync('study', 'dist-demo/study', {
+  recursive: true,
+  filter(source) {
+    const parts = relative('study', source).split(sep);
+    return !(parts[0] === 'data' && parts.at(-1)?.endsWith('.png'));
+  },
+});
+const studyFonts = join('dist-demo/study', 'fonts');
+mkdirSync(studyFonts, { recursive: true });
+const fontFiles = join(dirname(require.resolve('@fontsource/space-grotesk/package.json')), 'files');
+const monoFiles = join(dirname(require.resolve('@fontsource/dm-mono/package.json')), 'files');
+for (const weight of [400, 500, 600, 700]) {
+  const file = `space-grotesk-latin-${weight}-normal.woff2`;
+  cpSync(join(fontFiles, file), join(studyFonts, file));
+}
+for (const weight of [400, 500]) {
+  const file = `dm-mono-latin-${weight}-normal.woff2`;
+  cpSync(join(monoFiles, file), join(studyFonts, file));
+}
