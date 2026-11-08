@@ -19,6 +19,7 @@
     "mutate": "stryker run",
     "test:visual": "npm run build && playwright test --project=visual",
     "test:visual:update": "npm run build && playwright test --project=visual --update-snapshots",
+    "build:demo": "npm run build && node scripts/build-demo.mjs",
     "mutate:ui": "stryker run stryker.ui.config.json"
   },
   "dependencies": {
