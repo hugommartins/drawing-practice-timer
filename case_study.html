@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'">
+<title>Plchldr · case study</title>
+<link rel="stylesheet" href="./fonts.css">
+<link rel="stylesheet" href="./styles.css">
+<style>
+body { height: auto; min-height: 100%; overflow: auto; }
+.case-nav { display: flex; gap: 4px; }
+.case-nav a { padding: 7px 14px; border-radius: 999px; color: var(--mu); text-decoration: none; }
+.case-nav a[aria-current='page'] { background: var(--sf2); color: var(--tx); }
+.case-page { width: min(940px, 100%); margin: 0 auto; padding: 36px 28px 72px; }
+.case-page > header { margin-bottom: 28px; }
+.case-page h1 { font-size: clamp(30px, 6vw, 48px); line-height: 1.08; }
+.case-page .lede { max-width: 70ch; margin-top: 16px; color: var(--mu); font-size: 16px; }
+.case-page section { margin-top: 20px; }
+.case-page section p { max-width: 75ch; }
+.case-page h2 { margin-bottom: 12px; }
+.case-page .card { margin-top: 12px; }
+@media (max-width: 600px) {
+  .app-header { padding: 8px 12px; }
+  .case-nav { gap: 0; }
+  .case-nav a { padding: 7px 8px; font-size: 12px; }
+  .case-page { padding: 24px 16px 48px; }
+}
+</style>
+</head>
+<body>
+<header class="app-header">
+  <div class="brand">plchldr</div>
+  <nav class="case-nav" aria-label="Site">
+    <a href="./">Demo</a>
+    <a href="./strategy.html">Test strategy</a>
+    <a href="./case_study.html" aria-current="page">Case study</a>
+    <a href="https://github.com/hugommartins/drawing-practice-timer">Source</a>
+  </nav>
+</header>
+<main class="case-page">
+  <header>
+    <p class="eyebrow">Test strategy · visual regression</p>
+    <h1>What do screenshot tests catch that UI tests miss?</h1>
+    <p class="lede">A case study of a drawing-practice timer: compare the changes a screenshot check notices with the changes that functional UI tests notice, then measure how much the image varies without a code change.</p>
+  </header>
+
+  <section id="context" class="card">
+    <h2>Context</h2>
+    <p>Plchldr is a desktop app for practicing from local image folders. Its automated UI tests exercise screens and interactions, while a screenshot layer compares the rendered Electron window with reviewed images.</p>
+    <p>The question is whether that visual layer catches regressions the UI tests miss—and whether the screenshot comparison can distinguish deliberate visual changes from rendering noise.</p>
+  </section>
+
+  <section id="outcome" class="card">
+    <h2>Outcome</h2>
+    <p>Run a controlled comparison of injected visual changes, functional UI tests, and screenshot thresholds. Record repeat-render variation and keep the evidence separate from assumptions about performance or reliability.</p>
+  </section>
+
+  <section id="stages" class="card">
+    <h2>Key stages</h2>
+    <ol>
+      <li>Pin screen size, theme, clock, and random image order.</li>
+      <li>Apply visual faults and controls to the built renderer.</li>
+      <li>Run the UI suite and screenshot comparisons against the same screens.</li>
+      <li>Repeat unchanged renders and compare selected historical changes.</li>
+    </ol>
+  </section>
+
+  <section id="learning" class="card">
+    <h2>Learning</h2>
+    <p>A passing interaction test is not evidence that the rendered appearance stayed the same. Whether screenshot testing is useful here depends on which visual changes it catches and how much the images move without one.</p>
+  </section>
+
+  <section id="next" class="card">
+    <h2>Next steps</h2>
+    <p>Publish the measurements, their inputs, and their limits together. Electron runs on macOS and CI, CI runtime and flake rate, and mutation score require separate evidence and should not be inferred from screenshot sensitivity alone.</p>
+  </section>
+</main>
+</body>
+</html>

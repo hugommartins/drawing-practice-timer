@@ -10,6 +10,7 @@ banner.innerHTML =
   '<span class="demo-tag">Demo</span>' +
   '<span class="demo-text">Demo with sample data. References are generated, and changes stay in this browser.</span>' +
   '<a class="demo-strategy" href="./strategy.html">Test strategy</a>' +
+  '<a class="demo-strategy" href="./case_study.html">Case study</a>' +
   '<button type="button" class="demo-reset">Reset demo</button>';
 banner.querySelector('button')!.addEventListener('click', () => (window as unknown as { __resetDemo: () => void }).__resetDemo());
 document.body.prepend(banner);

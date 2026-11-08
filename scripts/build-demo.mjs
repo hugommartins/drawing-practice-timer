@@ -31,3 +31,4 @@ writeFileSync('dist-demo/index.html', html);
 writeFileSync('dist-demo/.nojekyll', '');
 writeFileSync('dist-demo/strategy.css', readFileSync('src/demo/strategy.css', 'utf8'));
 execFileSync(process.execPath, ['scripts/build-strategy.mjs'], { stdio: 'inherit' });
+cpSync('case_study.html', 'dist-demo/case_study.html');
