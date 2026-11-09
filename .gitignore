@@ -8,3 +8,4 @@ playwright-report
 .stryker-tmp
 reports
 dist-demo
+study/data/*.png

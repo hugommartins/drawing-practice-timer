@@ -20,6 +20,8 @@
     "test:visual": "npm run build && playwright test --project=visual",
     "test:visual:update": "npm run build && playwright test --project=visual --update-snapshots",
     "build:demo": "npm run build && node scripts/build-demo.mjs",
+    "study:sensitivity": "npm run build && tsx scripts/visual-sensitivity.ts && tsx scripts/ui-vs-faults.ts",
+    "study:real": "npm run build && tsx scripts/visual-sensitivity.ts --real && tsx scripts/ui-vs-faults.ts --real",
     "mutate:ui": "stryker run stryker.ui.config.json"
   },
   "dependencies": {
@@ -34,11 +36,14 @@
     "@stryker-mutator/core": "^9.0.0",
     "@stryker-mutator/typescript-checker": "^9.0.0",
     "@types/node": "^22.0.0",
+    "@types/pngjs": "^6.0.5",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "electron": "^37.0.0",
     "electron-builder": "^26.0.0",
     "esbuild": "^0.25.0",
+    "pixelmatch": "^7.1.0",
+    "pngjs": "^7.0.0",
     "tsx": "^4.20.0",
     "typescript": "^5.9.0"
   },
