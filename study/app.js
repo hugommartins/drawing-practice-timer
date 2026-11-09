@@ -54,7 +54,7 @@ function allDiffs(fault, setting) {
 }
 
 function settingTable(visual, ui, real, realUi) {
-  const headings = ['Setting', `${visual.faults.length} injected faults`, `${realUi.faults.length} historical changes`];
+  const headings = ['Setting', `${visual.faults.length} injected`, `${realUi.faults.length} replayed`];
   const rows = [
     ['UI tests', `${uiFailures(ui)}/${ui.faults.length}`, `${uiFailures(realUi)}/${realUi.faults.length}`],
     [`Default (${visual.study.thresholds[0]})`, `${visualCount(visual, 'default')}/${visual.faults.length}`, `${replayCount(real, 'default')}/${real.faults.length}`],
@@ -118,7 +118,7 @@ function renderRealTable(visual, uiReal) {
     };
     return [`${fault.name} (${fault.sourceCommit})`, uiStatus, cell('default'), cell('local'), cell('ci'), cell('strict')];
   });
-  return table(['Replayed change', 'UI tests fail?', `Default (${visual.study.thresholds[0]})`, 'Local', 'CI', `Strict (${visual.study.thresholds[1]})`], rows);
+  return table(['Change', 'UI', 'Default', 'Local', 'CI', 'Strict'], rows);
 }
 
 function renderFaultMatrix(visual, ui, real, uiReal) {
@@ -215,6 +215,8 @@ function renderStudy(visual, ui, real, uiReal, editorial) {
 
   document.getElementById('setting-results').append(settingTable(visual, ui, real, uiReal));
   document.getElementById('real-results').append(renderRealTable(real, uiReal));
+  document.getElementById('matrix-summary').textContent =
+    `Show the full fault-by-screen matrix (${visual.faults.length + real.faults.length} faults)`;
   document.getElementById('matrix-help')?.remove();
   const help = node('p', 'sr-only', 'Filled dots mean flagged; open dots mean missed; a dash means the fault is not drawn on that screen.');
   help.id = 'matrix-help';
