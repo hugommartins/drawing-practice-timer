@@ -10,6 +10,7 @@ export interface Fault {
   js?: string;
   screens: string[];
   sourceCommit?: string;
+  transform?: string;
   rgbDelta?: number;
 }
 
@@ -119,4 +120,45 @@ export const controls: Fault[] = [
   },
 ];
 
-export const realFaults: Fault[] = [];
+export const realFaults: Fault[] = [
+  {
+    id: 'real-select-chevron',
+    name: 'Select chevron inset',
+    kind: 'real',
+    theme: 'dark',
+    css: "[data-testid='ref-select'] { background-position: calc(100% - 22px) calc(50% - 1px), calc(100% - 17px) calc(50% - 1px) !important; }",
+    screens: ['Practice'],
+    sourceCommit: '8f59799',
+    transform: 'Move the custom select chevron 3 px inward on Practice.',
+  },
+  {
+    id: 'real-light-accent',
+    name: 'Light accent change',
+    kind: 'real',
+    theme: 'light',
+    css: ":root[data-theme='light'] { --ac: #c18b35 !important; }",
+    screens: [...screens],
+    sourceCommit: '053ee43',
+    transform: 'Change the light-theme accent from #b87a12 to #c18b35.',
+  },
+  {
+    id: 'real-light-palette',
+    name: 'Light palette change',
+    kind: 'real',
+    theme: 'light',
+    css: ":root[data-theme='light'] { --bg: #f6f4ef !important; --sf: #ffffff !important; --sf2: #efece5 !important; --ln: #e2ded4 !important; --ln2: #cfc9bb !important; --tx: #1d1b17 !important; --mu: #6b675d !important; --ink: #ffffff !important; --l0: #ebe7dc !important; --l1: #f0d9a4 !important; --l2: #e2b45c !important; --l3: #cf9230 !important; --l4: #b87a12 !important; }",
+    screens: [...screens],
+    sourceCommit: '78fbfa1',
+    transform: 'Restore the earlier warm light-theme palette values.',
+  },
+  {
+    id: 'real-rename',
+    name: 'App-name casing change',
+    kind: 'real',
+    theme: 'dark',
+    js: "const brand = document.querySelector('.brand span'); if (brand) brand.textContent = 'Plchldr';",
+    screens: [...screens],
+    sourceCommit: '58fdceb',
+    transform: 'Change the rendered app name from plchldr to Plchldr.',
+  },
+];

@@ -1,0 +1,378 @@
+{
+  "study": {
+    "title": "What screenshot tests catch that UI tests miss?",
+    "faultSet": "four historical changes",
+    "sourceNote": "The four abbreviated commit IDs were supplied in the study brief but were not resolvable in available repository history or GitHub. Each replay reconstructs the supplied change description; it is not the original patch.",
+    "renderer": "Chromium browser harness; not Electron",
+    "screens": [
+      "Practice",
+      "History",
+      "Library"
+    ],
+    "viewport": {
+      "width": 1280,
+      "height": 760,
+      "deviceScaleFactor": 1
+    },
+    "repeatCount": 20,
+    "budgets": {
+      "local": 97,
+      "ci": 486
+    },
+    "thresholds": [
+      0.2,
+      0.02
+    ],
+    "comparator": "pixelmatch",
+    "environmentProxy": "A 31% opacity subpixel text-shadow perturbation in a separate Chromium context; same machine, not a second machine",
+    "date": "2026-10-30",
+    "countRule": "A fault counts as caught only when it is flagged on every screen where it is drawn."
+  },
+  "noise": {
+    "sameMachine": {
+      "Practice": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "History": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "Library": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "environmentProxy": {
+      "Practice": [
+        5094
+      ],
+      "History": [
+        5336
+      ],
+      "Library": [
+        2797
+      ]
+    }
+  },
+  "faults": [
+    {
+      "id": "real-select-chevron",
+      "name": "Select chevron inset",
+      "kind": "real",
+      "theme": "dark",
+      "sourceCommit": "8f59799",
+      "transform": "Move the custom select chevron 3 px inward on Practice.",
+      "rgbDelta": null,
+      "drawnOn": [
+        "Practice"
+      ],
+      "screens": {
+        "Practice": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 23,
+            "flagged": true
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 23,
+            "localFlagged": false,
+            "ciFlagged": false,
+            "unlimitedFlagged": true
+          }
+        }
+      },
+      "caughtEveryScreen": {
+        "default": true,
+        "local": false,
+        "ci": false,
+        "strict": true
+      }
+    },
+    {
+      "id": "real-light-accent",
+      "name": "Light accent change",
+      "kind": "real",
+      "theme": "light",
+      "sourceCommit": "053ee43",
+      "transform": "Change the light-theme accent from #b87a12 to #c18b35.",
+      "rgbDelta": null,
+      "drawnOn": [
+        "Practice",
+        "History",
+        "Library"
+      ],
+      "screens": {
+        "Practice": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 0,
+            "flagged": false
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 249,
+            "localFlagged": true,
+            "ciFlagged": false,
+            "unlimitedFlagged": true
+          }
+        },
+        "History": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 0,
+            "flagged": false
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 95,
+            "localFlagged": false,
+            "ciFlagged": false,
+            "unlimitedFlagged": true
+          }
+        },
+        "Library": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 0,
+            "flagged": false
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 8492,
+            "localFlagged": true,
+            "ciFlagged": true,
+            "unlimitedFlagged": true
+          }
+        }
+      },
+      "caughtEveryScreen": {
+        "default": false,
+        "local": false,
+        "ci": false,
+        "strict": true
+      }
+    },
+    {
+      "id": "real-light-palette",
+      "name": "Light palette change",
+      "kind": "real",
+      "theme": "light",
+      "sourceCommit": "78fbfa1",
+      "transform": "Restore the earlier warm light-theme palette values.",
+      "rgbDelta": null,
+      "drawnOn": [
+        "Practice",
+        "History",
+        "Library"
+      ],
+      "screens": {
+        "Practice": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 0,
+            "flagged": false
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 14214,
+            "localFlagged": true,
+            "ciFlagged": true,
+            "unlimitedFlagged": true
+          }
+        },
+        "History": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 0,
+            "flagged": false
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 20140,
+            "localFlagged": true,
+            "ciFlagged": true,
+            "unlimitedFlagged": true
+          }
+        },
+        "Library": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 375,
+            "flagged": true
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 6282,
+            "localFlagged": true,
+            "ciFlagged": true,
+            "unlimitedFlagged": true
+          }
+        }
+      },
+      "caughtEveryScreen": {
+        "default": false,
+        "local": true,
+        "ci": true,
+        "strict": true
+      }
+    },
+    {
+      "id": "real-rename",
+      "name": "App-name casing change",
+      "kind": "real",
+      "theme": "dark",
+      "sourceCommit": "58fdceb",
+      "transform": "Change the rendered app name from plchldr to Plchldr.",
+      "rgbDelta": null,
+      "drawnOn": [
+        "Practice",
+        "History",
+        "Library"
+      ],
+      "screens": {
+        "Practice": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 289,
+            "flagged": true
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 525,
+            "localFlagged": true,
+            "ciFlagged": true,
+            "unlimitedFlagged": true
+          }
+        },
+        "History": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 291,
+            "flagged": true
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 522,
+            "localFlagged": true,
+            "ciFlagged": true,
+            "unlimitedFlagged": true
+          }
+        },
+        "Library": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 290,
+            "flagged": true
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 528,
+            "localFlagged": true,
+            "ciFlagged": true,
+            "unlimitedFlagged": true
+          }
+        }
+      },
+      "caughtEveryScreen": {
+        "default": true,
+        "local": true,
+        "ci": true,
+        "strict": true
+      }
+    }
+  ],
+  "controls": [
+    {
+      "id": "hide-navigation",
+      "name": "Hide navigation links",
+      "screens": {
+        "Practice": {
+          "diffPixels": 2472,
+          "flagged": true
+        },
+        "History": {
+          "diffPixels": 2312,
+          "flagged": true
+        },
+        "Library": {
+          "diffPixels": 2251,
+          "flagged": true
+        }
+      }
+    },
+    {
+      "id": "high-contrast-border",
+      "name": "Replace card border with a high-contrast color",
+      "screens": {
+        "Practice": {
+          "diffPixels": 2542,
+          "flagged": true
+        },
+        "History": {
+          "diffPixels": 5219,
+          "flagged": true
+        },
+        "Library": {
+          "diffPixels": 2674,
+          "flagged": true
+        }
+      }
+    }
+  ]
+}

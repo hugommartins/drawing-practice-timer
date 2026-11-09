@@ -150,6 +150,7 @@ function faultSummary(fault: Fault, byScreen: Record<string, ReturnType<typeof c
     kind: fault.kind,
     theme: fault.theme,
     sourceCommit: fault.sourceCommit ?? null,
+    transform: fault.transform ?? null,
     rgbDelta: fault.rgbDelta ?? null,
     drawnOn: fault.screens,
     screens: byScreen,
@@ -250,6 +251,12 @@ async function main() {
       study: {
         title: 'What screenshot tests catch that UI tests miss?',
         faultSet: realMode ? 'four historical changes' : 'ten injected visual faults',
+        ...(realMode
+          ? {
+              sourceNote:
+                'The four abbreviated commit IDs were supplied in the study brief but were not resolvable in available repository history or GitHub. Each replay reconstructs the supplied change description; it is not the original patch.',
+            }
+          : {}),
         renderer: 'Chromium browser harness; not Electron',
         screens: [...screens],
         viewport: { width: WIDTH, height: HEIGHT, deviceScaleFactor: 1 },
