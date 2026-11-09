@@ -150,7 +150,7 @@
       "kind": "real",
       "theme": "light",
       "sourceCommit": "053ee43",
-      "transform": "Change the light-theme accent from #b87a12 to #c18b35.",
+      "transform": "Warm the light-theme accent and border colors, including the strongest heatmap accent.",
       "rgbDelta": null,
       "drawnOn": [
         "Practice",
@@ -166,9 +166,9 @@
           },
           "strict": {
             "threshold": 0.02,
-            "diffPixels": 249,
+            "diffPixels": 12007,
             "localFlagged": true,
-            "ciFlagged": false,
+            "ciFlagged": true,
             "unlimitedFlagged": true
           }
         },
@@ -180,9 +180,9 @@
           },
           "strict": {
             "threshold": 0.02,
-            "diffPixels": 95,
-            "localFlagged": false,
-            "ciFlagged": false,
+            "diffPixels": 16911,
+            "localFlagged": true,
+            "ciFlagged": true,
             "unlimitedFlagged": true
           }
         },
@@ -194,7 +194,7 @@
           },
           "strict": {
             "threshold": 0.02,
-            "diffPixels": 8492,
+            "diffPixels": 13314,
             "localFlagged": true,
             "ciFlagged": true,
             "unlimitedFlagged": true
@@ -203,8 +203,8 @@
       },
       "caughtEveryScreen": {
         "default": false,
-        "local": false,
-        "ci": false,
+        "local": true,
+        "ci": true,
         "strict": true
       }
     },

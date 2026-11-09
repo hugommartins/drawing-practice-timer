@@ -155,6 +155,7 @@ tbody th { color: var(--ink); font-weight: 500; }
   .wide { padding-inline: 16px; }
   .masthead-inner { align-items: flex-start; flex-direction: column; gap: .2rem; padding-block: .6rem; }
   .site-nav { max-width: 100%; gap: .8rem; overflow-x: auto; white-space: nowrap; font-size: .84rem; }
+  .rail { margin-inline: -16px; padding-inline: 16px; }
   .aside { grid-template-columns: 1fr; }
   .stats { grid-template-columns: 1fr; gap: 1rem; }
   .figure-trio { grid-template-columns: 1fr; }

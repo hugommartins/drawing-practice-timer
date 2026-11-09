@@ -136,10 +136,10 @@ export const realFaults: Fault[] = [
     name: 'Light accent change',
     kind: 'real',
     theme: 'light',
-    css: ":root[data-theme='light'] { --ac: #c18b35 !important; }",
+    css: ":root[data-theme='light'] { --ac: #c18b35 !important; --l4: #c18b35 !important; --ln: #e7e1d6 !important; --ln2: #d5c9b0 !important; }",
     screens: [...screens],
     sourceCommit: '053ee43',
-    transform: 'Change the light-theme accent from #b87a12 to #c18b35.',
+    transform: 'Warm the light-theme accent and border colors, including the strongest heatmap accent.',
   },
   {
     id: 'real-light-palette',

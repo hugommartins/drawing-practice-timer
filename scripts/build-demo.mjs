@@ -44,8 +44,6 @@ cpSync('study', 'dist-demo/study', {
 });
 const studyFonts = join('dist-demo/study', 'fonts');
 mkdirSync(studyFonts, { recursive: true });
-mkdirSync('dist-demo/scripts', { recursive: true });
-cpSync('scripts/faults.ts', 'dist-demo/scripts/faults.ts');
 const fontFiles = join(dirname(require.resolve('@fontsource/space-grotesk/package.json')), 'files');
 const monoFiles = join(dirname(require.resolve('@fontsource/dm-mono/package.json')), 'files');
 for (const weight of [400, 500, 600, 700]) {
