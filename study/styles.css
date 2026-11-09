@@ -110,6 +110,8 @@ main { min-width: 0; }
 .figure-trio img { width: 100%; background: var(--tint); }
 .figure-trio figcaption { margin-top: .4rem; color: var(--ink); font: 600 .82rem var(--head); }
 .figure > figcaption { margin-top: .8rem; color: var(--muted); font-size: .8rem; }
+.provenance { margin: .8rem 0 1.2rem; padding: .75rem 1rem; border-left: 3px solid var(--accent); background: var(--tint); font-size: .82rem; }
+.provenance[hidden] { display: none; }
 .table-wrap { min-width: 0; margin: .8rem 0 1.3rem; overflow-x: auto; overscroll-behavior-x: contain; }
 table { width: 100%; border-collapse: collapse; font-size: .8rem; font-variant-numeric: tabular-nums; }
 th, td { min-width: 5.5rem; padding: .55rem .8rem .55rem 0; border-bottom: 1px solid var(--rule); text-align: left; vertical-align: top; }

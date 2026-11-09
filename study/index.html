@@ -29,7 +29,7 @@
     <div>
       <p class="eyebrow">Measured study <span aria-hidden="true">/</span> visual regression</p>
       <h1>What do screenshot tests catch that UI tests miss?</h1>
-      <p class="lede">A controlled comparison of visual faults, functional UI tests, and screenshot thresholds in plchldr.</p>
+      <p class="lede" id="study-lede"></p>
     </div>
     <svg class="hero-art" viewBox="0 0 360 230" role="img" aria-label="Two overlapping outlines representing a screenshot and a changed layout" xmlns="http://www.w3.org/2000/svg">
       <rect x="34" y="34" width="270" height="160" fill="none" stroke="#183940" stroke-width="4"/>
@@ -56,7 +56,7 @@
     <p class="load-status" id="load-status" role="status">Loading measured results…</p>
     <section class="section" id="context" aria-labelledby="context-heading">
       <h2 id="context-heading">Context</h2>
-      <p>Plchldr is a desktop drawing-practice timer. Its UI tests exercise behavior in Chromium; visual tests compare rendered screens with saved baselines.</p>
+      <p id="context-copy"></p>
       <h3>Why a visual layer at all</h3>
       <p id="visual-rationale">The measured comparison is loading.</p>
       <dl class="aside" id="study-settings"></dl>
@@ -64,7 +64,7 @@
 
     <section class="section" id="outcome" aria-labelledby="outcome-heading">
       <h2 id="outcome-heading">Outcome</h2>
-      <p class="lead">The aim was to learn which changes each test layer detects, and how the comparison responds to repeat-render and environment variation.</p>
+      <p class="lead" id="outcome-copy"></p>
       <ul class="stats" id="outcome-stats"></ul>
       <figure class="figure" id="corner-figure">
         <div class="figure-trio">
@@ -77,9 +77,10 @@
       <h3 class="subheading">Sensitivity by setting</h3>
       <div class="table-wrap" id="setting-results" tabindex="0" aria-label="Sensitivity results by setting"></div>
       <h3 class="subheading">Replayed repository changes</h3>
+      <p class="provenance" id="real-provenance" hidden></p>
       <div class="table-wrap" id="real-results" tabindex="0" aria-label="Results for replayed repository changes"></div>
       <ul class="findings" id="findings"></ul>
-      <details class="matrix-details">
+      <details class="matrix-details" open>
         <summary>Show the full fault-by-screen matrix</summary>
         <div class="table-wrap" id="fault-matrix" tabindex="0" aria-label="Full fault-by-screen matrix"></div>
       </details>
@@ -104,7 +105,7 @@
 
 <footer class="footer">
   <div class="wide">
-    <p>Results are based on the local study data files. <a href="../strategy.html">Test strategy</a> · <a href="../">Demo</a> · <a href="https://github.com/hugommartins/drawing-practice-timer">Source</a></p>
+    <p>Results are based on the local study data files. Fault definitions: <a href="../scripts/faults.ts">scripts/faults.ts</a>. <a href="../strategy.html">Test strategy</a> · <a href="../">Demo</a> · <a href="https://github.com/hugommartins/drawing-practice-timer">Source</a></p>
   </div>
 </footer>
 </body>

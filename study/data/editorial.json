@@ -1,5 +1,7 @@
 {
+  "lede": "A controlled comparison of visual faults, functional UI tests, and screenshot thresholds in plchldr.",
   "context": "Plchldr is a desktop drawing-practice timer. Its UI tests exercise behavior in Chromium; visual tests compare rendered screens with saved baselines. This study asks which deliberate appearance changes each layer catches, then measures repeat-render variation and a controlled environment proxy.",
+  "outcome": "The aim was to learn which changes each test layer detects, and how the comparison responds to repeat-render and environment variation.",
   "whyLayer": "The UI suite verifies behavior and selected layout constraints, but does not compare the rendered appearance. A visual check compares the actual Electron window with a reviewed baseline, so changes such as a radius, border, or color can be noticed even when the controls still work. The measurements here use the browser harness and should not be read as Electron results.",
   "stages": [
     {
