@@ -1,0 +1,65 @@
+{
+  "study": {
+    "runner": "27 Playwright UI tests per fault",
+    "expectedTestCount": 27,
+    "mode": "replays of real commits"
+  },
+  "faults": [
+    {
+      "id": "real-select-chevron",
+      "name": "Select arrow: custom chevron and inset removed",
+      "kind": "real commit",
+      "commit": "6cf487f",
+      "ui": {
+        "exitCode": 0,
+        "passed": 27,
+        "failed": 0,
+        "skipped": 0,
+        "expectedTests": 27
+      }
+    },
+    {
+      "id": "real-light-palette",
+      "name": "Light palette: warm instead of cool grey",
+      "kind": "real commit",
+      "commit": "722a9bb",
+      "ui": {
+        "exitCode": 0,
+        "passed": 27,
+        "failed": 0,
+        "skipped": 0,
+        "expectedTests": 27
+      }
+    }
+  ],
+  "controls": [
+    {
+      "id": "hide-navigation",
+      "name": "Hide navigation links",
+      "kind": "invented",
+      "briefReference": null,
+      "ui": {
+        "exitCode": 1,
+        "passed": 19,
+        "failed": 8,
+        "skipped": 0,
+        "expectedTests": 27,
+        "outputTail": "    [ui] \u203a tests/ui/pages.spec.ts:55:7 \u203a history \u203a numbers, heatmap and types reflect the sessions \u2500\n    [ui] \u203a tests/ui/pages.spec.ts:72:7 \u203a history \u203a deleting a session asks first and updates the totals \n    [ui] \u203a tests/ui/pages.spec.ts:88:7 \u203a library \u203a lists folders with previews \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n    [ui] \u203a tests/ui/pages.spec.ts:97:7 \u203a library \u203a rename changes the type used for new sessions \u2500\u2500\u2500\n    [ui] \u203a tests/ui/pages.spec.ts:108:7 \u203a library \u203a a missing folder is flagged and blocks practice \n    [ui] \u203a tests/ui/pages.spec.ts:120:7 \u203a library \u203a remove keeps past sessions in history \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n    [ui] \u203a tests/ui/pages.spec.ts:131:5 \u203a no page overflows sideways in a narrow window \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n  19 passed (1.1m)\n\n"
+      }
+    },
+    {
+      "id": "high-contrast-border",
+      "name": "Replace card border with a high-contrast color",
+      "kind": "invented",
+      "briefReference": null,
+      "ui": {
+        "exitCode": 0,
+        "passed": 27,
+        "failed": 0,
+        "skipped": 0,
+        "expectedTests": 27,
+        "outputTail": "[21/27] [ui] \u203a tests/ui/session.spec.ts:85:7 \u203a running a session \u203a no-timer mode counts up and saves what was drawn\n[22/27] [ui] \u203a tests/ui/session.spec.ts:99:7 \u203a running a session \u203a ending early: keep drawing resumes, discard saves nothing\n[23/27] [ui] \u203a tests/ui/session.spec.ts:114:7 \u203a running a session \u203a sessions under 20 seconds are not saved\n[24/27] [ui] \u203a tests/ui/session.spec.ts:133:7 \u203a on screen \u203a view tools and keyboard shortcuts\n[25/27] [ui] \u203a tests/ui/session.spec.ts:156:7 \u203a on screen \u203a focus mode gives the image the whole window and keeps the timer reachable\n[26/27] [ui] \u203a tests/ui/session.spec.ts:175:7 \u203a on screen \u203a image keeps its aspect ratio and the grid sits exactly on it at any window size\n[27/27] [ui] \u203a tests/ui/session.spec.ts:190:7 \u203a on screen \u203a controls move below the image in a narrow window, with no overflow\n  27 passed (20.9s)\n\n"
+      }
+    }
+  ]
+}

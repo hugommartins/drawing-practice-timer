@@ -1,0 +1,83 @@
+.strategy-body {
+  display: block;
+  min-height: 100%;
+  height: auto;
+  overflow: auto;
+  background: var(--bg);
+  color: var(--tx);
+}
+.strategy-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  padding: 0 28px;
+  border-bottom: 1px solid var(--ln);
+  background: var(--bg);
+}
+.strategy-header nav {
+  display: flex;
+  gap: 4px;
+  width: min(1120px, 100%);
+  min-height: 54px;
+  align-items: center;
+}
+.strategy-header a {
+  padding: 7px 14px;
+  border-radius: 999px;
+  color: var(--mu);
+  text-decoration: none;
+  font-weight: 500;
+}
+.strategy-header a:hover,
+.strategy-header a[aria-current='page'] {
+  color: var(--tx);
+  background: var(--sf2);
+}
+.strategy-main {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  padding: 30px 28px 64px;
+  line-height: 1.65;
+}
+.strategy-main h1,
+.strategy-main h2,
+.strategy-main h3 {
+  margin: 1.6em 0 0.55em;
+  line-height: 1.25;
+}
+.strategy-main h1 { margin-top: 0; font-size: 30px; }
+.strategy-main h2 { font-size: 23px; }
+.strategy-main h3 { font-size: 17px; }
+.strategy-main p,
+.strategy-main ul,
+.strategy-main ol { margin: 0 0 1em; }
+.strategy-main li { margin: 0.35em 0; }
+.strategy-main a { color: var(--ac); }
+.strategy-main code {
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  background: var(--sf2);
+  font: 0.92em var(--font-mono);
+  overflow-wrap: anywhere;
+}
+.strategy-main pre {
+  overflow-x: auto;
+  padding: 16px;
+  border: 1px solid var(--ln);
+  border-radius: 12px;
+  background: var(--sf);
+}
+.strategy-main pre code { padding: 0; background: none; }
+.strategy-table { margin: 1em 0 1.5em; overflow-x: auto; }
+.strategy-table table { width: 100%; border-collapse: collapse; }
+.strategy-table th,
+.strategy-table td { min-width: 7rem; padding: 9px 12px; border-bottom: 1px solid var(--ln); text-align: left; vertical-align: top; }
+.strategy-table th { background: var(--sf); font-weight: 600; }
+@media (max-width: 600px) {
+  .strategy-header { padding: 0 8px; }
+  .strategy-header nav { gap: 0; }
+  .strategy-header a { padding-inline: 9px; font-size: 12px; }
+  .strategy-main { padding: 24px 16px 48px; }
+}

@@ -1,0 +1,179 @@
+{
+  "study": {
+    "runner": "27 Playwright UI tests per fault",
+    "expectedTestCount": 27,
+    "mode": "injected visual faults and controls"
+  },
+  "faults": [
+    {
+      "id": "card-radius",
+      "name": "Card radius reduced from 16 px to 8 px",
+      "kind": "invented",
+      "briefReference": null,
+      "ui": {
+        "exitCode": 0,
+        "passed": 27,
+        "failed": 0,
+        "skipped": 0,
+        "expectedTests": 27,
+        "outputTail": "[21/27] [ui] › tests/ui/session.spec.ts:85:7 › running a session › no-timer mode counts up and saves what was drawn\n[22/27] [ui] › tests/ui/session.spec.ts:99:7 › running a session › ending early: keep drawing resumes, discard saves nothing\n[23/27] [ui] › tests/ui/session.spec.ts:133:7 › on screen › view tools and keyboard shortcuts\n[24/27] [ui] › tests/ui/session.spec.ts:114:7 › running a session › sessions under 20 seconds are not saved\n[25/27] [ui] › tests/ui/session.spec.ts:156:7 › on screen › focus mode gives the image the whole window and keeps the timer reachable\n[26/27] [ui] › tests/ui/session.spec.ts:175:7 › on screen › image keeps its aspect ratio and the grid sits exactly on it at any window size\n[27/27] [ui] › tests/ui/session.spec.ts:190:7 › on screen › controls move below the image in a narrow window, with no overflow\n  27 passed (19.7s)\n\n"
+      }
+    },
+    {
+      "id": "card-border-removed",
+      "name": "Card border removed",
+      "kind": "stand-in",
+      "briefReference": null,
+      "ui": {
+        "exitCode": 0,
+        "passed": 27,
+        "failed": 0,
+        "skipped": 0,
+        "expectedTests": 27,
+        "outputTail": "[21/27] [ui] › tests/ui/session.spec.ts:85:7 › running a session › no-timer mode counts up and saves what was drawn\n[22/27] [ui] › tests/ui/session.spec.ts:99:7 › running a session › ending early: keep drawing resumes, discard saves nothing\n[23/27] [ui] › tests/ui/session.spec.ts:114:7 › running a session › sessions under 20 seconds are not saved\n[24/27] [ui] › tests/ui/session.spec.ts:133:7 › on screen › view tools and keyboard shortcuts\n[25/27] [ui] › tests/ui/session.spec.ts:156:7 › on screen › focus mode gives the image the whole window and keeps the timer reachable\n[26/27] [ui] › tests/ui/session.spec.ts:175:7 › on screen › image keeps its aspect ratio and the grid sits exactly on it at any window size\n[27/27] [ui] › tests/ui/session.spec.ts:190:7 › on screen › controls move below the image in a narrow window, with no overflow\n  27 passed (19.4s)\n\n"
+      }
+    },
+    {
+      "id": "muted-text-darkened",
+      "name": "Muted text darkened",
+      "kind": "invented",
+      "briefReference": null,
+      "ui": {
+        "exitCode": 0,
+        "passed": 27,
+        "failed": 0,
+        "skipped": 0,
+        "expectedTests": 27,
+        "outputTail": "[21/27] [ui] › tests/ui/session.spec.ts:85:7 › running a session › no-timer mode counts up and saves what was drawn\n[22/27] [ui] › tests/ui/session.spec.ts:99:7 › running a session › ending early: keep drawing resumes, discard saves nothing\n[23/27] [ui] › tests/ui/session.spec.ts:114:7 › running a session › sessions under 20 seconds are not saved\n[24/27] [ui] › tests/ui/session.spec.ts:133:7 › on screen › view tools and keyboard shortcuts\n[25/27] [ui] › tests/ui/session.spec.ts:156:7 › on screen › focus mode gives the image the whole window and keeps the timer reachable\n[26/27] [ui] › tests/ui/session.spec.ts:175:7 › on screen › image keeps its aspect ratio and the grid sits exactly on it at any window size\n[27/27] [ui] › tests/ui/session.spec.ts:190:7 › on screen › controls move below the image in a narrow window, with no overflow\n  27 passed (19.9s)\n\n"
+      }
+    },
+    {
+      "id": "light-accent-subtle",
+      "name": "Light accent shifted by four RGB units",
+      "kind": "stand-in",
+      "briefReference": null,
+      "ui": {
+        "exitCode": 0,
+        "passed": 27,
+        "failed": 0,
+        "skipped": 0,
+        "expectedTests": 27,
+        "outputTail": "[21/27] [ui] › tests/ui/session.spec.ts:85:7 › running a session › no-timer mode counts up and saves what was drawn\n[22/27] [ui] › tests/ui/session.spec.ts:99:7 › running a session › ending early: keep drawing resumes, discard saves nothing\n[23/27] [ui] › tests/ui/session.spec.ts:114:7 › running a session › sessions under 20 seconds are not saved\n[24/27] [ui] › tests/ui/session.spec.ts:133:7 › on screen › view tools and keyboard shortcuts\n[25/27] [ui] › tests/ui/session.spec.ts:156:7 › on screen › focus mode gives the image the whole window and keeps the timer reachable\n[26/27] [ui] › tests/ui/session.spec.ts:175:7 › on screen › image keeps its aspect ratio and the grid sits exactly on it at any window size\n[27/27] [ui] › tests/ui/session.spec.ts:190:7 › on screen › controls move below the image in a narrow window, with no overflow\n  27 passed (19.8s)\n\n"
+      }
+    },
+    {
+      "id": "page-padding",
+      "name": "Page padding increased by 2 px",
+      "kind": "invented",
+      "briefReference": null,
+      "ui": {
+        "exitCode": 0,
+        "passed": 27,
+        "failed": 0,
+        "skipped": 0,
+        "expectedTests": 27,
+        "outputTail": "[21/27] [ui] › tests/ui/session.spec.ts:85:7 › running a session › no-timer mode counts up and saves what was drawn\n[22/27] [ui] › tests/ui/session.spec.ts:99:7 › running a session › ending early: keep drawing resumes, discard saves nothing\n[23/27] [ui] › tests/ui/session.spec.ts:114:7 › running a session › sessions under 20 seconds are not saved\n[24/27] [ui] › tests/ui/session.spec.ts:133:7 › on screen › view tools and keyboard shortcuts\n[25/27] [ui] › tests/ui/session.spec.ts:156:7 › on screen › focus mode gives the image the whole window and keeps the timer reachable\n[26/27] [ui] › tests/ui/session.spec.ts:175:7 › on screen › image keeps its aspect ratio and the grid sits exactly on it at any window size\n[27/27] [ui] › tests/ui/session.spec.ts:190:7 › on screen › controls move below the image in a narrow window, with no overflow\n  27 passed (19.3s)\n\n"
+      }
+    },
+    {
+      "id": "body-font-size",
+      "name": "Body font reduced by 1 px",
+      "kind": "stand-in",
+      "briefReference": null,
+      "ui": {
+        "exitCode": 0,
+        "passed": 27,
+        "failed": 0,
+        "skipped": 0,
+        "expectedTests": 27,
+        "outputTail": "[21/27] [ui] › tests/ui/session.spec.ts:85:7 › running a session › no-timer mode counts up and saves what was drawn\n[22/27] [ui] › tests/ui/session.spec.ts:99:7 › running a session › ending early: keep drawing resumes, discard saves nothing\n[23/27] [ui] › tests/ui/session.spec.ts:114:7 › running a session › sessions under 20 seconds are not saved\n[24/27] [ui] › tests/ui/session.spec.ts:133:7 › on screen › view tools and keyboard shortcuts\n[25/27] [ui] › tests/ui/session.spec.ts:156:7 › on screen › focus mode gives the image the whole window and keeps the timer reachable\n[26/27] [ui] › tests/ui/session.spec.ts:175:7 › on screen › image keeps its aspect ratio and the grid sits exactly on it at any window size\n[27/27] [ui] › tests/ui/session.spec.ts:190:7 › on screen › controls move below the image in a narrow window, with no overflow\n  27 passed (19.1s)\n\n"
+      }
+    },
+    {
+      "id": "heading-copy",
+      "name": "Page heading misspelled",
+      "kind": "invented",
+      "briefReference": null,
+      "ui": {
+        "exitCode": 0,
+        "passed": 27,
+        "failed": 0,
+        "skipped": 0,
+        "expectedTests": 27,
+        "outputTail": "[21/27] [ui] › tests/ui/session.spec.ts:85:7 › running a session › no-timer mode counts up and saves what was drawn\n[22/27] [ui] › tests/ui/session.spec.ts:99:7 › running a session › ending early: keep drawing resumes, discard saves nothing\n[23/27] [ui] › tests/ui/session.spec.ts:114:7 › running a session › sessions under 20 seconds are not saved\n[24/27] [ui] › tests/ui/session.spec.ts:133:7 › on screen › view tools and keyboard shortcuts\n[25/27] [ui] › tests/ui/session.spec.ts:156:7 › on screen › focus mode gives the image the whole window and keeps the timer reachable\n[26/27] [ui] › tests/ui/session.spec.ts:175:7 › on screen › image keeps its aspect ratio and the grid sits exactly on it at any window size\n[27/27] [ui] › tests/ui/session.spec.ts:190:7 › on screen › controls move below the image in a narrow window, with no overflow\n  27 passed (19.3s)\n\n"
+      }
+    },
+    {
+      "id": "button-radius",
+      "name": "Button corners enlarged by 1 px",
+      "kind": "stand-in",
+      "briefReference": null,
+      "ui": {
+        "exitCode": 0,
+        "passed": 27,
+        "failed": 0,
+        "skipped": 0,
+        "expectedTests": 27,
+        "outputTail": "[21/27] [ui] › tests/ui/session.spec.ts:85:7 › running a session › no-timer mode counts up and saves what was drawn\n[22/27] [ui] › tests/ui/session.spec.ts:99:7 › running a session › ending early: keep drawing resumes, discard saves nothing\n[23/27] [ui] › tests/ui/session.spec.ts:114:7 › running a session › sessions under 20 seconds are not saved\n[24/27] [ui] › tests/ui/session.spec.ts:133:7 › on screen › view tools and keyboard shortcuts\n[25/27] [ui] › tests/ui/session.spec.ts:156:7 › on screen › focus mode gives the image the whole window and keeps the timer reachable\n[26/27] [ui] › tests/ui/session.spec.ts:175:7 › on screen › image keeps its aspect ratio and the grid sits exactly on it at any window size\n[27/27] [ui] › tests/ui/session.spec.ts:190:7 › on screen › controls move below the image in a narrow window, with no overflow\n  27 passed (19.0s)\n\n"
+      }
+    },
+    {
+      "id": "light-palette",
+      "name": "Light surface palette shifted",
+      "kind": "stand-in",
+      "briefReference": null,
+      "ui": {
+        "exitCode": 0,
+        "passed": 27,
+        "failed": 0,
+        "skipped": 0,
+        "expectedTests": 27,
+        "outputTail": "[21/27] [ui] › tests/ui/session.spec.ts:99:7 › running a session › ending early: keep drawing resumes, discard saves nothing\n[22/27] [ui] › tests/ui/session.spec.ts:85:7 › running a session › no-timer mode counts up and saves what was drawn\n[23/27] [ui] › tests/ui/session.spec.ts:114:7 › running a session › sessions under 20 seconds are not saved\n[24/27] [ui] › tests/ui/session.spec.ts:133:7 › on screen › view tools and keyboard shortcuts\n[25/27] [ui] › tests/ui/session.spec.ts:156:7 › on screen › focus mode gives the image the whole window and keeps the timer reachable\n[26/27] [ui] › tests/ui/session.spec.ts:175:7 › on screen › image keeps its aspect ratio and the grid sits exactly on it at any window size\n[27/27] [ui] › tests/ui/session.spec.ts:190:7 › on screen › controls move below the image in a narrow window, with no overflow\n  27 passed (19.0s)\n\n"
+      }
+    },
+    {
+      "id": "small-color-delta-2",
+      "name": "Light border color shifted by two RGB units",
+      "kind": "invented",
+      "briefReference": null,
+      "ui": {
+        "exitCode": 0,
+        "passed": 27,
+        "failed": 0,
+        "skipped": 0,
+        "expectedTests": 27,
+        "outputTail": "[21/27] [ui] › tests/ui/session.spec.ts:85:7 › running a session › no-timer mode counts up and saves what was drawn\n[22/27] [ui] › tests/ui/session.spec.ts:99:7 › running a session › ending early: keep drawing resumes, discard saves nothing\n[23/27] [ui] › tests/ui/session.spec.ts:114:7 › running a session › sessions under 20 seconds are not saved\n[24/27] [ui] › tests/ui/session.spec.ts:133:7 › on screen › view tools and keyboard shortcuts\n[25/27] [ui] › tests/ui/session.spec.ts:156:7 › on screen › focus mode gives the image the whole window and keeps the timer reachable\n[26/27] [ui] › tests/ui/session.spec.ts:175:7 › on screen › image keeps its aspect ratio and the grid sits exactly on it at any window size\n[27/27] [ui] › tests/ui/session.spec.ts:190:7 › on screen › controls move below the image in a narrow window, with no overflow\n  27 passed (19.0s)\n\n"
+      }
+    }
+  ],
+  "controls": [
+    {
+      "id": "hide-navigation",
+      "name": "Hide navigation links",
+      "kind": "invented",
+      "briefReference": null,
+      "ui": {
+        "exitCode": 1,
+        "passed": 19,
+        "failed": 8,
+        "skipped": 0,
+        "expectedTests": 27,
+        "outputTail": "    [ui] › tests/ui/pages.spec.ts:55:7 › history › numbers, heatmap and types reflect the sessions ─\n    [ui] › tests/ui/pages.spec.ts:72:7 › history › deleting a session asks first and updates the totals \n    [ui] › tests/ui/pages.spec.ts:88:7 › library › lists folders with previews ─────────────────────\n    [ui] › tests/ui/pages.spec.ts:97:7 › library › rename changes the type used for new sessions ───\n    [ui] › tests/ui/pages.spec.ts:108:7 › library › a missing folder is flagged and blocks practice \n    [ui] › tests/ui/pages.spec.ts:120:7 › library › remove keeps past sessions in history ──────────\n    [ui] › tests/ui/pages.spec.ts:131:5 › no page overflows sideways in a narrow window ────────────\n  19 passed (1.1m)\n\n"
+      }
+    },
+    {
+      "id": "high-contrast-border",
+      "name": "Replace card border with a high-contrast color",
+      "kind": "invented",
+      "briefReference": null,
+      "ui": {
+        "exitCode": 0,
+        "passed": 27,
+        "failed": 0,
+        "skipped": 0,
+        "expectedTests": 27,
+        "outputTail": "[21/27] [ui] › tests/ui/session.spec.ts:99:7 › running a session › ending early: keep drawing resumes, discard saves nothing\n[22/27] [ui] › tests/ui/session.spec.ts:85:7 › running a session › no-timer mode counts up and saves what was drawn\n[23/27] [ui] › tests/ui/session.spec.ts:114:7 › running a session › sessions under 20 seconds are not saved\n[24/27] [ui] › tests/ui/session.spec.ts:133:7 › on screen › view tools and keyboard shortcuts\n[25/27] [ui] › tests/ui/session.spec.ts:156:7 › on screen › focus mode gives the image the whole window and keeps the timer reachable\n[26/27] [ui] › tests/ui/session.spec.ts:175:7 › on screen › image keeps its aspect ratio and the grid sits exactly on it at any window size\n[27/27] [ui] › tests/ui/session.spec.ts:190:7 › on screen › controls move below the image in a narrow window, with no overflow\n  27 passed (19.9s)\n\n"
+      }
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'">
+<meta name="description" content="A measured case study asking what screenshot tests catch that UI tests miss.">
+<title>What Screenshot Tests Catch That UI Tests Miss · plchldr</title>
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="./styles.css">
+<script src="./app.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="hero">
+  <div class="wide hero-grid">
+    <div>
+      <p class="eyebrow">Measured study <span aria-hidden="true">/</span> visual regression</p>
+      <h1>What do screenshot tests catch <span class="tail">that UI tests miss?</span></h1>
+      <p class="lede" id="study-lede"></p>
+    </div>
+    <svg class="hero-art" viewBox="0 0 520 320" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+      <rect width="520" height="320" fill="#f2f6f7"/>
+      <path d="M60 250V120Q60 60 120 60H460" fill="none" stroke="#16222b" stroke-width="10" stroke-linecap="square"/>
+      <path d="M60 250V150Q60 60 150 60H460" fill="none" stroke="#2b7a8c" stroke-width="10" stroke-linecap="square" opacity=".85"/>
+    </svg>
+  </div>
+  <div class="wide">
+    <ul class="strip" id="hero-stats" aria-label="Study summary"></ul>
+  </div>
+</header>
+
+<div class="layout wide">
+  <nav class="rail" id="rail" aria-label="Study sections">
+    <span class="indicator" aria-hidden="true"></span>
+    <a href="#context">Context</a>
+    <a href="#outcome">Outcome</a>
+    <a href="#stages">Key stages</a>
+    <a href="#learning">Learning</a>
+    <a href="#next">Next steps</a>
+  </nav>
+
+  <main id="main">
+    <p class="load-status" id="load-status" role="status">Loading measured results…</p>
+    <section class="section" id="context" aria-labelledby="context-heading">
+      <h2 id="context-heading">Context</h2>
+      <p id="context-copy"></p>
+      <h3>Why a visual layer at all</h3>
+      <p id="visual-rationale">The measured comparison is loading.</p>
+      <dl class="aside" id="study-settings"></dl>
+    </section>
+
+    <section class="section" id="outcome" aria-labelledby="outcome-heading">
+      <h2 id="outcome-heading">Outcome</h2>
+      <p class="lead" id="outcome-copy"></p>
+      <ul class="stats" id="outcome-stats"></ul>
+      <figure class="figure" id="corner-figure">
+        <div class="figure-trio">
+          <figure><img src="./images/corner-before.svg" alt="Card corner with a wider rounded radius"><figcaption id="corner-before-caption">Before</figcaption></figure>
+          <figure><img src="./images/corner-after.svg" alt="The same card corner with a tighter rounded radius"><figcaption id="corner-after-caption">After</figcaption></figure>
+          <figure><img src="./images/corner-changed.svg" alt="Orange marks show the changed part of the card corner"><figcaption>Changed pixels</figcaption></figure>
+        </div>
+        <figcaption id="corner-caption"></figcaption>
+      </figure>
+      <h3 class="subheading">Sensitivity by setting</h3>
+      <div class="table-wrap" id="setting-results" tabindex="0" aria-label="Sensitivity results by setting"></div>
+      <h3 class="subheading">Real commits, replayed</h3>
+      <p class="provenance" id="reconstruction-note" hidden></p>
+      <div class="table-wrap" id="reconstructed-results" tabindex="0" aria-label="Results for replays of real commits"></div>
+      <ul class="findings" id="findings"></ul>
+      <details class="matrix-details">
+        <summary id="matrix-summary">Show the full fault-by-screen matrix</summary>
+        <div class="table-wrap" id="fault-matrix" tabindex="0" aria-label="Full fault-by-screen matrix"></div>
+      </details>
+    </section>
+
+    <section class="section" id="stages" aria-labelledby="stages-heading">
+      <h2 id="stages-heading">Key stages</h2>
+      <ol class="stages" id="stage-list"></ol>
+    </section>
+
+    <section class="section" id="learning" aria-labelledby="learning-heading">
+      <h2 id="learning-heading">Learning</h2>
+      <ul class="learning" id="learning-list"></ul>
+    </section>
+
+    <section class="section" id="next" aria-labelledby="next-heading">
+      <h2 id="next-heading">Next steps</h2>
+      <ul class="next-steps" id="next-list"></ul>
+    </section>
+  </main>
+</div>
+
+<footer class="footer">
+  <div class="wide">
+    <p>Results are based on the local study data files. Fault definitions: <a href="https://github.com/hugommartins/drawing-practice-timer/blob/main/scripts/faults.ts">scripts/faults.ts</a>. <a href="../strategy.html">Test strategy</a> · <a href="../">Demo</a> · <a href="https://github.com/hugommartins/drawing-practice-timer">Source</a></p>
+  </div>
+</footer>
+</body>
+</html>
