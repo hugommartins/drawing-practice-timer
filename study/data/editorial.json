@@ -29,8 +29,8 @@
       "body": "Apply every fault to the built renderer and run the complete UI test suite. A hide-navigation control checks that the test harness can fail."
     },
     {
-      "title": "Replay repository changes",
-      "body": "Apply the four named historical changes to today's built interface and record their UI and screenshot results separately."
+      "title": "Replay two real commits",
+      "body": "Two visual changes from this repository's history (6cf487f, 722a9bb) are applied to the built interface as style transforms, then measured the same way. 722a9bb also changed the session UI, so only its light-palette change is replayed, in reverse. These are replays on the current renderer, not builds of those commits."
     }
   ],
   "learning": [
@@ -51,8 +51,8 @@
       "body": "The recorded low-delta color changes did not produce flagged pixels at the strict threshold; controls changed the same surfaces more substantially."
     },
     {
-      "title": "Historical changes complement invented faults.",
-      "body": "Real change replays test whether the findings hold for changes that occurred in this project, not only for a designed fault set."
+      "title": "A replay on the current renderer is not the original change.",
+      "body": "Each real commit is applied as a transform on the current build, so the results show how each layer sees that kind of change, not how the app looked at the time. Only two commits are replayed, and the palette commit only in part."
     },
     {
       "title": "A proxy is not a cross-machine measurement.",
@@ -60,6 +60,10 @@
     }
   ],
   "nextSteps": [
+    {
+      "title": "Build each commit.",
+      "body": "Build and capture the app at 6cf487f, 722a9bb and their parents, then compare, instead of replaying the changes as transforms."
+    },
     {
       "title": "Run in Electron on macOS and CI.",
       "body": "Repeat the same captures against the actual Electron renderer on both environments; those results are not measured here."
@@ -74,6 +78,7 @@
     }
   ],
   "unknowns": [
+    "How closely the replays match builds of the commits themselves",
     "Electron rendering on macOS and CI",
     "CI run time and flake rate",
     "Mutation score"

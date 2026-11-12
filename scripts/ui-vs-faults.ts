@@ -2,17 +2,17 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 import { spawnSync } from 'node:child_process';
-import { controls, realFaults, visualFaults, type Fault } from './faults';
+import { controls, reconstructedFaults, visualFaults, type Fault } from './faults';
 
 const require = createRequire(import.meta.url);
 const dist = path.resolve('dist/renderer');
 const files = ['styles.css', 'app.js'] as const;
 const args = process.argv.slice(2);
-const realMode = args.includes('--real');
+const reconstructedMode = args.includes('--reconstructed');
 const only = args.find((arg) => arg.startsWith('--only='))?.slice('--only='.length);
-const faults = (realMode ? realFaults : visualFaults).filter((fault) => !only || fault.id === only);
+const faults = (reconstructedMode ? reconstructedFaults : visualFaults).filter((fault) => !only || fault.id === only);
 const selectedControls = controls.filter((fault) => !only || fault.id === only);
-const outputName = realMode ? 'ui-real.json' : 'ui-vs-faults.json';
+const outputName = reconstructedMode ? 'ui-reconstructed.json' : 'ui-vs-faults.json';
 const testCount = 27;
 
 function inject(fault: Fault) {
@@ -58,7 +58,7 @@ function saveOriginals() {
 
 async function main() {
   const restore = saveOriginals();
-  const results: Array<{ id: string; name: string; kind: string; sourceCommit: string | null; ui: ReturnType<typeof runUiTests> }> = [];
+  const results: Array<{ id: string; name: string; kind: string; briefReference: string | null; ui: ReturnType<typeof runUiTests> }> = [];
   try {
     for (const fault of [...faults, ...selectedControls]) {
       restore();
@@ -70,7 +70,7 @@ async function main() {
         id: fault.id,
         name: fault.name,
         kind: fault.kind,
-        sourceCommit: fault.sourceCommit ?? null,
+        briefReference: fault.briefReference ?? null,
         ui,
       });
     }
@@ -84,7 +84,7 @@ async function main() {
     study: {
       runner: '27 Playwright UI tests per fault',
       expectedTestCount: testCount,
-      mode: realMode ? 'real-commit replays' : 'invented visual faults and controls',
+      mode: reconstructedMode ? 'reconstructed examples based on supplied descriptions' : 'injected visual faults and controls',
     },
     faults: results.filter((result) => !controlIds.has(result.id)),
     controls: results.filter((result) => controlIds.has(result.id)),

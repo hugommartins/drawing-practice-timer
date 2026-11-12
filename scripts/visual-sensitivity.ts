@@ -9,15 +9,15 @@ import { startHarness, bridgeInitScript } from '../tests/helpers/harness';
 import { makeReferenceFolder } from '../tests/helpers/fixtures';
 import { addDays, localDate } from '../src/shared/dates';
 import { API_METHODS } from '../src/shared/types';
-import { controls, realFaults, screens, visualFaults, type Fault } from './faults';
+import { controls, reconstructedFaults, screens, visualFaults, type Fault } from './faults';
 
 const OUT = path.resolve('study/data');
 const WIDTH = 1280;
 const HEIGHT = 760;
 const BUDGETS = { local: 97, ci: 486 };
 const REPEATS = 20;
-const realMode = process.argv.includes('--real');
-const measuredFaults = realMode ? realFaults : visualFaults;
+const reconstructedMode = process.argv.includes('--reconstructed');
+const measuredFaults = reconstructedMode ? reconstructedFaults : visualFaults;
 
 interface Shot {
   buffer: Buffer;
@@ -88,7 +88,7 @@ async function pin(page: Page) {
 }
 
 async function installBridge(page: Page, harness: Awaited<ReturnType<typeof startHarness>>) {
-  await page.exposeFunction('__plchldrApi', async (method: string, args: unknown[]) => {
+  await page.exposeFunction('__hatchmarkApi', async (method: string, args: unknown[]) => {
     if (!(API_METHODS as readonly string[]).includes(method)) throw new Error(`Unknown bridge method: ${method}`);
     const action = (harness.api as unknown as Record<string, (...values: unknown[]) => unknown>)[method];
     if (!action) throw new Error(`Missing bridge method: ${method}`);
@@ -149,7 +149,7 @@ function faultSummary(fault: Fault, byScreen: Record<string, ReturnType<typeof c
     name: fault.name,
     kind: fault.kind,
     theme: fault.theme,
-    sourceCommit: fault.sourceCommit ?? null,
+    briefReference: fault.briefReference ?? null,
     transform: fault.transform ?? null,
     rgbDelta: fault.rgbDelta ?? null,
     drawnOn: fault.screens,
@@ -165,7 +165,7 @@ function faultSummary(fault: Fault, byScreen: Record<string, ReturnType<typeof c
 
 async function main() {
   mkdirSync(OUT, { recursive: true });
-  const temp = mkdtempSync(path.join(tmpdir(), 'plchldr-study-'));
+  const temp = mkdtempSync(path.join(tmpdir(), 'hatchmark-study-'));
   const folder = path.join(temp, 'Gesture');
   makeReferenceFolder(folder, 14, 'gesture');
   const harness = await startHarness();
@@ -250,11 +250,11 @@ async function main() {
     const result = {
       study: {
         title: 'What screenshot tests catch that UI tests miss?',
-        faultSet: realMode ? 'four historical changes' : 'ten injected visual faults',
-        ...(realMode
+        faultSet: reconstructedMode ? 'four reconstructed examples based on supplied descriptions' : 'ten injected visual faults',
+        ...(reconstructedMode
           ? {
               sourceNote:
-                'The four abbreviated commit IDs were supplied in the study brief but were not resolvable in available repository history or GitHub. Each replay reconstructs the supplied change description; it is not the original patch.',
+                'The four abbreviated references were supplied in the study brief but could not be verified against source patches in this checkout. The transforms below were manually reconstructed from those descriptions and run against today’s built app. They are not replays of the original changes.',
             }
           : {}),
         renderer: 'Chromium browser harness; not Electron',
@@ -265,7 +265,8 @@ async function main() {
         thresholds: [0.2, 0.02],
         comparator: 'pixelmatch',
         environmentProxy: 'A 31% opacity subpixel text-shadow perturbation in a separate Chromium context; same machine, not a second machine',
-        date: '2026-10-30',
+        fixtureDate: '2026-10-30',
+        measuredAt: new Date().toISOString(),
         countRule: 'A fault counts as caught only when it is flagged on every screen where it is drawn.',
       },
       noise: {
@@ -275,7 +276,7 @@ async function main() {
       faults: faultResults,
       controls: controlsResults,
     };
-    const output = realMode ? 'visual-real.json' : 'visual-sensitivity.json';
+    const output = reconstructedMode ? 'visual-reconstructed.json' : 'visual-sensitivity.json';
     writeFileSync(path.join(OUT, output), JSON.stringify(result, null, 2) + '\n');
   } finally {
     await browser?.close();

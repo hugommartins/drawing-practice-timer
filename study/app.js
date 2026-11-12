@@ -1,19 +1,20 @@
 const status = document.getElementById('load-status');
 
-async function loadStudy() {
-  const [visual, ui, real, uiReal, editorial] = await Promise.all([
-    fetch('./data/visual-sensitivity.json').then(readJson),
-    fetch('./data/ui-vs-faults.json').then(readJson),
-    fetch('./data/visual-real.json').then(readJson),
-    fetch('./data/ui-real.json').then(readJson),
-    fetch('./data/editorial.json').then(readJson),
-  ]);
-  renderStudy(visual, ui, real, uiReal, editorial);
+// The data is embedded in index.html (<script type="application/json" id="data-...">), so there is nothing to fetch.
+function readData(name) {
+  const element = document.getElementById(`data-${name}`);
+  if (!element) throw new Error(`Study data "${name}" is missing from the page.`);
+  return JSON.parse(element.textContent);
 }
 
-async function readJson(response) {
-  if (!response.ok) throw new Error(`Could not load study data (${response.status}).`);
-  return response.json();
+function loadStudy() {
+  renderStudy(
+    readData('visual-sensitivity'),
+    readData('ui-vs-faults'),
+    readData('visual-real'),
+    readData('ui-real'),
+    readData('editorial'),
+  );
 }
 
 function node(tag, className, text) {
@@ -36,7 +37,7 @@ function visualCount(visual, setting) {
   return visual.faults.filter((fault) => fault.caughtEveryScreen[setting]).length;
 }
 
-function replayCount(visual, setting) {
+function reconstructionCount(visual, setting) {
   return visual.faults.filter((fault) => fault.caughtEveryScreen[setting]).length;
 }
 
@@ -53,14 +54,14 @@ function allDiffs(fault, setting) {
   }).length;
 }
 
-function settingTable(visual, ui, real, realUi) {
-  const headings = ['Setting', `${visual.faults.length} injected`, `${realUi.faults.length} replayed`];
+function settingTable(visual, ui, reconstructed, reconstructedUi) {
+  const headings = ['Setting', `${visual.faults.length} injected`, `${reconstructedUi.faults.length} real commits`];
   const rows = [
-    ['UI tests', `${uiFailures(ui)}/${ui.faults.length}`, `${uiFailures(realUi)}/${realUi.faults.length}`],
-    [`Default (${visual.study.thresholds[0]})`, `${visualCount(visual, 'default')}/${visual.faults.length}`, `${replayCount(real, 'default')}/${real.faults.length}`],
-    [`Local budget (${fmt(visual.study.budgets.local)} px)`, `${visualCount(visual, 'local')}/${visual.faults.length}`, `${replayCount(real, 'local')}/${real.faults.length}`],
-    [`CI budget (${fmt(visual.study.budgets.ci)} px)`, `${visualCount(visual, 'ci')}/${visual.faults.length}`, `${replayCount(real, 'ci')}/${real.faults.length}`],
-    [`Strict (${visual.study.thresholds[1]}, no budget)`, `${visualCount(visual, 'strict')}/${visual.faults.length}`, `${replayCount(real, 'strict')}/${real.faults.length}`],
+    ['UI tests', `${uiFailures(ui)}/${ui.faults.length}`, `${uiFailures(reconstructedUi)}/${reconstructedUi.faults.length}`],
+    [`Default (${visual.study.thresholds[0]})`, `${visualCount(visual, 'default')}/${visual.faults.length}`, `${reconstructionCount(reconstructed, 'default')}/${reconstructed.faults.length}`],
+    [`Local budget (${fmt(visual.study.budgets.local)} px)`, `${visualCount(visual, 'local')}/${visual.faults.length}`, `${reconstructionCount(reconstructed, 'local')}/${reconstructed.faults.length}`],
+    [`CI budget (${fmt(visual.study.budgets.ci)} px)`, `${visualCount(visual, 'ci')}/${visual.faults.length}`, `${reconstructionCount(reconstructed, 'ci')}/${reconstructed.faults.length}`],
+    [`Strict (${visual.study.thresholds[1]}, no budget)`, `${visualCount(visual, 'strict')}/${visual.faults.length}`, `${reconstructionCount(reconstructed, 'strict')}/${reconstructed.faults.length}`],
   ];
   return table(headings, rows);
 }
@@ -80,7 +81,8 @@ function table(headings, rows) {
   for (const row of rows) {
     const tr = document.createElement('tr');
     row.forEach((value, index) => {
-      const cell = node(index === 0 ? 'th' : 'td', '', value);
+      const cell = node(index === 0 ? 'th' : 'td');
+      if (value instanceof Node) cell.append(value); else cell.textContent = value;
       if (index === 0) cell.scope = 'row';
       tr.append(cell);
     });
@@ -104,9 +106,19 @@ function stat(value, label) {
   return li;
 }
 
-function renderRealTable(visual, uiReal) {
+function commitLabel(fault, base) {
+  const wrap = document.createDocumentFragment();
+  wrap.append(node('span', '', fault.name), document.createElement('br'));
+  const link = node('a', '', fault.commit);
+  link.href = `${base}${fault.commit}`;
+  link.title = fault.commitSubject;
+  wrap.append(link);
+  return wrap;
+}
+
+function renderReconstructedTable(visual, uiReconstructed) {
   const rows = visual.faults.map((fault) => {
-    const matchingUi = uiReal.faults.find((result) => result.id === fault.id);
+    const matchingUi = uiReconstructed.faults.find((result) => result.id === fault.id);
     const uiStatus = matchingUi?.ui.failed ? 'yes' : 'none';
     const total = fault.drawnOn.length;
     const cell = (setting) => {
@@ -116,16 +128,17 @@ function renderRealTable(visual, uiReal) {
       if (total === 1) return 'yes';
       return `${caught} of ${total}`;
     };
-    return [`${fault.name} (${fault.sourceCommit})`, uiStatus, cell('default'), cell('local'), cell('ci'), cell('strict')];
+    return [commitLabel(fault, visual.study.repoCommitUrl), uiStatus, cell('default'), cell('local'), cell('ci'), cell('strict')];
   });
-  return table(['Change', 'UI', 'Default', 'Local', 'CI', 'Strict'], rows);
+  return table(['Real commit', 'UI', 'Default', 'Local', 'CI', 'Strict'], rows);
 }
 
-function renderFaultMatrix(visual, ui, real, uiReal) {
-  const allVisualFaults = [...visual.faults, ...real.faults];
-  const allUiFaults = [...ui.faults, ...uiReal.faults];
+function renderFaultMatrix(visual, ui, reconstructed, uiReconstructed) {
+  const allVisualFaults = [...visual.faults, ...reconstructed.faults];
+  const allUiFaults = [...ui.faults, ...uiReconstructed.faults];
   const headings = [
     'Fault',
+    'Type',
     'UI tests fail?',
     ...visual.study.screens.flatMap((screen) => [
       `${screen} · default`,
@@ -146,14 +159,14 @@ function renderFaultMatrix(visual, ui, real, uiReal) {
         outcome.strict.unlimitedFlagged ? '●' : '○',
       ];
     });
-    return [fault.name, uiFault?.ui.failed ? 'yes' : 'no', ...cells];
+    return [fault.name, fault.kind, uiFault?.ui.failed ? 'yes' : 'no', ...cells];
   });
   const result = table(headings, rows);
   result.setAttribute('aria-describedby', 'matrix-help');
   return result;
 }
 
-function renderStudy(visual, ui, real, uiReal, editorial) {
+function renderStudy(visual, ui, reconstructed, uiReconstructed, editorial) {
   status.hidden = true;
   const repeat = range(Object.values(visual.noise.sameMachine));
   const proxy = range(Object.values(visual.noise.environmentProxy));
@@ -167,9 +180,9 @@ function renderStudy(visual, ui, real, uiReal, editorial) {
   const passedVisual = ui.faults.filter((fault) => fault.ui.failed === 0).length;
   const controlFailed = ui.controls.some((fault) => fault.id === 'hide-navigation' && fault.ui.failed > 0);
 
-  const provenance = document.getElementById('real-provenance');
-  if (real.study.sourceNote) {
-    provenance.textContent = real.study.sourceNote;
+  const provenance = document.getElementById('reconstruction-note');
+  if (reconstructed.study.sourceNote) {
+    provenance.textContent = reconstructed.study.sourceNote;
     provenance.hidden = false;
   }
 
@@ -213,14 +226,14 @@ function renderStudy(visual, ui, real, uiReal, editorial) {
   document.getElementById('corner-caption').textContent =
     `Schematic of the measured Practice-screen radius change. The strict comparison reported ${fmt(radiusPixels)} changed pixels on that screen; UI-test and screenshot results are in the tables below.`;
 
-  document.getElementById('setting-results').append(settingTable(visual, ui, real, uiReal));
-  document.getElementById('real-results').append(renderRealTable(real, uiReal));
+  document.getElementById('setting-results').append(settingTable(visual, ui, reconstructed, uiReconstructed));
+  document.getElementById('reconstructed-results').append(renderReconstructedTable(reconstructed, uiReconstructed));
   document.getElementById('matrix-summary').textContent =
-    `Show the full fault-by-screen matrix (${visual.faults.length + real.faults.length} faults)`;
+    `Show the full fault-by-screen matrix (${visual.faults.length + reconstructed.faults.length} faults)`;
   document.getElementById('matrix-help')?.remove();
   const help = node('p', 'sr-only', 'Filled dots mean flagged; open dots mean missed; a dash means the fault is not drawn on that screen.');
   help.id = 'matrix-help';
-  document.getElementById('fault-matrix').append(help, renderFaultMatrix(visual, ui, real, uiReal));
+  document.getElementById('fault-matrix').append(help, renderFaultMatrix(visual, ui, reconstructed, uiReconstructed));
 
   const findings = document.getElementById('findings');
   const lowDeltaMisses = smallColorFaults.every((fault) => Object.values(fault.screens).every((screen) => screen.strict.diffPixels === 0));
@@ -272,32 +285,74 @@ function renderNextSteps(items, unknowns) {
   list.append(unknown);
 }
 
-loadStudy().catch((error) => {
+try {
+  loadStudy();
+} catch (error) {
   status.textContent = `Study data could not be loaded: ${error.message}`;
-});
-
-const rail = document.getElementById('rail');
-const links = [...rail.querySelectorAll('a')];
-const sections = links.map((link) => document.querySelector(link.getAttribute('href'))).filter(Boolean);
-
-function updateRail() {
-  const current = sections.filter((section) => section.getBoundingClientRect().top <= innerHeight * 0.3).at(-1);
-  links.forEach((link) => {
-    if (current && link.hash === `#${current.id}`) link.setAttribute('aria-current', 'location');
-    else link.removeAttribute('aria-current');
-  });
-  const active = links.find((link) => link.hasAttribute('aria-current'));
-  if (!active) return;
-  const railRect = rail.getBoundingClientRect();
-  const linkRect = active.getBoundingClientRect();
-  if (innerWidth < 800) {
-    rail.style.setProperty('--indicator-x', `${linkRect.left - railRect.left}px`);
-    rail.style.setProperty('--indicator-width', `${linkRect.width}px`);
-  } else {
-    rail.style.setProperty('--indicator-y', `${active.offsetTop - 8}px`);
-  }
 }
 
-document.addEventListener('scroll', updateRail, { passive: true });
-window.addEventListener('resize', updateRail);
-updateRail();
+// Side rail: same behaviour as the original study (underline indicator, click lock, centring on narrow screens).
+(function () {
+  var rail = document.getElementById("rail");
+  var links = rail.querySelectorAll("a");
+  var items = [];
+  for (var i = 0; i < links.length; i++) {
+    var el = document.getElementById(links[i].getAttribute("href").slice(1));
+    if (el) items.push({ el: el, link: links[i] });
+  }
+  var current = null, locked = false, lockTimer = 0, ticking = false;
+  var calm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function place(item) {
+    var l = item.link;
+    rail.style.setProperty("--ix", l.offsetLeft + "px");
+    rail.style.setProperty("--iw", l.offsetWidth + "px");
+    rail.style.setProperty("--iy", (l.offsetTop + l.offsetHeight - 10) + "px");
+    rail.setAttribute("data-ready", "");
+  }
+  function setCurrent(item) {
+    if (item === current) return;
+    current = item;
+    for (var k = 0; k < items.length; k++) {
+      if (items[k] === item) items[k].link.setAttribute("aria-current", "true");
+      else items[k].link.removeAttribute("aria-current");
+    }
+    if (!item) { rail.removeAttribute("data-ready"); return; }
+    place(item);
+    // On narrow screens, bring the current link to the middle of the bar, once per change
+    if (window.innerWidth < 1000 && rail.scrollWidth > rail.clientWidth) {
+      var left = item.link.offsetLeft - (rail.clientWidth - item.link.offsetWidth) / 2;
+      rail.scrollTo({ left: Math.max(0, left), behavior: calm ? "auto" : "smooth" });
+    }
+  }
+  function update() {
+    ticking = false;
+    if (locked) return;
+    var line = window.innerHeight * 0.3, found = null;
+    for (var j = 0; j < items.length; j++) {
+      if (items[j].el.getBoundingClientRect().top <= line) found = items[j];
+    }
+    setCurrent(found);
+  }
+  function unlockSoon(ms) {
+    clearTimeout(lockTimer);
+    lockTimer = setTimeout(function () { locked = false; update(); }, ms);
+  }
+  window.addEventListener("scroll", function () {
+    if (locked) unlockSoon(160);
+    else if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }, { passive: true });
+  // A tap on a link goes straight to that link, without the indicator stopping at every section on the way
+  for (var m = 0; m < items.length; m++) {
+    (function (item) {
+      item.link.addEventListener("click", function () { locked = true; setCurrent(item); unlockSoon(700); });
+    })(items[m]);
+  }
+  window.addEventListener("resize", function () { if (current) place(current); });
+  var initial = null;
+  for (var n = 0; n < items.length; n++) {
+    if (items[n].link.getAttribute("href") === window.location.hash) initial = items[n];
+  }
+  if (initial) setCurrent(initial);
+  else update();
+})();

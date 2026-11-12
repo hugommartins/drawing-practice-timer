@@ -1,8 +1,7 @@
 {
   "study": {
     "title": "What screenshot tests catch that UI tests miss?",
-    "faultSet": "four historical changes",
-    "sourceNote": "The four abbreviated commit IDs were supplied in the study brief but were not resolvable in available repository history or GitHub. Each replay reconstructs the supplied change description; it is not the original patch.",
+    "faultSet": "two replays of real commits from this repository",
     "renderer": "Chromium browser harness; not Electron",
     "screens": [
       "Practice",
@@ -25,98 +24,20 @@
     ],
     "comparator": "pixelmatch",
     "environmentProxy": "A 31% opacity subpixel text-shadow perturbation in a separate Chromium context; same machine, not a second machine",
-    "date": "2026-10-30",
-    "countRule": "A fault counts as caught only when it is flagged on every screen where it is drawn."
-  },
-  "noise": {
-    "sameMachine": {
-      "Practice": [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
-      "History": [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
-      "Library": [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ]
-    },
-    "environmentProxy": {
-      "Practice": [
-        5094
-      ],
-      "History": [
-        5336
-      ],
-      "Library": [
-        2797
-      ]
-    }
+    "fixtureDate": "2026-10-30",
+    "countRule": "A fault counts as caught only when it is flagged on every screen where it is drawn.",
+    "sourceNote": "These are real commits from this repository's history. Each is replayed as a style transform on the built interface, not by checking out the commit, so the pixel counts describe the change on the current screens. 722a9bb also reworked the session UI; only its light-palette change is replayed, in reverse. Same viewport, thresholds and budgets as the injected faults.",
+    "repoCommitUrl": "https://github.com/hugommartins/drawing-practice-timer/commit/"
   },
   "faults": [
     {
       "id": "real-select-chevron",
-      "name": "Select chevron inset",
-      "kind": "real",
+      "name": "Select arrow: custom chevron and inset removed",
+      "kind": "real commit",
       "theme": "dark",
-      "sourceCommit": "8f59799",
-      "transform": "Move the custom select chevron 3 px inward on Practice.",
+      "commit": "6cf487f",
+      "commitSubject": "fix(renderer): inset the select arrow with a custom chevron",
+      "transform": "Remove the custom select rule, so the native arrow sits against the edge again.",
       "rgbDelta": null,
       "drawnOn": [
         "Practice"
@@ -125,84 +46,20 @@
         "Practice": {
           "default": {
             "threshold": 0.2,
-            "diffPixels": 23,
+            "diffPixels": 432,
             "flagged": true
           },
           "strict": {
             "threshold": 0.02,
-            "diffPixels": 23,
-            "localFlagged": false,
-            "ciFlagged": false,
+            "diffPixels": 2087,
+            "localFlagged": true,
+            "ciFlagged": true,
             "unlimitedFlagged": true
           }
         }
       },
       "caughtEveryScreen": {
         "default": true,
-        "local": false,
-        "ci": false,
-        "strict": true
-      }
-    },
-    {
-      "id": "real-light-accent",
-      "name": "Light accent change",
-      "kind": "real",
-      "theme": "light",
-      "sourceCommit": "053ee43",
-      "transform": "Warm the light-theme accent and border colors, including the strongest heatmap accent.",
-      "rgbDelta": null,
-      "drawnOn": [
-        "Practice",
-        "History",
-        "Library"
-      ],
-      "screens": {
-        "Practice": {
-          "default": {
-            "threshold": 0.2,
-            "diffPixels": 0,
-            "flagged": false
-          },
-          "strict": {
-            "threshold": 0.02,
-            "diffPixels": 12007,
-            "localFlagged": true,
-            "ciFlagged": true,
-            "unlimitedFlagged": true
-          }
-        },
-        "History": {
-          "default": {
-            "threshold": 0.2,
-            "diffPixels": 0,
-            "flagged": false
-          },
-          "strict": {
-            "threshold": 0.02,
-            "diffPixels": 16911,
-            "localFlagged": true,
-            "ciFlagged": true,
-            "unlimitedFlagged": true
-          }
-        },
-        "Library": {
-          "default": {
-            "threshold": 0.2,
-            "diffPixels": 0,
-            "flagged": false
-          },
-          "strict": {
-            "threshold": 0.02,
-            "diffPixels": 13314,
-            "localFlagged": true,
-            "ciFlagged": true,
-            "unlimitedFlagged": true
-          }
-        }
-      },
-      "caughtEveryScreen": {
-        "default": false,
         "local": true,
         "ci": true,
         "strict": true
@@ -210,11 +67,12 @@
     },
     {
       "id": "real-light-palette",
-      "name": "Light palette change",
-      "kind": "real",
+      "name": "Light palette: warm instead of cool grey",
+      "kind": "real commit",
       "theme": "light",
-      "sourceCommit": "78fbfa1",
-      "transform": "Restore the earlier warm light-theme palette values.",
+      "commit": "722a9bb",
+      "commitSubject": "feat(ui): improve the session UI and light mode",
+      "transform": "Put back the light-theme palette from before the commit (warm instead of cool grey). The commit also reworked the session UI; only the palette change is replayed.",
       "rgbDelta": null,
       "drawnOn": [
         "Practice",
@@ -230,7 +88,7 @@
           },
           "strict": {
             "threshold": 0.02,
-            "diffPixels": 14214,
+            "diffPixels": 14435,
             "localFlagged": true,
             "ciFlagged": true,
             "unlimitedFlagged": true
@@ -244,7 +102,7 @@
           },
           "strict": {
             "threshold": 0.02,
-            "diffPixels": 20140,
+            "diffPixels": 20306,
             "localFlagged": true,
             "ciFlagged": true,
             "unlimitedFlagged": true
@@ -253,12 +111,12 @@
         "Library": {
           "default": {
             "threshold": 0.2,
-            "diffPixels": 375,
+            "diffPixels": 661,
             "flagged": true
           },
           "strict": {
             "threshold": 0.02,
-            "diffPixels": 6282,
+            "diffPixels": 10191,
             "localFlagged": true,
             "ciFlagged": true,
             "unlimitedFlagged": true
@@ -270,108 +128,6 @@
         "local": true,
         "ci": true,
         "strict": true
-      }
-    },
-    {
-      "id": "real-rename",
-      "name": "App-name casing change",
-      "kind": "real",
-      "theme": "dark",
-      "sourceCommit": "58fdceb",
-      "transform": "Change the rendered app name from plchldr to Plchldr.",
-      "rgbDelta": null,
-      "drawnOn": [
-        "Practice",
-        "History",
-        "Library"
-      ],
-      "screens": {
-        "Practice": {
-          "default": {
-            "threshold": 0.2,
-            "diffPixels": 289,
-            "flagged": true
-          },
-          "strict": {
-            "threshold": 0.02,
-            "diffPixels": 525,
-            "localFlagged": true,
-            "ciFlagged": true,
-            "unlimitedFlagged": true
-          }
-        },
-        "History": {
-          "default": {
-            "threshold": 0.2,
-            "diffPixels": 291,
-            "flagged": true
-          },
-          "strict": {
-            "threshold": 0.02,
-            "diffPixels": 522,
-            "localFlagged": true,
-            "ciFlagged": true,
-            "unlimitedFlagged": true
-          }
-        },
-        "Library": {
-          "default": {
-            "threshold": 0.2,
-            "diffPixels": 290,
-            "flagged": true
-          },
-          "strict": {
-            "threshold": 0.02,
-            "diffPixels": 528,
-            "localFlagged": true,
-            "ciFlagged": true,
-            "unlimitedFlagged": true
-          }
-        }
-      },
-      "caughtEveryScreen": {
-        "default": true,
-        "local": true,
-        "ci": true,
-        "strict": true
-      }
-    }
-  ],
-  "controls": [
-    {
-      "id": "hide-navigation",
-      "name": "Hide navigation links",
-      "screens": {
-        "Practice": {
-          "diffPixels": 2472,
-          "flagged": true
-        },
-        "History": {
-          "diffPixels": 2312,
-          "flagged": true
-        },
-        "Library": {
-          "diffPixels": 2251,
-          "flagged": true
-        }
-      }
-    },
-    {
-      "id": "high-contrast-border",
-      "name": "Replace card border with a high-contrast color",
-      "screens": {
-        "Practice": {
-          "diffPixels": 2542,
-          "flagged": true
-        },
-        "History": {
-          "diffPixels": 5219,
-          "flagged": true
-        },
-        "Library": {
-          "diffPixels": 2674,
-          "flagged": true
-        }
       }
     }
   ]

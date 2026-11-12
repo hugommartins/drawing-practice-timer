@@ -24,7 +24,8 @@
     ],
     "comparator": "pixelmatch",
     "environmentProxy": "A 31% opacity subpixel text-shadow perturbation in a separate Chromium context; same machine, not a second machine",
-    "date": "2026-10-30",
+    "fixtureDate": "2026-10-30",
+    "measuredAt": "2026-11-09T14:12:57.529Z",
     "countRule": "A fault counts as caught only when it is flagged on every screen where it is drawn."
   },
   "noise": {
@@ -114,7 +115,8 @@
       "name": "Card radius reduced from 16 px to 8 px",
       "kind": "invented",
       "theme": "dark",
-      "sourceCommit": null,
+      "briefReference": null,
+      "transform": null,
       "rgbDelta": null,
       "drawnOn": [
         "Practice",
@@ -144,7 +146,7 @@
           },
           "strict": {
             "threshold": 0.02,
-            "diffPixels": 609,
+            "diffPixels": 612,
             "localFlagged": true,
             "ciFlagged": true,
             "unlimitedFlagged": true
@@ -177,7 +179,8 @@
       "name": "Card border removed",
       "kind": "stand-in",
       "theme": "dark",
-      "sourceCommit": null,
+      "briefReference": null,
+      "transform": null,
       "rgbDelta": null,
       "drawnOn": [
         "Practice",
@@ -207,7 +210,7 @@
           },
           "strict": {
             "threshold": 0.02,
-            "diffPixels": 5303,
+            "diffPixels": 5305,
             "localFlagged": true,
             "ciFlagged": true,
             "unlimitedFlagged": true
@@ -240,7 +243,8 @@
       "name": "Muted text darkened",
       "kind": "invented",
       "theme": "dark",
-      "sourceCommit": null,
+      "briefReference": null,
+      "transform": null,
       "rgbDelta": null,
       "drawnOn": [
         "Practice",
@@ -303,7 +307,8 @@
       "name": "Light accent shifted by four RGB units",
       "kind": "stand-in",
       "theme": "light",
-      "sourceCommit": null,
+      "briefReference": null,
+      "transform": null,
       "rgbDelta": 4,
       "drawnOn": [
         "Practice",
@@ -366,7 +371,8 @@
       "name": "Page padding increased by 2 px",
       "kind": "invented",
       "theme": "dark",
-      "sourceCommit": null,
+      "briefReference": null,
+      "transform": null,
       "rgbDelta": null,
       "drawnOn": [
         "Practice",
@@ -396,7 +402,7 @@
           },
           "strict": {
             "threshold": 0.02,
-            "diffPixels": 34102,
+            "diffPixels": 34105,
             "localFlagged": true,
             "ciFlagged": true,
             "unlimitedFlagged": true
@@ -405,12 +411,12 @@
         "Library": {
           "default": {
             "threshold": 0.2,
-            "diffPixels": 9660,
+            "diffPixels": 9659,
             "flagged": true
           },
           "strict": {
             "threshold": 0.02,
-            "diffPixels": 20209,
+            "diffPixels": 20206,
             "localFlagged": true,
             "ciFlagged": true,
             "unlimitedFlagged": true
@@ -429,7 +435,8 @@
       "name": "Body font reduced by 1 px",
       "kind": "stand-in",
       "theme": "dark",
-      "sourceCommit": null,
+      "briefReference": null,
+      "transform": null,
       "rgbDelta": null,
       "drawnOn": [
         "Practice",
@@ -468,7 +475,7 @@
         "Library": {
           "default": {
             "threshold": 0.2,
-            "diffPixels": 9075,
+            "diffPixels": 9076,
             "flagged": true
           },
           "strict": {
@@ -492,7 +499,8 @@
       "name": "Page heading misspelled",
       "kind": "invented",
       "theme": "dark",
-      "sourceCommit": null,
+      "briefReference": null,
+      "transform": null,
       "rgbDelta": null,
       "drawnOn": [
         "Practice",
@@ -555,7 +563,8 @@
       "name": "Button corners enlarged by 1 px",
       "kind": "stand-in",
       "theme": "dark",
-      "sourceCommit": null,
+      "briefReference": null,
+      "transform": null,
       "rgbDelta": null,
       "drawnOn": [
         "Practice",
@@ -599,7 +608,7 @@
           },
           "strict": {
             "threshold": 0.02,
-            "diffPixels": 119,
+            "diffPixels": 120,
             "localFlagged": true,
             "ciFlagged": false,
             "unlimitedFlagged": true
@@ -618,7 +627,8 @@
       "name": "Light surface palette shifted",
       "kind": "stand-in",
       "theme": "light",
-      "sourceCommit": null,
+      "briefReference": null,
+      "transform": null,
       "rgbDelta": null,
       "drawnOn": [
         "Practice",
@@ -681,7 +691,8 @@
       "name": "Light border color shifted by two RGB units",
       "kind": "invented",
       "theme": "light",
-      "sourceCommit": null,
+      "briefReference": null,
+      "transform": null,
       "rgbDelta": 2,
       "drawnOn": [
         "Practice",
