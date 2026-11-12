@@ -5,10 +5,10 @@
  *   tests/unit  timer logic, stats, storage, image-access rules, window security settings
  *   tests/ui    every screen and interaction in Chromium, backed by the real file-handling code
  *   tests/e2e   (this file) only what needs the whole thing wired together: preload bridge, IPC,
- *               plchldr-img:// protocol, files on disk, a restart
+ *               hatchmark-img:// protocol, files on disk, a restart
  *
  * Needs `npm install` (for the electron binary) and `npm run build`; `npm run test:e2e` does both.
- * The OS folder dialog can't be automated portably, so PLCHLDR_TEST_FOLDER stands in for it.
+ * The OS folder dialog can't be automated portably, so HATCHMARK_TEST_FOLDER stands in for it.
  */
 import { _electron as electron, expect, test, type ElectronApplication, type Page } from '@playwright/test';
 import { existsSync, mkdtempSync, readFileSync } from 'node:fs';
@@ -24,9 +24,9 @@ async function launch(userData: string, folder?: string): Promise<{ app: Electro
     cwd: root,
     env: {
       ...(process.env as Record<string, string>),
-      PLCHLDR_USER_DATA: userData,
-      PLCHLDR_DATA_DIR: path.join(userData, 'data'),
-      ...(folder ? { PLCHLDR_TEST_FOLDER: folder } : {}),
+      HATCHMARK_USER_DATA: userData,
+      HATCHMARK_DATA_DIR: path.join(userData, 'data'),
+      ...(folder ? { HATCHMARK_TEST_FOLDER: folder } : {}),
     },
   });
   return { app, page: await app.firstWindow() };
@@ -34,8 +34,8 @@ async function launch(userData: string, folder?: string): Promise<{ app: Electro
 
 test('journey: first run to first saved session, then a restart', async () => {
   test.setTimeout(90_000);
-  const userData = mkdtempSync(path.join(tmpdir(), 'plchldr-e2e-'));
-  const folder = path.join(mkdtempSync(path.join(tmpdir(), 'plchldr-e2e-refs-')), 'Figure');
+  const userData = mkdtempSync(path.join(tmpdir(), 'hatchmark-e2e-'));
+  const folder = path.join(mkdtempSync(path.join(tmpdir(), 'hatchmark-e2e-refs-')), 'Figure');
   makeReferenceFolder(folder, 10, 'fig');
 
   const first = await launch(userData, folder);

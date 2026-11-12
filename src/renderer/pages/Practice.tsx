@@ -79,7 +79,7 @@ export function Practice() {
     <>
       <div className="page-head">
         <div>
-          <h1>Practice</h1>
+          <h1>Draw</h1>
           <p className="muted">{todayMin > 0 ? `${fmtMin(todayMin)} drawn today.` : 'Nothing drawn yet today.'}</p>
         </div>
         <button type="button" className="btn" data-testid="log-open" onClick={() => setLogOpen(true)}>
@@ -111,7 +111,7 @@ export function Practice() {
         <section className="card empty" data-testid="empty-practice">
           <div className="art"><IconFolder size={44} plus /></div>
           <h2>Link a reference folder to start</h2>
-          <p className="muted">Point Plchldr at a folder of images on this computer. The folder name becomes the drawing type, like "Figure" or "Hands", and every session is tracked against it.</p>
+          <p className="muted">Point Hatchmark at a folder of images on this computer. The folder name becomes the drawing type, like "Figure" or "Hands", and every session is tracked against it.</p>
           <button type="button" className="btn primary big" data-testid="link-folder-cta" onClick={() => void link()}>
             Link a folder
           </button>

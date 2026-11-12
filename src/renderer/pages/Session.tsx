@@ -159,7 +159,7 @@ export function Session({ active, onExit }: { active: ActiveSession; onExit(): v
             : `Sessions under ${MIN_SAVE_SECONDS} seconds are not counted.`}
         </p>
         <button type="button" className="btn primary big" data-testid="done-back" onClick={onExit}>
-          Back to practice
+          Done
         </button>
       </div>
     );

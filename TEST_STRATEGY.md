@@ -1,4 +1,4 @@
-# plchldr test strategy
+# Hatchmark test strategy
 
 ## 1. Scope and risks
 
@@ -69,7 +69,7 @@ Boundary rule: every threshold gets one value just inside and one just outside.
 
 ### UI (`tests/ui`, Playwright, Chromium)
 
-The built renderer is served over local HTTP. `window.plchldr` is backed by the real `createApi`, so disk behaviour is production behaviour. Only the folder picker is faked. Playwright's fake clock runs a 30-minute session in milliseconds. A test starts the clock only after the session screen is up.
+The built renderer is served over local HTTP. `window.hatchmark` is backed by the real `createApi`, so disk behaviour is production behaviour. Only the folder picker is faked. Playwright's fake clock runs a 30-minute session in milliseconds. A test starts the clock only after the session screen is up.
 
 | Group | Covers |
 |---|---|
@@ -94,7 +94,7 @@ Visual tests catch what functional tests can't: a layout that still works but lo
 
 ### E2E (`tests/e2e`, Playwright `_electron`)
 
-One journey: first run → link a folder (images load through the real protocol) → draw for real → session appears in History → theme change → files on disk are as expected → restart → everything is still there. It exists to catch wiring that no lower layer can see. The folder dialog is replaced by `PLCHLDR_TEST_FOLDER`; `PLCHLDR_USER_DATA` and `PLCHLDR_DATA_DIR` keep tests off real data.
+One journey: first run → link a folder (images load through the real protocol) → draw for real → session appears in History → theme change → files on disk are as expected → restart → everything is still there. It exists to catch wiring that no lower layer can see. The folder dialog is replaced by `HATCHMARK_TEST_FOLDER`; `HATCHMARK_USER_DATA` and `HATCHMARK` keep tests off real data.
 
 ## 4. Where each risk is covered
 

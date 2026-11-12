@@ -46,7 +46,8 @@ button { cursor: pointer; }
 .nav { display: flex; gap: 4px; }
 .nav-link { padding: 7px 14px; border-radius: 999px; color: var(--mu); text-decoration: none; font-weight: 500; }
 .nav-link:hover { color: var(--tx); }
-.nav-link[aria-current='page'] { background: var(--sf2); color: var(--tx); }
+.nav-link[aria-current='page'] { background: var(--ac); color: var(--ink); }
+.nav-link[aria-current='page']:hover { color: var(--ink); }
 .page { flex: 1; overflow: auto; padding: 28px; }
 .page-inner { max-width: 1120px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
 .page-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }

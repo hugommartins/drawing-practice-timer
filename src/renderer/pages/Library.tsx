@@ -56,7 +56,7 @@ export function Library() {
       <div className="page-head">
         <div>
           <h1>Library</h1>
-          <p className="muted">Each linked folder is a drawing type. Images stay where they are; Plchldr only reads them.</p>
+          <p className="muted">Each linked folder is a drawing type. Images stay where they are; Hatchmark only reads them.</p>
         </div>
         <div className="chip-row">
           <button type="button" className="btn primary" data-testid="library-link" onClick={() => void link()}>

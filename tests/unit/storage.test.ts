@@ -11,7 +11,7 @@ import { makeReferenceFolder } from '../helpers/fixtures';
 
 let tmp: string;
 beforeEach(() => {
-  tmp = mkdtempSync(path.join(tmpdir(), 'plchldr-'));
+  tmp = mkdtempSync(path.join(tmpdir(), 'hatchmark-'));
 });
 afterEach(() => rmSync(tmp, { recursive: true, force: true }));
 

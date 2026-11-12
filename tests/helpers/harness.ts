@@ -31,12 +31,12 @@ export interface Harness {
 export const DIST = path.resolve(__dirname, '../../dist/renderer');
 
 /**
- * Serves the built renderer over HTTP and backs `window.plchldr` with the real createApi,
+ * Serves the built renderer over HTTP and backs `window.hatchmark` with the real createApi,
  * so UI tests exercise the same code the Electron main process runs. Only the native
  * folder picker is faked.
  */
 export async function startHarness(): Promise<Harness> {
-  const dataDir = mkdtempSync(path.join(tmpdir(), 'plchldr-data-'));
+  const dataDir = mkdtempSync(path.join(tmpdir(), 'hatchmark-data-'));
   let nextPick: string | null = null;
   const api = createApi({ dataDir, pickFolder: async () => nextPick });
 
@@ -79,10 +79,10 @@ export async function startHarness(): Promise<Harness> {
   };
 }
 
-/** Script injected before the app loads: window.plchldr forwards to the Node side. */
+/** Script injected before the app loads: window.hatchmark forwards to the Node side. */
 export const bridgeInitScript = `
   const methods = ${JSON.stringify(API_METHODS)};
   const api = {};
-  for (const m of methods) api[m] = (...args) => window.__plchldrApi(m, args);
-  window.plchldr = { api, fileUrl: (abs) => '/img/' + encodeURIComponent(abs) };
+  for (const m of methods) api[m] = (...args) => window.__hatchmarkApi(m, args);
+  window.hatchmark = { api, fileUrl: (abs) => '/img/' + encodeURIComponent(abs) };
 `;

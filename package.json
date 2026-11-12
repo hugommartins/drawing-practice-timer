@@ -1,6 +1,6 @@
 {
   "name": "drawing-practice-timer",
-  "productName": "Plchldr",
+  "productName": "Hatchmark",
   "version": "0.1.0",
   "description": "Drawing-reference practice timer. Local folders, per-type tracking, a heatmap of when you practiced.",
   "private": true,
@@ -15,10 +15,15 @@
     "test:ui": "npm run build && playwright test --project=ui",
     "test:e2e": "npm run build && playwright test --project=electron",
     "package": "npm run build && electron-builder --dir",
+    "install:win": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/install-win.ps1",
+    "package:win": "npm run build && electron-builder --win nsis --x64 --publish never",
     "install:mac": "bash scripts/install-mac.sh",
     "mutate": "stryker run",
     "test:visual": "npm run build && playwright test --project=visual",
     "test:visual:update": "npm run build && playwright test --project=visual --update-snapshots",
+    "build:demo": "npm run build && node scripts/build-demo.mjs",
+    "study:sensitivity": "npm run build && tsx scripts/visual-sensitivity.ts && tsx scripts/ui-vs-faults.ts",
+    "study:reconstructed": "npm run build && tsx scripts/visual-sensitivity.ts --reconstructed && tsx scripts/ui-vs-faults.ts --reconstructed",
     "mutate:ui": "stryker run stryker.ui.config.json"
   },
   "dependencies": {
@@ -28,6 +33,9 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@fontsource-variable/fraunces": "^5.3.0",
+    "@fontsource-variable/inconsolata": "^5.3.0",
+    "@fontsource/ibm-plex-mono": "^5.3.0",
     "@playwright/test": "^1.55.0",
     "@stryker-mutator/core": "^9.0.0",
     "@stryker-mutator/typescript-checker": "^9.0.0",
@@ -41,8 +49,8 @@
     "typescript": "^5.9.0"
   },
   "build": {
-    "appId": "dev.plchldr.app",
-    "productName": "Plchldr",
+    "appId": "dev.hatchmark.app",
+    "productName": "Hatchmark",
     "directories": {
       "output": "release"
     },
@@ -59,7 +67,13 @@
     "win": {
       "target": [
         "dir"
-      ]
+      ],
+      "artifactName": "${productName}-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "deleteAppDataOnUninstall": false
     },
     "linux": {
       "target": [
@@ -69,6 +83,6 @@
     }
   },
   "allowScripts": {
-    "electron": true
+    "electron@37.10.3": true
   }
 }

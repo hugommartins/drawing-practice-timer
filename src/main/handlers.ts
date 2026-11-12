@@ -125,7 +125,7 @@ export async function resolveAllowed(api: ApiWithInternals, abs: string): Promis
 }
 
 /**
- * The gatekeeper for the plchldr-img:// protocol. Takes the still-encoded path from the URL and
+ * The gatekeeper for the hatchmark-img:// protocol. Takes the still-encoded path from the URL and
  * returns the file to serve, or null. Only absolute paths to image files inside a linked folder
  * pass; anything else (other file types, other folders, `..` tricks, symlinks pointing out) does not.
  */

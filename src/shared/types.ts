@@ -95,8 +95,8 @@ export const API_METHODS = [
   'saveSettings',
 ] as const satisfies readonly (keyof Api)[];
 
-/** What the preload script (or a test harness) puts on `window.plchldr`. */
-export interface PlchldrBridge {
+/** What the preload script (or a test harness) puts on `window.hatchmark`. */
+export interface HatchmarkBridge {
   api: Api;
   /** URL the <img> tag should use for an absolute file path inside a linked folder. */
   fileUrl(absPath: string): string;
