@@ -4,6 +4,8 @@ import { pathToFileURL } from 'node:url';
 import { API_METHODS } from '../shared/types';
 import { authorizeImage, createApi } from './handlers';
 import { migrateLegacyData } from './migrate';
+import { renderThumbnail } from './thumb-render';
+import { createThumbnailer } from './thumbs';
 import { windowOptions } from './window';
 
 const SCHEME = 'hatchmark-img';
@@ -28,6 +30,9 @@ if (!process.env.HATCHMARK_USER_DATA && !process.env.HATCHMARK_DATA_DIR) {
 }
 
 let win: BrowserWindow | null = null;
+
+// Previews of images, made on demand and kept here. A cache: safe to delete.
+const thumbs = createThumbnailer({ cacheDir: path.join(app.getPath('userData'), 'thumbs'), render: renderThumbnail });
 
 const api = createApi({
   dataDir,
@@ -58,12 +63,15 @@ app.whenReady().then(() => {
   }
 
   // hatchmark-img://local/<encoded absolute path>  ->  the file, if it is an image inside a linked folder
+  // hatchmark-img://thumb/<encoded absolute path>  ->  a small preview of it (the file itself if none can be made)
   protocol.handle(SCHEME, async (request) => {
     const url = new URL(request.url);
     const abs = await authorizeImage(api, url.pathname.slice(1));
     if (!abs) return new Response('Forbidden', { status: 403 });
-    return net.fetch(pathToFileURL(abs).toString());
+    const file = url.hostname === 'thumb' ? ((await thumbs.get(abs)) ?? abs) : abs;
+    return net.fetch(pathToFileURL(file).toString());
   });
+  void thumbs.prune().catch(() => undefined); // keep the cache within its size limit; not needed for startup
 
   Menu.setApplicationMenu(
     Menu.buildFromTemplate([

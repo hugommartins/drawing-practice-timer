@@ -100,6 +100,8 @@ export interface HatchmarkBridge {
   api: Api;
   /** URL the <img> tag should use for an absolute file path inside a linked folder. */
   fileUrl(absPath: string): string;
+  /** Same file, but a small preview for grids of tiles. Falls back to the file itself when no preview can be made. */
+  thumbUrl(absPath: string): string;
 }
 
 export const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif', '.bmp'] as const;

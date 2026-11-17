@@ -7,6 +7,7 @@ for (const name of API_METHODS) api[name] = (...args) => ipcRenderer.invoke(`api
 const bridge: HatchmarkBridge = {
   api: api as unknown as Api,
   fileUrl: (abs) => `hatchmark-img://local/${encodeURIComponent(abs)}`,
+  thumbUrl: (abs) => `hatchmark-img://thumb/${encodeURIComponent(abs)}`,
 };
 
 contextBridge.exposeInMainWorld('hatchmark', bridge);

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import type { CollectionInfo } from '../../shared/types';
 import { api, bridge, imagePath } from '../bridge';
 import { Dialog } from './Dialog';
@@ -12,10 +12,54 @@ interface Props {
   onClose(): void;
 }
 
+const GAP = 8;
+const MIN_TILE = 104;
+const PAD = 2; // matches .picker-grid padding
+const OVERSCAN_ROWS = 3;
+
+/**
+ * Only the rows in view (plus a few either side) are rendered, with explicit pixel positions.
+ * A folder of 50,000 images used to mean 50,000 buttons and images in the page; now it is a few dozen,
+ * and no layout depends on the browser sizing a huge grid.
+ */
+function useWindowedGrid(count: number) {
+  // A callback ref held in state: the grid only exists while the dialog is open, so the measuring
+  // effect must run when the element appears, not when the component mounts.
+  const [el, setEl] = useState<HTMLDivElement | null>(null);
+  const [box, setBox] = useState({ w: 0, h: 0 });
+  const [top, setTop] = useState(0);
+
+  useLayoutEffect(() => {
+    if (!el) return;
+    setTop(el.scrollTop);
+    const measure = () => setBox((b) => (b.w === el.clientWidth && b.h === el.clientHeight ? b : { w: el.clientWidth, h: el.clientHeight }));
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [el]);
+
+  const onScroll = useCallback(() => {
+    if (el) setTop(el.scrollTop);
+  }, [el]);
+
+  return useMemo(() => {
+    const inner = Math.max(0, box.w - PAD * 2);
+    const cols = Math.max(1, Math.floor((inner + GAP) / (MIN_TILE + GAP)));
+    const size = Math.max(MIN_TILE, Math.floor((inner - GAP * (cols - 1)) / cols));
+    const pitch = size + GAP;
+    const rows = Math.ceil(count / cols);
+    const first = Math.max(0, Math.floor(top / pitch) - OVERSCAN_ROWS);
+    const last = Math.min(rows - 1, Math.ceil((top + box.h) / pitch) + OVERSCAN_ROWS);
+    return { ref: setEl, onScroll, cols, size, pitch, height: Math.max(0, rows * pitch - GAP), from: first * cols, to: Math.min(count, (last + 1) * cols) };
+  }, [box.w, box.h, top, count, onScroll]);
+}
+
 /** Thumbnails of one folder; click to pick the images a session should use. */
 export function ImagePicker({ open, collection, chosen, onApply, onClose }: Props) {
   const [all, setAll] = useState<string[]>([]);
   const [draft, setDraft] = useState<Set<string>>(new Set());
+  const grid = useWindowedGrid(all.length);
 
   useEffect(() => {
     if (!open) return;
@@ -56,12 +100,27 @@ export function ImagePicker({ open, collection, chosen, onApply, onClose }: Prop
           <button type="button" className="btn ghost" data-testid="picker-none" onClick={() => setDraft(new Set())}>Clear</button>
         </span>
       </div>
-      <div className="picker-grid" data-testid="picker-grid">
-        {all.map((rel) => (
-          <button key={rel} type="button" className="pick-tile" aria-pressed={draft.has(rel)} aria-label={rel} title={rel} data-testid="pick-tile" onClick={() => toggle(rel)}>
-            <img loading="lazy" decoding="async" alt="" src={bridge().fileUrl(imagePath(collection.path, rel))} />
-          </button>
-        ))}
+      <div className="picker-grid" data-testid="picker-grid" ref={grid.ref} onScroll={grid.onScroll}>
+        <div className="picker-grid-inner" style={{ height: grid.height }}>
+          {all.slice(grid.from, grid.to).map((rel, k) => {
+            const i = grid.from + k;
+            return (
+              <button
+                key={rel}
+                type="button"
+                className="pick-tile"
+                aria-pressed={draft.has(rel)}
+                aria-label={rel}
+                title={rel}
+                data-testid="pick-tile"
+                style={{ left: (i % grid.cols) * (grid.size + GAP), top: Math.floor(i / grid.cols) * grid.pitch, width: grid.size, height: grid.size }}
+                onClick={() => toggle(rel)}
+              >
+                <img loading="lazy" decoding="async" alt="" src={bridge().thumbUrl(imagePath(collection.path, rel))} />
+              </button>
+            );
+          })}
+        </div>
       </div>
       <div className="dialog-actions">
         <button type="button" className="btn" onClick={onClose}>Cancel</button>

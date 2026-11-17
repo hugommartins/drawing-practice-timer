@@ -27,7 +27,7 @@ function Previews({ c }: { c: CollectionInfo }) {
   return (
     <div className="tiles" data-testid="previews">
       {imgs.map((rel) => (
-        <img key={rel} className="tile" loading="lazy" decoding="async" alt="" src={bridge().fileUrl(imagePath(c.path, rel))} />
+        <img key={rel} className="tile" loading="lazy" decoding="async" alt="" src={bridge().thumbUrl(imagePath(c.path, rel))} />
       ))}
     </div>
   );

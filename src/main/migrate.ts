@@ -1,7 +1,7 @@
 import { cpSync, existsSync, readdirSync } from 'node:fs';
 
 /**
- * Copy the data folder used under the previous product name (Plchldr) into the new one.
+ * Copy the data folder used under the previous product name (Hatchmark) into the new one.
  * Does nothing when the new folder already has files or the old one is missing. The old folder is left in place.
  * Returns true when it copied.
  */
