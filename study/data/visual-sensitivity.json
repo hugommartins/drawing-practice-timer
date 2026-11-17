@@ -1,0 +1,792 @@
+{
+  "study": {
+    "title": "What screenshot tests catch that UI tests miss?",
+    "faultSet": "ten injected visual faults",
+    "renderer": "Chromium browser harness; not Electron",
+    "screens": [
+      "Practice",
+      "History",
+      "Library"
+    ],
+    "viewport": {
+      "width": 1280,
+      "height": 760,
+      "deviceScaleFactor": 1
+    },
+    "repeatCount": 20,
+    "budgets": {
+      "local": 97,
+      "ci": 486
+    },
+    "thresholds": [
+      0.2,
+      0.02
+    ],
+    "comparator": "pixelmatch",
+    "environmentProxy": "A 31% opacity subpixel text-shadow perturbation in a separate Chromium context; same machine, not a second machine",
+    "fixtureDate": "2026-10-30",
+    "measuredAt": "2026-11-09T14:12:57.529Z",
+    "countRule": "A fault counts as caught only when it is flagged on every screen where it is drawn."
+  },
+  "noise": {
+    "sameMachine": {
+      "Practice": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "History": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "Library": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "environmentProxy": {
+      "Practice": [
+        5094
+      ],
+      "History": [
+        5336
+      ],
+      "Library": [
+        2797
+      ]
+    }
+  },
+  "faults": [
+    {
+      "id": "card-radius",
+      "name": "Card radius reduced from 16 px to 8 px",
+      "kind": "invented",
+      "theme": "dark",
+      "briefReference": null,
+      "transform": null,
+      "rgbDelta": null,
+      "drawnOn": [
+        "Practice",
+        "History",
+        "Library"
+      ],
+      "screens": {
+        "Practice": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 0,
+            "flagged": false
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 227,
+            "localFlagged": true,
+            "ciFlagged": false,
+            "unlimitedFlagged": true
+          }
+        },
+        "History": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 0,
+            "flagged": false
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 612,
+            "localFlagged": true,
+            "ciFlagged": true,
+            "unlimitedFlagged": true
+          }
+        },
+        "Library": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 0,
+            "flagged": false
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 148,
+            "localFlagged": true,
+            "ciFlagged": false,
+            "unlimitedFlagged": true
+          }
+        }
+      },
+      "caughtEveryScreen": {
+        "default": false,
+        "local": true,
+        "ci": false,
+        "strict": true
+      }
+    },
+    {
+      "id": "card-border-removed",
+      "name": "Card border removed",
+      "kind": "stand-in",
+      "theme": "dark",
+      "briefReference": null,
+      "transform": null,
+      "rgbDelta": null,
+      "drawnOn": [
+        "Practice",
+        "History",
+        "Library"
+      ],
+      "screens": {
+        "Practice": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 0,
+            "flagged": false
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 2577,
+            "localFlagged": true,
+            "ciFlagged": true,
+            "unlimitedFlagged": true
+          }
+        },
+        "History": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 0,
+            "flagged": false
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 5305,
+            "localFlagged": true,
+            "ciFlagged": true,
+            "unlimitedFlagged": true
+          }
+        },
+        "Library": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 0,
+            "flagged": false
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 2688,
+            "localFlagged": true,
+            "ciFlagged": true,
+            "unlimitedFlagged": true
+          }
+        }
+      },
+      "caughtEveryScreen": {
+        "default": false,
+        "local": true,
+        "ci": true,
+        "strict": true
+      }
+    },
+    {
+      "id": "muted-text-darkened",
+      "name": "Muted text darkened",
+      "kind": "invented",
+      "theme": "dark",
+      "briefReference": null,
+      "transform": null,
+      "rgbDelta": null,
+      "drawnOn": [
+        "Practice",
+        "History",
+        "Library"
+      ],
+      "screens": {
+        "Practice": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 0,
+            "flagged": false
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 0,
+            "localFlagged": false,
+            "ciFlagged": false,
+            "unlimitedFlagged": false
+          }
+        },
+        "History": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 0,
+            "flagged": false
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 0,
+            "localFlagged": false,
+            "ciFlagged": false,
+            "unlimitedFlagged": false
+          }
+        },
+        "Library": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 0,
+            "flagged": false
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 0,
+            "localFlagged": false,
+            "ciFlagged": false,
+            "unlimitedFlagged": false
+          }
+        }
+      },
+      "caughtEveryScreen": {
+        "default": false,
+        "local": false,
+        "ci": false,
+        "strict": false
+      }
+    },
+    {
+      "id": "light-accent-subtle",
+      "name": "Light accent shifted by four RGB units",
+      "kind": "stand-in",
+      "theme": "light",
+      "briefReference": null,
+      "transform": null,
+      "rgbDelta": 4,
+      "drawnOn": [
+        "Practice",
+        "History",
+        "Library"
+      ],
+      "screens": {
+        "Practice": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 0,
+            "flagged": false
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 0,
+            "localFlagged": false,
+            "ciFlagged": false,
+            "unlimitedFlagged": false
+          }
+        },
+        "History": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 0,
+            "flagged": false
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 0,
+            "localFlagged": false,
+            "ciFlagged": false,
+            "unlimitedFlagged": false
+          }
+        },
+        "Library": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 0,
+            "flagged": false
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 0,
+            "localFlagged": false,
+            "ciFlagged": false,
+            "unlimitedFlagged": false
+          }
+        }
+      },
+      "caughtEveryScreen": {
+        "default": false,
+        "local": false,
+        "ci": false,
+        "strict": false
+      }
+    },
+    {
+      "id": "page-padding",
+      "name": "Page padding increased by 2 px",
+      "kind": "invented",
+      "theme": "dark",
+      "briefReference": null,
+      "transform": null,
+      "rgbDelta": null,
+      "drawnOn": [
+        "Practice",
+        "History",
+        "Library"
+      ],
+      "screens": {
+        "Practice": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 6874,
+            "flagged": true
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 36667,
+            "localFlagged": true,
+            "ciFlagged": true,
+            "unlimitedFlagged": true
+          }
+        },
+        "History": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 8892,
+            "flagged": true
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 34105,
+            "localFlagged": true,
+            "ciFlagged": true,
+            "unlimitedFlagged": true
+          }
+        },
+        "Library": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 9659,
+            "flagged": true
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 20206,
+            "localFlagged": true,
+            "ciFlagged": true,
+            "unlimitedFlagged": true
+          }
+        }
+      },
+      "caughtEveryScreen": {
+        "default": true,
+        "local": true,
+        "ci": true,
+        "strict": true
+      }
+    },
+    {
+      "id": "body-font-size",
+      "name": "Body font reduced by 1 px",
+      "kind": "stand-in",
+      "theme": "dark",
+      "briefReference": null,
+      "transform": null,
+      "rgbDelta": null,
+      "drawnOn": [
+        "Practice",
+        "History",
+        "Library"
+      ],
+      "screens": {
+        "Practice": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 8025,
+            "flagged": true
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 42860,
+            "localFlagged": true,
+            "ciFlagged": true,
+            "unlimitedFlagged": true
+          }
+        },
+        "History": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 7713,
+            "flagged": true
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 34935,
+            "localFlagged": true,
+            "ciFlagged": true,
+            "unlimitedFlagged": true
+          }
+        },
+        "Library": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 9076,
+            "flagged": true
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 20377,
+            "localFlagged": true,
+            "ciFlagged": true,
+            "unlimitedFlagged": true
+          }
+        }
+      },
+      "caughtEveryScreen": {
+        "default": true,
+        "local": true,
+        "ci": true,
+        "strict": true
+      }
+    },
+    {
+      "id": "heading-copy",
+      "name": "Page heading misspelled",
+      "kind": "invented",
+      "theme": "dark",
+      "briefReference": null,
+      "transform": null,
+      "rgbDelta": null,
+      "drawnOn": [
+        "Practice",
+        "History",
+        "Library"
+      ],
+      "screens": {
+        "Practice": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 52,
+            "flagged": true
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 68,
+            "localFlagged": false,
+            "ciFlagged": false,
+            "unlimitedFlagged": true
+          }
+        },
+        "History": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 124,
+            "flagged": true
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 128,
+            "localFlagged": true,
+            "ciFlagged": false,
+            "unlimitedFlagged": true
+          }
+        },
+        "Library": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 222,
+            "flagged": true
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 231,
+            "localFlagged": true,
+            "ciFlagged": false,
+            "unlimitedFlagged": true
+          }
+        }
+      },
+      "caughtEveryScreen": {
+        "default": true,
+        "local": false,
+        "ci": false,
+        "strict": true
+      }
+    },
+    {
+      "id": "button-radius",
+      "name": "Button corners enlarged by 1 px",
+      "kind": "stand-in",
+      "theme": "dark",
+      "briefReference": null,
+      "transform": null,
+      "rgbDelta": null,
+      "drawnOn": [
+        "Practice",
+        "History",
+        "Library"
+      ],
+      "screens": {
+        "Practice": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 0,
+            "flagged": false
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 52,
+            "localFlagged": false,
+            "ciFlagged": false,
+            "unlimitedFlagged": true
+          }
+        },
+        "History": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 0,
+            "flagged": false
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 21,
+            "localFlagged": false,
+            "ciFlagged": false,
+            "unlimitedFlagged": true
+          }
+        },
+        "Library": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 0,
+            "flagged": false
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 120,
+            "localFlagged": true,
+            "ciFlagged": false,
+            "unlimitedFlagged": true
+          }
+        }
+      },
+      "caughtEveryScreen": {
+        "default": false,
+        "local": false,
+        "ci": false,
+        "strict": true
+      }
+    },
+    {
+      "id": "light-palette",
+      "name": "Light surface palette shifted",
+      "kind": "stand-in",
+      "theme": "light",
+      "briefReference": null,
+      "transform": null,
+      "rgbDelta": null,
+      "drawnOn": [
+        "Practice",
+        "History",
+        "Library"
+      ],
+      "screens": {
+        "Practice": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 0,
+            "flagged": false
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 8915,
+            "localFlagged": true,
+            "ciFlagged": true,
+            "unlimitedFlagged": true
+          }
+        },
+        "History": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 0,
+            "flagged": false
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 9528,
+            "localFlagged": true,
+            "ciFlagged": true,
+            "unlimitedFlagged": true
+          }
+        },
+        "Library": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 0,
+            "flagged": false
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 4023,
+            "localFlagged": true,
+            "ciFlagged": true,
+            "unlimitedFlagged": true
+          }
+        }
+      },
+      "caughtEveryScreen": {
+        "default": false,
+        "local": true,
+        "ci": true,
+        "strict": true
+      }
+    },
+    {
+      "id": "small-color-delta-2",
+      "name": "Light border color shifted by two RGB units",
+      "kind": "invented",
+      "theme": "light",
+      "briefReference": null,
+      "transform": null,
+      "rgbDelta": 2,
+      "drawnOn": [
+        "Practice",
+        "History",
+        "Library"
+      ],
+      "screens": {
+        "Practice": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 0,
+            "flagged": false
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 0,
+            "localFlagged": false,
+            "ciFlagged": false,
+            "unlimitedFlagged": false
+          }
+        },
+        "History": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 0,
+            "flagged": false
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 0,
+            "localFlagged": false,
+            "ciFlagged": false,
+            "unlimitedFlagged": false
+          }
+        },
+        "Library": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 0,
+            "flagged": false
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 0,
+            "localFlagged": false,
+            "ciFlagged": false,
+            "unlimitedFlagged": false
+          }
+        }
+      },
+      "caughtEveryScreen": {
+        "default": false,
+        "local": false,
+        "ci": false,
+        "strict": false
+      }
+    }
+  ],
+  "controls": [
+    {
+      "id": "hide-navigation",
+      "name": "Hide navigation links",
+      "screens": {
+        "Practice": {
+          "diffPixels": 2472,
+          "flagged": true
+        },
+        "History": {
+          "diffPixels": 2312,
+          "flagged": true
+        },
+        "Library": {
+          "diffPixels": 2251,
+          "flagged": true
+        }
+      }
+    },
+    {
+      "id": "high-contrast-border",
+      "name": "Replace card border with a high-contrast color",
+      "screens": {
+        "Practice": {
+          "diffPixels": 2542,
+          "flagged": true
+        },
+        "History": {
+          "diffPixels": 5219,
+          "flagged": true
+        },
+        "Library": {
+          "diffPixels": 2674,
+          "flagged": true
+        }
+      }
+    }
+  ]
+}

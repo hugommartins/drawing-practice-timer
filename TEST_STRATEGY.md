@@ -90,10 +90,14 @@ Each screen is compared with a stored baseline, taken from the real app window s
 - **Real launch, seeded data:** the data folder is created by the same code the app uses, and the app starts against it. Nothing is faked in the renderer except time and randomness.
 - **Pinned inputs:** the clock is fixed to one day and checked to be frozen, `Math.random` is seeded so the image order is identical, the theme is stored in the seeded settings, the window content size is set exactly (the test fails if the display can't fit it), display scale is forced to 1, animations and the caret are off, temp-folder paths are masked, and fonts and images are awaited.
 - **Strict comparison:** per-pixel tolerance is lowered from the default so low-contrast edges (a card corner, a border colour) are noticed. A small pixel budget absorbs nothing more than noise.
-- **Per-platform baselines:** font rendering differs by OS, so baselines carry a platform suffix. Each machine creates its own with one update command and the diffs are reviewed before committing.
+- **Per-environment baselines:** the local macOS screenshots use the `-darwin` suffix; the CI macOS runner uses `-darwin-ci`. Font rendering can differ between machines even on the same OS, so each environment compares against its own reviewed baseline.
 - **Intentional change:** update, review the diff images, commit.
 
 Visual tests catch what functional tests can't: a layout that still works but looks wrong.
+
+#### Why this layer exists
+
+The UI suite verifies behavior and selected layout constraints, but does not compare the rendered appearance. A visual check compares the actual Electron window with a reviewed baseline, so changes such as a radius, border, or color can be noticed even when the controls still work. The measured study linked from the demo reports what this project’s screenshot checks caught in a controlled fault set; that result is evidence for this project, not a general guarantee.
 
 ### E2E (`tests/e2e`, Playwright `_electron`)
 
@@ -161,6 +165,7 @@ One journey: first run → link a folder (images load through the real protocol)
 |---|---|
 | While coding | Unit on save |
 | Before commit | Unit + UI + Visual |
+| CI (push and pull request) | Typecheck, unit and UI on Linux; Visual and E2E on macOS |
 | Before release or install | All of the above + E2E on macOS |
 | Before release, and after changes to scanning or list rendering | Performance lane (`npm run perf`, section 3) |
 | Periodically | Mutation testing (section 8) |

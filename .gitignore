@@ -7,4 +7,6 @@ playwright-report
 *.log
 .stryker-tmp
 reports
+dist-demo
+study/data/*.png
 tests/perf/results

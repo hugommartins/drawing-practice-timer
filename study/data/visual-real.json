@@ -1,0 +1,134 @@
+{
+  "study": {
+    "title": "What screenshot tests catch that UI tests miss?",
+    "faultSet": "two replays of real commits from this repository",
+    "renderer": "Chromium browser harness; not Electron",
+    "screens": [
+      "Practice",
+      "History",
+      "Library"
+    ],
+    "viewport": {
+      "width": 1280,
+      "height": 760,
+      "deviceScaleFactor": 1
+    },
+    "repeatCount": 20,
+    "budgets": {
+      "local": 97,
+      "ci": 486
+    },
+    "thresholds": [
+      0.2,
+      0.02
+    ],
+    "comparator": "pixelmatch",
+    "environmentProxy": "A 31% opacity subpixel text-shadow perturbation in a separate Chromium context; same machine, not a second machine",
+    "fixtureDate": "2026-10-30",
+    "countRule": "A fault counts as caught only when it is flagged on every screen where it is drawn.",
+    "sourceNote": "These are real commits from this repository's history. Each is replayed as a style transform on the built interface, not by checking out the commit, so the pixel counts describe the change on the current screens. 722a9bb also reworked the session UI; only its light-palette change is replayed, in reverse. Same viewport, thresholds and budgets as the injected faults.",
+    "repoCommitUrl": "https://github.com/hugommartins/drawing-practice-timer/commit/"
+  },
+  "faults": [
+    {
+      "id": "real-select-chevron",
+      "name": "Select arrow: custom chevron and inset removed",
+      "kind": "real commit",
+      "theme": "dark",
+      "commit": "6cf487f",
+      "commitSubject": "fix(renderer): inset the select arrow with a custom chevron",
+      "transform": "Remove the custom select rule, so the native arrow sits against the edge again.",
+      "rgbDelta": null,
+      "drawnOn": [
+        "Practice"
+      ],
+      "screens": {
+        "Practice": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 432,
+            "flagged": true
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 2087,
+            "localFlagged": true,
+            "ciFlagged": true,
+            "unlimitedFlagged": true
+          }
+        }
+      },
+      "caughtEveryScreen": {
+        "default": true,
+        "local": true,
+        "ci": true,
+        "strict": true
+      }
+    },
+    {
+      "id": "real-light-palette",
+      "name": "Light palette: warm instead of cool grey",
+      "kind": "real commit",
+      "theme": "light",
+      "commit": "722a9bb",
+      "commitSubject": "feat(ui): improve the session UI and light mode",
+      "transform": "Put back the light-theme palette from before the commit (warm instead of cool grey). The commit also reworked the session UI; only the palette change is replayed.",
+      "rgbDelta": null,
+      "drawnOn": [
+        "Practice",
+        "History",
+        "Library"
+      ],
+      "screens": {
+        "Practice": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 0,
+            "flagged": false
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 14435,
+            "localFlagged": true,
+            "ciFlagged": true,
+            "unlimitedFlagged": true
+          }
+        },
+        "History": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 0,
+            "flagged": false
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 20306,
+            "localFlagged": true,
+            "ciFlagged": true,
+            "unlimitedFlagged": true
+          }
+        },
+        "Library": {
+          "default": {
+            "threshold": 0.2,
+            "diffPixels": 661,
+            "flagged": true
+          },
+          "strict": {
+            "threshold": 0.02,
+            "diffPixels": 10191,
+            "localFlagged": true,
+            "ciFlagged": true,
+            "unlimitedFlagged": true
+          }
+        }
+      },
+      "caughtEveryScreen": {
+        "default": false,
+        "local": true,
+        "ci": true,
+        "strict": true
+      }
+    }
+  ]
+}

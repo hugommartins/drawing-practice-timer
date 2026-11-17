@@ -1,0 +1,86 @@
+{
+  "lede": "A controlled comparison of visual faults, functional UI tests, and screenshot thresholds in plchldr.",
+  "context": "Plchldr is a desktop drawing-practice timer. Its UI tests exercise behavior in Chromium; visual tests compare rendered screens with saved baselines. This study asks which deliberate appearance changes each layer catches, then measures repeat-render variation and a controlled environment proxy.",
+  "outcome": "The aim was to learn which changes each test layer detects, and how the comparison responds to repeat-render and environment variation.",
+  "whyLayer": "The UI suite verifies behavior and selected layout constraints, but does not compare the rendered appearance. A visual check compares the actual Electron window with a reviewed baseline, so changes such as a radius, border, or color can be noticed even when the controls still work. The measurements here use the browser harness and should not be read as Electron results.",
+  "stages": [
+    {
+      "title": "Choose the comparison surfaces",
+      "body": "Use Practice, History, and Library at one fixed viewport; these screens combine navigation, typography, controls, and cards."
+    },
+    {
+      "title": "Pin the inputs",
+      "body": "Fix the date, theme, random seed, viewport, and device scale so repeated captures show the same state."
+    },
+    {
+      "title": "Measure unchanged renders",
+      "body": "Repeat each screen without a design change to establish a same-machine comparison floor."
+    },
+    {
+      "title": "Add an environment proxy",
+      "body": "Change the system-font fallback and device scale in a separate browser context. This is a controlled proxy, not a second machine or an Electron run."
+    },
+    {
+      "title": "Inject visual changes",
+      "body": "Apply ten style and text faults, plus controls, then compare each drawn screen at the default and strict pixel thresholds."
+    },
+    {
+      "title": "Run the UI suite against the faults",
+      "body": "Apply every fault to the built renderer and run the complete UI test suite. A hide-navigation control checks that the test harness can fail."
+    },
+    {
+      "title": "Replay two real commits",
+      "body": "Two visual changes from this repository's history (6cf487f, 722a9bb) are applied to the built interface as style transforms, then measured the same way. 722a9bb also changed the session UI, so only its light-palette change is replayed, in reverse. These are replays on the current renderer, not builds of those commits."
+    }
+  ],
+  "learning": [
+    {
+      "title": "Functional coverage and appearance coverage answer different questions.",
+      "body": "The UI suite passed for the deliberately visual changes; the broken-navigation control failed, showing the tests can detect a behavioral break."
+    },
+    {
+      "title": "Measure a noise floor before choosing a pixel budget.",
+      "body": "The repeated captures were identical in this browser harness. That does not establish a zero-noise Electron or CI environment."
+    },
+    {
+      "title": "Budgets trade sensitivity for tolerance.",
+      "body": "The same faults produce different catch counts when a pixel budget is added; count a fault only when every screen where it is drawn is flagged."
+    },
+    {
+      "title": "Small color changes can sit below a threshold.",
+      "body": "The recorded low-delta color changes did not produce flagged pixels at the strict threshold; controls changed the same surfaces more substantially."
+    },
+    {
+      "title": "A replay on the current renderer is not the original change.",
+      "body": "Each real commit is applied as a transform on the current build, so the results show how each layer sees that kind of change, not how the app looked at the time. Only two commits are replayed, and the palette commit only in part."
+    },
+    {
+      "title": "A proxy is not a cross-machine measurement.",
+      "body": "The environment comparison changes browser rendering inputs on one machine. It cannot estimate macOS-to-CI noise."
+    }
+  ],
+  "nextSteps": [
+    {
+      "title": "Build each commit.",
+      "body": "Build and capture the app at 6cf487f, 722a9bb and their parents, then compare, instead of replaying the changes as transforms."
+    },
+    {
+      "title": "Run in Electron on macOS and CI.",
+      "body": "Repeat the same captures against the actual Electron renderer on both environments; those results are not measured here."
+    },
+    {
+      "title": "Measure the cost side.",
+      "body": "Record CI run time, baseline maintenance effort, and flake rate before drawing conclusions about the operating cost."
+    },
+    {
+      "title": "Add mutation testing.",
+      "body": "Run the mutation suite and report its score separately; mutation score is not measured by this study."
+    }
+  ],
+  "unknowns": [
+    "How closely the replays match builds of the commits themselves",
+    "Electron rendering on macOS and CI",
+    "CI run time and flake rate",
+    "Mutation score"
+  ]
+}

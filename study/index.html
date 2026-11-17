@@ -1,0 +1,754 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'">
+<meta name="description" content="A measured case study of what a pixelmatch screenshot comparison catches that one repository's 27-test UI suite misses.">
+<title>What a Screenshot Comparison Catches That This UI Suite Misses · hatchmark</title>
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="./styles.css">
+<!-- study-data:start -->
+<script type="application/json" id="data-visual-sensitivity">
+{
+  "study": {
+    "title": "What does a screenshot comparison catch that this UI suite misses?",
+    "faultSet": "ten injected visual faults",
+    "renderer": "Chromium browser harness; not Electron",
+    "screens": ["Practice", "History", "Library"],
+    "viewport": { "width": 1280, "height": 760, "deviceScaleFactor": 1 },
+    "repeatCount": 20,
+    "budgets": { "local": 97, "ci": 486 },
+    "thresholds": [0.2, 0.02],
+    "comparator": "pixelmatch",
+    "environmentProxy": "A 31% opacity subpixel text-shadow perturbation in a separate Chromium context; same machine, not a second machine",
+    "fixtureDate": "2026-10-30",
+    "measuredAt": "2026-11-09T14:12:57.529Z",
+    "countRule": "A fault counts as caught only when it is flagged on every screen where it is drawn."
+  },
+  "noise": {
+    "sameMachine": {
+      "Practice": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      "History": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      "Library": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    "environmentProxy": {
+      "Practice": [5094],
+      "History": [5336],
+      "Library": [2797]
+    }
+  },
+  "faults": [
+    {
+      "id": "card-radius",
+      "name": "Card radius reduced from 16 px to 8 px",
+      "kind": "invented",
+      "theme": "dark",
+      "briefReference": null,
+      "transform": null,
+      "rgbDelta": null,
+      "drawnOn": ["Practice", "History", "Library"],
+      "screens": {
+        "Practice": {
+          "default": { "threshold": 0.2, "diffPixels": 0, "flagged": false },
+          "strict": { "threshold": 0.02, "diffPixels": 227, "localFlagged": true, "ciFlagged": false, "unlimitedFlagged": true }
+        },
+        "History": {
+          "default": { "threshold": 0.2, "diffPixels": 0, "flagged": false },
+          "strict": { "threshold": 0.02, "diffPixels": 612, "localFlagged": true, "ciFlagged": true, "unlimitedFlagged": true }
+        },
+        "Library": {
+          "default": { "threshold": 0.2, "diffPixels": 0, "flagged": false },
+          "strict": { "threshold": 0.02, "diffPixels": 148, "localFlagged": true, "ciFlagged": false, "unlimitedFlagged": true }
+        }
+      },
+      "caughtEveryScreen": { "default": false, "local": true, "ci": false, "strict": true }
+    },
+    {
+      "id": "card-border-removed",
+      "name": "Card border removed",
+      "kind": "stand-in",
+      "theme": "dark",
+      "briefReference": null,
+      "transform": null,
+      "rgbDelta": null,
+      "drawnOn": ["Practice", "History", "Library"],
+      "screens": {
+        "Practice": {
+          "default": { "threshold": 0.2, "diffPixels": 0, "flagged": false },
+          "strict": { "threshold": 0.02, "diffPixels": 2577, "localFlagged": true, "ciFlagged": true, "unlimitedFlagged": true }
+        },
+        "History": {
+          "default": { "threshold": 0.2, "diffPixels": 0, "flagged": false },
+          "strict": { "threshold": 0.02, "diffPixels": 5305, "localFlagged": true, "ciFlagged": true, "unlimitedFlagged": true }
+        },
+        "Library": {
+          "default": { "threshold": 0.2, "diffPixels": 0, "flagged": false },
+          "strict": { "threshold": 0.02, "diffPixels": 2688, "localFlagged": true, "ciFlagged": true, "unlimitedFlagged": true }
+        }
+      },
+      "caughtEveryScreen": { "default": false, "local": true, "ci": true, "strict": true }
+    },
+    {
+      "id": "muted-text-darkened",
+      "name": "Muted text darkened",
+      "kind": "invented",
+      "theme": "dark",
+      "briefReference": null,
+      "transform": null,
+      "rgbDelta": null,
+      "drawnOn": ["Practice", "History", "Library"],
+      "screens": {
+        "Practice": {
+          "default": { "threshold": 0.2, "diffPixels": 0, "flagged": false },
+          "strict": { "threshold": 0.02, "diffPixels": 0, "localFlagged": false, "ciFlagged": false, "unlimitedFlagged": false }
+        },
+        "History": {
+          "default": { "threshold": 0.2, "diffPixels": 0, "flagged": false },
+          "strict": { "threshold": 0.02, "diffPixels": 0, "localFlagged": false, "ciFlagged": false, "unlimitedFlagged": false }
+        },
+        "Library": {
+          "default": { "threshold": 0.2, "diffPixels": 0, "flagged": false },
+          "strict": { "threshold": 0.02, "diffPixels": 0, "localFlagged": false, "ciFlagged": false, "unlimitedFlagged": false }
+        }
+      },
+      "caughtEveryScreen": { "default": false, "local": false, "ci": false, "strict": false }
+    },
+    {
+      "id": "light-accent-subtle",
+      "name": "Light accent shifted by four RGB units",
+      "kind": "stand-in",
+      "theme": "light",
+      "briefReference": null,
+      "transform": null,
+      "rgbDelta": 4,
+      "drawnOn": ["Practice", "History", "Library"],
+      "screens": {
+        "Practice": {
+          "default": { "threshold": 0.2, "diffPixels": 0, "flagged": false },
+          "strict": { "threshold": 0.02, "diffPixels": 0, "localFlagged": false, "ciFlagged": false, "unlimitedFlagged": false }
+        },
+        "History": {
+          "default": { "threshold": 0.2, "diffPixels": 0, "flagged": false },
+          "strict": { "threshold": 0.02, "diffPixels": 0, "localFlagged": false, "ciFlagged": false, "unlimitedFlagged": false }
+        },
+        "Library": {
+          "default": { "threshold": 0.2, "diffPixels": 0, "flagged": false },
+          "strict": { "threshold": 0.02, "diffPixels": 0, "localFlagged": false, "ciFlagged": false, "unlimitedFlagged": false }
+        }
+      },
+      "caughtEveryScreen": { "default": false, "local": false, "ci": false, "strict": false }
+    },
+    {
+      "id": "page-padding",
+      "name": "Page padding increased by 2 px",
+      "kind": "invented",
+      "theme": "dark",
+      "briefReference": null,
+      "transform": null,
+      "rgbDelta": null,
+      "drawnOn": ["Practice", "History", "Library"],
+      "screens": {
+        "Practice": {
+          "default": { "threshold": 0.2, "diffPixels": 6874, "flagged": true },
+          "strict": { "threshold": 0.02, "diffPixels": 36667, "localFlagged": true, "ciFlagged": true, "unlimitedFlagged": true }
+        },
+        "History": {
+          "default": { "threshold": 0.2, "diffPixels": 8892, "flagged": true },
+          "strict": { "threshold": 0.02, "diffPixels": 34105, "localFlagged": true, "ciFlagged": true, "unlimitedFlagged": true }
+        },
+        "Library": {
+          "default": { "threshold": 0.2, "diffPixels": 9659, "flagged": true },
+          "strict": { "threshold": 0.02, "diffPixels": 20206, "localFlagged": true, "ciFlagged": true, "unlimitedFlagged": true }
+        }
+      },
+      "caughtEveryScreen": { "default": true, "local": true, "ci": true, "strict": true }
+    },
+    {
+      "id": "body-font-size",
+      "name": "Body font reduced by 1 px",
+      "kind": "stand-in",
+      "theme": "dark",
+      "briefReference": null,
+      "transform": null,
+      "rgbDelta": null,
+      "drawnOn": ["Practice", "History", "Library"],
+      "screens": {
+        "Practice": {
+          "default": { "threshold": 0.2, "diffPixels": 8025, "flagged": true },
+          "strict": { "threshold": 0.02, "diffPixels": 42860, "localFlagged": true, "ciFlagged": true, "unlimitedFlagged": true }
+        },
+        "History": {
+          "default": { "threshold": 0.2, "diffPixels": 7713, "flagged": true },
+          "strict": { "threshold": 0.02, "diffPixels": 34935, "localFlagged": true, "ciFlagged": true, "unlimitedFlagged": true }
+        },
+        "Library": {
+          "default": { "threshold": 0.2, "diffPixels": 9076, "flagged": true },
+          "strict": { "threshold": 0.02, "diffPixels": 20377, "localFlagged": true, "ciFlagged": true, "unlimitedFlagged": true }
+        }
+      },
+      "caughtEveryScreen": { "default": true, "local": true, "ci": true, "strict": true }
+    },
+    {
+      "id": "heading-copy",
+      "name": "Page heading misspelled",
+      "kind": "invented",
+      "theme": "dark",
+      "briefReference": null,
+      "transform": null,
+      "rgbDelta": null,
+      "drawnOn": ["Practice", "History", "Library"],
+      "screens": {
+        "Practice": {
+          "default": { "threshold": 0.2, "diffPixels": 52, "flagged": true },
+          "strict": { "threshold": 0.02, "diffPixels": 68, "localFlagged": false, "ciFlagged": false, "unlimitedFlagged": true }
+        },
+        "History": {
+          "default": { "threshold": 0.2, "diffPixels": 124, "flagged": true },
+          "strict": { "threshold": 0.02, "diffPixels": 128, "localFlagged": true, "ciFlagged": false, "unlimitedFlagged": true }
+        },
+        "Library": {
+          "default": { "threshold": 0.2, "diffPixels": 222, "flagged": true },
+          "strict": { "threshold": 0.02, "diffPixels": 231, "localFlagged": true, "ciFlagged": false, "unlimitedFlagged": true }
+        }
+      },
+      "caughtEveryScreen": { "default": true, "local": false, "ci": false, "strict": true }
+    },
+    {
+      "id": "button-radius",
+      "name": "Button corners enlarged by 1 px",
+      "kind": "stand-in",
+      "theme": "dark",
+      "briefReference": null,
+      "transform": null,
+      "rgbDelta": null,
+      "drawnOn": ["Practice", "History", "Library"],
+      "screens": {
+        "Practice": {
+          "default": { "threshold": 0.2, "diffPixels": 0, "flagged": false },
+          "strict": { "threshold": 0.02, "diffPixels": 52, "localFlagged": false, "ciFlagged": false, "unlimitedFlagged": true }
+        },
+        "History": {
+          "default": { "threshold": 0.2, "diffPixels": 0, "flagged": false },
+          "strict": { "threshold": 0.02, "diffPixels": 21, "localFlagged": false, "ciFlagged": false, "unlimitedFlagged": true }
+        },
+        "Library": {
+          "default": { "threshold": 0.2, "diffPixels": 0, "flagged": false },
+          "strict": { "threshold": 0.02, "diffPixels": 120, "localFlagged": true, "ciFlagged": false, "unlimitedFlagged": true }
+        }
+      },
+      "caughtEveryScreen": { "default": false, "local": false, "ci": false, "strict": true }
+    },
+    {
+      "id": "light-palette",
+      "name": "Light surface palette shifted",
+      "kind": "stand-in",
+      "theme": "light",
+      "briefReference": null,
+      "transform": null,
+      "rgbDelta": null,
+      "drawnOn": ["Practice", "History", "Library"],
+      "screens": {
+        "Practice": {
+          "default": { "threshold": 0.2, "diffPixels": 0, "flagged": false },
+          "strict": { "threshold": 0.02, "diffPixels": 8915, "localFlagged": true, "ciFlagged": true, "unlimitedFlagged": true }
+        },
+        "History": {
+          "default": { "threshold": 0.2, "diffPixels": 0, "flagged": false },
+          "strict": { "threshold": 0.02, "diffPixels": 9528, "localFlagged": true, "ciFlagged": true, "unlimitedFlagged": true }
+        },
+        "Library": {
+          "default": { "threshold": 0.2, "diffPixels": 0, "flagged": false },
+          "strict": { "threshold": 0.02, "diffPixels": 4023, "localFlagged": true, "ciFlagged": true, "unlimitedFlagged": true }
+        }
+      },
+      "caughtEveryScreen": { "default": false, "local": true, "ci": true, "strict": true }
+    },
+    {
+      "id": "small-color-delta-2",
+      "name": "Light border color shifted by two RGB units",
+      "kind": "invented",
+      "theme": "light",
+      "briefReference": null,
+      "transform": null,
+      "rgbDelta": 2,
+      "drawnOn": ["Practice", "History", "Library"],
+      "screens": {
+        "Practice": {
+          "default": { "threshold": 0.2, "diffPixels": 0, "flagged": false },
+          "strict": { "threshold": 0.02, "diffPixels": 0, "localFlagged": false, "ciFlagged": false, "unlimitedFlagged": false }
+        },
+        "History": {
+          "default": { "threshold": 0.2, "diffPixels": 0, "flagged": false },
+          "strict": { "threshold": 0.02, "diffPixels": 0, "localFlagged": false, "ciFlagged": false, "unlimitedFlagged": false }
+        },
+        "Library": {
+          "default": { "threshold": 0.2, "diffPixels": 0, "flagged": false },
+          "strict": { "threshold": 0.02, "diffPixels": 0, "localFlagged": false, "ciFlagged": false, "unlimitedFlagged": false }
+        }
+      },
+      "caughtEveryScreen": { "default": false, "local": false, "ci": false, "strict": false }
+    }
+  ],
+  "controls": [
+    {
+      "id": "hide-navigation",
+      "name": "Hide navigation links",
+      "screens": {
+        "Practice": { "diffPixels": 2472, "flagged": true },
+        "History": { "diffPixels": 2312, "flagged": true },
+        "Library": { "diffPixels": 2251, "flagged": true }
+      }
+    },
+    {
+      "id": "high-contrast-border",
+      "name": "Replace card border with a high-contrast color",
+      "screens": {
+        "Practice": { "diffPixels": 2542, "flagged": true },
+        "History": { "diffPixels": 5219, "flagged": true },
+        "Library": { "diffPixels": 2674, "flagged": true }
+      }
+    }
+  ]
+}
+</script>
+<script type="application/json" id="data-ui-vs-faults">
+{
+  "study": {
+    "runner": "27 Playwright UI tests per fault",
+    "expectedTestCount": 27,
+    "mode": "injected visual faults and controls"
+  },
+  "faults": [
+    {
+      "id": "card-radius",
+      "name": "Card radius reduced from 16 px to 8 px",
+      "kind": "invented",
+      "briefReference": null,
+      "ui": {
+        "exitCode": 0, "passed": 27, "failed": 0, "skipped": 0, "expectedTests": 27,
+        "outputTail": "[21/27] [ui] › tests/ui/session.spec.ts:85:7 › running a session › no-timer mode counts up and saves what was drawn\n[22/27] [ui] › tests/ui/session.spec.ts:99:7 › running a session › ending early: keep drawing resumes, discard saves nothing\n[23/27] [ui] › tests/ui/session.spec.ts:133:7 › on screen › view tools and keyboard shortcuts\n[24/27] [ui] › tests/ui/session.spec.ts:114:7 › running a session › sessions under 20 seconds are not saved\n[25/27] [ui] › tests/ui/session.spec.ts:156:7 › on screen › focus mode gives the image the whole window and keeps the timer reachable\n[26/27] [ui] › tests/ui/session.spec.ts:175:7 › on screen › image keeps its aspect ratio and the grid sits exactly on it at any window size\n[27/27] [ui] › tests/ui/session.spec.ts:190:7 › on screen › controls move below the image in a narrow window, with no overflow\n  27 passed (19.7s)\n\n"
+      }
+    },
+    {
+      "id": "card-border-removed",
+      "name": "Card border removed",
+      "kind": "stand-in",
+      "briefReference": null,
+      "ui": {
+        "exitCode": 0, "passed": 27, "failed": 0, "skipped": 0, "expectedTests": 27,
+        "outputTail": "[21/27] [ui] › tests/ui/session.spec.ts:85:7 › running a session › no-timer mode counts up and saves what was drawn\n[22/27] [ui] › tests/ui/session.spec.ts:99:7 › running a session › ending early: keep drawing resumes, discard saves nothing\n[23/27] [ui] › tests/ui/session.spec.ts:114:7 › running a session › sessions under 20 seconds are not saved\n[24/27] [ui] › tests/ui/session.spec.ts:133:7 › on screen › view tools and keyboard shortcuts\n[25/27] [ui] › tests/ui/session.spec.ts:156:7 › on screen › focus mode gives the image the whole window and keeps the timer reachable\n[26/27] [ui] › tests/ui/session.spec.ts:175:7 › on screen › image keeps its aspect ratio and the grid sits exactly on it at any window size\n[27/27] [ui] › tests/ui/session.spec.ts:190:7 › on screen › controls move below the image in a narrow window, with no overflow\n  27 passed (19.4s)\n\n"
+      }
+    },
+    {
+      "id": "muted-text-darkened",
+      "name": "Muted text darkened",
+      "kind": "invented",
+      "briefReference": null,
+      "ui": {
+        "exitCode": 0, "passed": 27, "failed": 0, "skipped": 0, "expectedTests": 27,
+        "outputTail": "[21/27] [ui] › tests/ui/session.spec.ts:85:7 › running a session › no-timer mode counts up and saves what was drawn\n[22/27] [ui] › tests/ui/session.spec.ts:99:7 › running a session › ending early: keep drawing resumes, discard saves nothing\n[23/27] [ui] › tests/ui/session.spec.ts:114:7 › running a session › sessions under 20 seconds are not saved\n[24/27] [ui] › tests/ui/session.spec.ts:133:7 › on screen › view tools and keyboard shortcuts\n[25/27] [ui] › tests/ui/session.spec.ts:156:7 › on screen › focus mode gives the image the whole window and keeps the timer reachable\n[26/27] [ui] › tests/ui/session.spec.ts:175:7 › on screen › image keeps its aspect ratio and the grid sits exactly on it at any window size\n[27/27] [ui] › tests/ui/session.spec.ts:190:7 › on screen › controls move below the image in a narrow window, with no overflow\n  27 passed (19.9s)\n\n"
+      }
+    },
+    {
+      "id": "light-accent-subtle",
+      "name": "Light accent shifted by four RGB units",
+      "kind": "stand-in",
+      "briefReference": null,
+      "ui": {
+        "exitCode": 0, "passed": 27, "failed": 0, "skipped": 0, "expectedTests": 27,
+        "outputTail": "[21/27] [ui] › tests/ui/session.spec.ts:85:7 › running a session › no-timer mode counts up and saves what was drawn\n[22/27] [ui] › tests/ui/session.spec.ts:99:7 › running a session › ending early: keep drawing resumes, discard saves nothing\n[23/27] [ui] › tests/ui/session.spec.ts:114:7 › running a session › sessions under 20 seconds are not saved\n[24/27] [ui] › tests/ui/session.spec.ts:133:7 › on screen › view tools and keyboard shortcuts\n[25/27] [ui] › tests/ui/session.spec.ts:156:7 › on screen › focus mode gives the image the whole window and keeps the timer reachable\n[26/27] [ui] › tests/ui/session.spec.ts:175:7 › on screen › image keeps its aspect ratio and the grid sits exactly on it at any window size\n[27/27] [ui] › tests/ui/session.spec.ts:190:7 › on screen › controls move below the image in a narrow window, with no overflow\n  27 passed (19.8s)\n\n"
+      }
+    },
+    {
+      "id": "page-padding",
+      "name": "Page padding increased by 2 px",
+      "kind": "invented",
+      "briefReference": null,
+      "ui": {
+        "exitCode": 0, "passed": 27, "failed": 0, "skipped": 0, "expectedTests": 27,
+        "outputTail": "[21/27] [ui] › tests/ui/session.spec.ts:85:7 › running a session › no-timer mode counts up and saves what was drawn\n[22/27] [ui] › tests/ui/session.spec.ts:99:7 › running a session › ending early: keep drawing resumes, discard saves nothing\n[23/27] [ui] › tests/ui/session.spec.ts:114:7 › running a session › sessions under 20 seconds are not saved\n[24/27] [ui] › tests/ui/session.spec.ts:133:7 › on screen › view tools and keyboard shortcuts\n[25/27] [ui] › tests/ui/session.spec.ts:156:7 › on screen › focus mode gives the image the whole window and keeps the timer reachable\n[26/27] [ui] › tests/ui/session.spec.ts:175:7 › on screen › image keeps its aspect ratio and the grid sits exactly on it at any window size\n[27/27] [ui] › tests/ui/session.spec.ts:190:7 › on screen › controls move below the image in a narrow window, with no overflow\n  27 passed (19.3s)\n\n"
+      }
+    },
+    {
+      "id": "body-font-size",
+      "name": "Body font reduced by 1 px",
+      "kind": "stand-in",
+      "briefReference": null,
+      "ui": {
+        "exitCode": 0, "passed": 27, "failed": 0, "skipped": 0, "expectedTests": 27,
+        "outputTail": "[21/27] [ui] › tests/ui/session.spec.ts:85:7 › running a session › no-timer mode counts up and saves what was drawn\n[22/27] [ui] › tests/ui/session.spec.ts:99:7 › running a session › ending early: keep drawing resumes, discard saves nothing\n[23/27] [ui] › tests/ui/session.spec.ts:114:7 › running a session › sessions under 20 seconds are not saved\n[24/27] [ui] › tests/ui/session.spec.ts:133:7 › on screen › view tools and keyboard shortcuts\n[25/27] [ui] › tests/ui/session.spec.ts:156:7 › on screen › focus mode gives the image the whole window and keeps the timer reachable\n[26/27] [ui] › tests/ui/session.spec.ts:175:7 › on screen › image keeps its aspect ratio and the grid sits exactly on it at any window size\n[27/27] [ui] › tests/ui/session.spec.ts:190:7 › on screen › controls move below the image in a narrow window, with no overflow\n  27 passed (19.1s)\n\n"
+      }
+    },
+    {
+      "id": "heading-copy",
+      "name": "Page heading misspelled",
+      "kind": "invented",
+      "briefReference": null,
+      "ui": {
+        "exitCode": 0, "passed": 27, "failed": 0, "skipped": 0, "expectedTests": 27,
+        "outputTail": "[21/27] [ui] › tests/ui/session.spec.ts:85:7 › running a session › no-timer mode counts up and saves what was drawn\n[22/27] [ui] › tests/ui/session.spec.ts:99:7 › running a session › ending early: keep drawing resumes, discard saves nothing\n[23/27] [ui] › tests/ui/session.spec.ts:114:7 › running a session › sessions under 20 seconds are not saved\n[24/27] [ui] › tests/ui/session.spec.ts:133:7 › on screen › view tools and keyboard shortcuts\n[25/27] [ui] › tests/ui/session.spec.ts:156:7 › on screen › focus mode gives the image the whole window and keeps the timer reachable\n[26/27] [ui] › tests/ui/session.spec.ts:175:7 › on screen › image keeps its aspect ratio and the grid sits exactly on it at any window size\n[27/27] [ui] › tests/ui/session.spec.ts:190:7 › on screen › controls move below the image in a narrow window, with no overflow\n  27 passed (19.3s)\n\n"
+      }
+    },
+    {
+      "id": "button-radius",
+      "name": "Button corners enlarged by 1 px",
+      "kind": "stand-in",
+      "briefReference": null,
+      "ui": {
+        "exitCode": 0, "passed": 27, "failed": 0, "skipped": 0, "expectedTests": 27,
+        "outputTail": "[21/27] [ui] › tests/ui/session.spec.ts:85:7 › running a session › no-timer mode counts up and saves what was drawn\n[22/27] [ui] › tests/ui/session.spec.ts:99:7 › running a session › ending early: keep drawing resumes, discard saves nothing\n[23/27] [ui] › tests/ui/session.spec.ts:114:7 › running a session › sessions under 20 seconds are not saved\n[24/27] [ui] › tests/ui/session.spec.ts:133:7 › on screen › view tools and keyboard shortcuts\n[25/27] [ui] › tests/ui/session.spec.ts:156:7 › on screen › focus mode gives the image the whole window and keeps the timer reachable\n[26/27] [ui] › tests/ui/session.spec.ts:175:7 › on screen › image keeps its aspect ratio and the grid sits exactly on it at any window size\n[27/27] [ui] › tests/ui/session.spec.ts:190:7 › on screen › controls move below the image in a narrow window, with no overflow\n  27 passed (19.0s)\n\n"
+      }
+    },
+    {
+      "id": "light-palette",
+      "name": "Light surface palette shifted",
+      "kind": "stand-in",
+      "briefReference": null,
+      "ui": {
+        "exitCode": 0, "passed": 27, "failed": 0, "skipped": 0, "expectedTests": 27,
+        "outputTail": "[21/27] [ui] › tests/ui/session.spec.ts:99:7 › running a session › ending early: keep drawing resumes, discard saves nothing\n[22/27] [ui] › tests/ui/session.spec.ts:85:7 › running a session › no-timer mode counts up and saves what was drawn\n[23/27] [ui] › tests/ui/session.spec.ts:114:7 › running a session › sessions under 20 seconds are not saved\n[24/27] [ui] › tests/ui/session.spec.ts:133:7 › on screen › view tools and keyboard shortcuts\n[25/27] [ui] › tests/ui/session.spec.ts:156:7 › on screen › focus mode gives the image the whole window and keeps the timer reachable\n[26/27] [ui] › tests/ui/session.spec.ts:175:7 › on screen › image keeps its aspect ratio and the grid sits exactly on it at any window size\n[27/27] [ui] › tests/ui/session.spec.ts:190:7 › on screen › controls move below the image in a narrow window, with no overflow\n  27 passed (19.0s)\n\n"
+      }
+    },
+    {
+      "id": "small-color-delta-2",
+      "name": "Light border color shifted by two RGB units",
+      "kind": "invented",
+      "briefReference": null,
+      "ui": {
+        "exitCode": 0, "passed": 27, "failed": 0, "skipped": 0, "expectedTests": 27,
+        "outputTail": "[21/27] [ui] › tests/ui/session.spec.ts:85:7 › running a session › no-timer mode counts up and saves what was drawn\n[22/27] [ui] › tests/ui/session.spec.ts:99:7 › running a session › ending early: keep drawing resumes, discard saves nothing\n[23/27] [ui] › tests/ui/session.spec.ts:114:7 › running a session › sessions under 20 seconds are not saved\n[24/27] [ui] › tests/ui/session.spec.ts:133:7 › on screen › view tools and keyboard shortcuts\n[25/27] [ui] › tests/ui/session.spec.ts:156:7 › on screen › focus mode gives the image the whole window and keeps the timer reachable\n[26/27] [ui] › tests/ui/session.spec.ts:175:7 › on screen › image keeps its aspect ratio and the grid sits exactly on it at any window size\n[27/27] [ui] › tests/ui/session.spec.ts:190:7 › on screen › controls move below the image in a narrow window, with no overflow\n  27 passed (19.0s)\n\n"
+      }
+    }
+  ],
+  "controls": [
+    {
+      "id": "hide-navigation",
+      "name": "Hide navigation links",
+      "kind": "invented",
+      "briefReference": null,
+      "ui": {
+        "exitCode": 1, "passed": 19, "failed": 8, "skipped": 0, "expectedTests": 27,
+        "outputTail": "    [ui] › tests/ui/pages.spec.ts:55:7 › history › numbers, heatmap and types reflect the sessions ─\n    [ui] › tests/ui/pages.spec.ts:72:7 › history › deleting a session asks first and updates the totals \n    [ui] › tests/ui/pages.spec.ts:88:7 › library › lists folders with previews ─────────────────────\n    [ui] › tests/ui/pages.spec.ts:97:7 › library › rename changes the type used for new sessions ───\n    [ui] › tests/ui/pages.spec.ts:108:7 › library › a missing folder is flagged and blocks practice \n    [ui] › tests/ui/pages.spec.ts:120:7 › library › remove keeps past sessions in history ──────────\n    [ui] › tests/ui/pages.spec.ts:131:5 › no page overflows sideways in a narrow window ────────────\n  19 passed (1.1m)\n\n"
+      }
+    },
+    {
+      "id": "high-contrast-border",
+      "name": "Replace card border with a high-contrast color",
+      "kind": "invented",
+      "briefReference": null,
+      "ui": {
+        "exitCode": 0, "passed": 27, "failed": 0, "skipped": 0, "expectedTests": 27,
+        "outputTail": "[21/27] [ui] › tests/ui/session.spec.ts:99:7 › running a session › ending early: keep drawing resumes, discard saves nothing\n[22/27] [ui] › tests/ui/session.spec.ts:85:7 › running a session › no-timer mode counts up and saves what was drawn\n[23/27] [ui] › tests/ui/session.spec.ts:114:7 › running a session › sessions under 20 seconds are not saved\n[24/27] [ui] › tests/ui/session.spec.ts:133:7 › on screen › view tools and keyboard shortcuts\n[25/27] [ui] › tests/ui/session.spec.ts:156:7 › on screen › focus mode gives the image the whole window and keeps the timer reachable\n[26/27] [ui] › tests/ui/session.spec.ts:175:7 › on screen › image keeps its aspect ratio and the grid sits exactly on it at any window size\n[27/27] [ui] › tests/ui/session.spec.ts:190:7 › on screen › controls move below the image in a narrow window, with no overflow\n  27 passed (19.9s)\n\n"
+      }
+    }
+  ]
+}
+</script>
+<script type="application/json" id="data-visual-real">
+{
+  "study": {
+    "title": "What does a screenshot comparison catch that this UI suite misses?",
+    "faultSet": "two replays of real commits from this repository",
+    "renderer": "Chromium browser harness; not Electron",
+    "screens": ["Practice", "History", "Library"],
+    "viewport": { "width": 1280, "height": 760, "deviceScaleFactor": 1 },
+    "repeatCount": 20,
+    "budgets": { "local": 97, "ci": 486 },
+    "thresholds": [0.2, 0.02],
+    "comparator": "pixelmatch",
+    "environmentProxy": "A 31% opacity subpixel text-shadow perturbation in a separate Chromium context; same machine, not a second machine",
+    "fixtureDate": "2026-10-30",
+    "countRule": "A fault counts as caught only when it is flagged on every screen where it is drawn.",
+    "sourceNote": "These are real commits from this repository's history. Each is replayed as a style transform on the built interface, not by checking out the commit, so the pixel counts describe the change on the current screens. 722a9bb also reworked the session UI; only its light-palette change is replayed, in reverse. Same viewport, thresholds and budgets as the injected faults.",
+    "repoCommitUrl": "https://github.com/hugommartins/drawing-practice-timer/commit/"
+  },
+  "faults": [
+    {
+      "id": "real-select-chevron",
+      "name": "Select arrow: custom chevron and inset removed",
+      "kind": "real commit",
+      "theme": "dark",
+      "commit": "6cf487f",
+      "commitSubject": "fix(renderer): inset the select arrow with a custom chevron",
+      "transform": "Remove the custom select rule, so the native arrow sits against the edge again.",
+      "rgbDelta": null,
+      "drawnOn": ["Practice"],
+      "screens": {
+        "Practice": {
+          "default": { "threshold": 0.2, "diffPixels": 432, "flagged": true },
+          "strict": { "threshold": 0.02, "diffPixels": 2087, "localFlagged": true, "ciFlagged": true, "unlimitedFlagged": true }
+        }
+      },
+      "caughtEveryScreen": { "default": true, "local": true, "ci": true, "strict": true }
+    },
+    {
+      "id": "real-light-palette",
+      "name": "Light palette: warm instead of cool grey",
+      "kind": "real commit",
+      "theme": "light",
+      "commit": "722a9bb",
+      "commitSubject": "feat(ui): improve the session UI and light mode",
+      "transform": "Put back the light-theme palette from before the commit (warm instead of cool grey). The commit also reworked the session UI; only the palette change is replayed.",
+      "rgbDelta": null,
+      "drawnOn": ["Practice", "History", "Library"],
+      "screens": {
+        "Practice": {
+          "default": { "threshold": 0.2, "diffPixels": 0, "flagged": false },
+          "strict": { "threshold": 0.02, "diffPixels": 14435, "localFlagged": true, "ciFlagged": true, "unlimitedFlagged": true }
+        },
+        "History": {
+          "default": { "threshold": 0.2, "diffPixels": 0, "flagged": false },
+          "strict": { "threshold": 0.02, "diffPixels": 20306, "localFlagged": true, "ciFlagged": true, "unlimitedFlagged": true }
+        },
+        "Library": {
+          "default": { "threshold": 0.2, "diffPixels": 661, "flagged": true },
+          "strict": { "threshold": 0.02, "diffPixels": 10191, "localFlagged": true, "ciFlagged": true, "unlimitedFlagged": true }
+        }
+      },
+      "caughtEveryScreen": { "default": false, "local": true, "ci": true, "strict": true }
+    }
+  ]
+}
+</script>
+<script type="application/json" id="data-ui-real">
+{
+  "study": {
+    "runner": "27 Playwright UI tests per fault",
+    "expectedTestCount": 27,
+    "mode": "replays of real commits"
+  },
+  "faults": [
+    {
+      "id": "real-select-chevron",
+      "name": "Select arrow: custom chevron and inset removed",
+      "kind": "real commit",
+      "commit": "6cf487f",
+      "ui": { "exitCode": 0, "passed": 27, "failed": 0, "skipped": 0, "expectedTests": 27 }
+    },
+    {
+      "id": "real-light-palette",
+      "name": "Light palette: warm instead of cool grey",
+      "kind": "real commit",
+      "commit": "722a9bb",
+      "ui": { "exitCode": 0, "passed": 27, "failed": 0, "skipped": 0, "expectedTests": 27 }
+    }
+  ],
+  "controls": [
+    {
+      "id": "hide-navigation",
+      "name": "Hide navigation links",
+      "kind": "invented",
+      "briefReference": null,
+      "ui": {
+        "exitCode": 1, "passed": 19, "failed": 8, "skipped": 0, "expectedTests": 27,
+        "outputTail": "    [ui] › tests/ui/pages.spec.ts:55:7 › history › numbers, heatmap and types reflect the sessions ─\n    [ui] › tests/ui/pages.spec.ts:72:7 › history › deleting a session asks first and updates the totals \n    [ui] › tests/ui/pages.spec.ts:88:7 › library › lists folders with previews ─────────────────────\n    [ui] › tests/ui/pages.spec.ts:97:7 › library › rename changes the type used for new sessions ───\n    [ui] › tests/ui/pages.spec.ts:108:7 › library › a missing folder is flagged and blocks practice \n    [ui] › tests/ui/pages.spec.ts:120:7 › library › remove keeps past sessions in history ──────────\n    [ui] › tests/ui/pages.spec.ts:131:5 › no page overflows sideways in a narrow window ────────────\n  19 passed (1.1m)\n\n"
+      }
+    },
+    {
+      "id": "high-contrast-border",
+      "name": "Replace card border with a high-contrast color",
+      "kind": "invented",
+      "briefReference": null,
+      "ui": {
+        "exitCode": 0, "passed": 27, "failed": 0, "skipped": 0, "expectedTests": 27,
+        "outputTail": "[21/27] [ui] › tests/ui/session.spec.ts:85:7 › running a session › no-timer mode counts up and saves what was drawn\n[22/27] [ui] › tests/ui/session.spec.ts:99:7 › running a session › ending early: keep drawing resumes, discard saves nothing\n[23/27] [ui] › tests/ui/session.spec.ts:114:7 › running a session › sessions under 20 seconds are not saved\n[24/27] [ui] › tests/ui/session.spec.ts:133:7 › on screen › view tools and keyboard shortcuts\n[25/27] [ui] › tests/ui/session.spec.ts:156:7 › on screen › focus mode gives the image the whole window and keeps the timer reachable\n[26/27] [ui] › tests/ui/session.spec.ts:175:7 › on screen › image keeps its aspect ratio and the grid sits exactly on it at any window size\n[27/27] [ui] › tests/ui/session.spec.ts:190:7 › on screen › controls move below the image in a narrow window, with no overflow\n  27 passed (20.9s)\n\n"
+      }
+    }
+  ]
+}
+</script>
+<script type="application/json" id="data-editorial">
+{
+  "lede": "A measured comparison, in one repository, of a 27-test Playwright UI suite and a pixelmatch screenshot comparison. Both were run against ten injected visual faults, two controls, and two replays of real commits in a Chromium harness.",
+  "context": "Hatchmark is a desktop drawing-practice timer. Its UI suite runs 27 Playwright tests in Chromium. The visual side of this study is a pixelmatch comparison of the Practice, History and Library screens against baseline captures, at 1280 x 760. The study asks which deliberate appearance changes each approach flags, how many differing pixels the unchanged screens produce across 20 repeat captures, and how one controlled perturbation on the same machine compares.",
+  "outcome": "In a Chromium harness, the 27-test UI suite passed on all 10 injected faults and both real-commit replays, and failed 8 tests on a navigation-break control. The pixelmatch comparison flagged 3 of 10 faults at threshold 0.2 with no pixel budget, and 7, 5 and 4 of 10 at threshold 0.02 with budgets of 0, 97 and 486 pixels. Three small color changes were flagged in no setting.",
+  "whyLayer": "The UI suite verifies behavior and selected layout constraints, such as image aspect ratio and sideways overflow, but does not compare rendered appearance. A visual comparison checks each screen against a saved baseline, so it can flag appearance changes while the controls still work. How many it flags depends on the threshold and pixel budget, which is what this study measures. All measurements use a Chromium browser harness and should not be read as Electron results.",
+  "stages": [
+    {
+      "title": "Choose the comparison surfaces",
+      "body": "Use Practice, History, and Library at one fixed viewport (1280 x 760); these screens combine navigation, typography, controls, and cards."
+    },
+    {
+      "title": "Pin the inputs",
+      "body": "Fix the date (2026-10-30), the theme for each fault, the viewport, and a device scale factor of 1, so repeated captures show the same state."
+    },
+    {
+      "title": "Measure unchanged renders",
+      "body": "Capture each screen 20 times without a design change, on the same machine. All 60 comparisons showed 0 differing pixels. The theme used for these repeats is not recorded."
+    },
+    {
+      "title": "Add an environment proxy",
+      "body": "Apply a 31% opacity subpixel text-shadow perturbation in a separate Chromium context, once per screen. The result was 5,094 differing pixels on Practice, 5,336 on History and 2,797 on Library; the threshold used is not recorded. This is one controlled perturbation on the same machine, not a second machine, a different font fallback, or an Electron run."
+    },
+    {
+      "title": "Inject visual changes",
+      "body": "Apply ten faults (nine style changes and one text change) plus two controls, then compare each drawn screen at thresholds 0.2 and 0.02. Budgets of 97 and 486 pixels were evaluated at 0.02 only; at 0.2, any differing pixel flags."
+    },
+    {
+      "title": "Run the UI suite against the faults",
+      "body": "Apply every fault and control to the built renderer and run all 27 UI tests each time. A hide-navigation control checks that the suite can fail."
+    },
+    {
+      "title": "Replay two real commits",
+      "body": "Two visual changes from this repository's history (6cf487f, 722a9bb) are applied to the built interface as style transforms, then measured the same way. 722a9bb also changed the session UI, so only its light-palette change is replayed, in reverse. These are replays on the current renderer, not builds of those commits."
+    }
+  ],
+  "learning": [
+    {
+      "title": "This UI suite does not check appearance.",
+      "body": "All 27 tests passed for each of the 10 injected faults and both replays, including the high-contrast-border control, which the screenshot comparison flagged on all three screens (2,542, 5,219 and 2,674 pixels at 0.02). The hide-navigation control failed 8 of 27 tests, so the suite can detect a behavioral break. These results describe this suite only, not UI tests in general."
+    },
+    {
+      "title": "The pixel budgets were not derived from the noise measurements.",
+      "body": "Repeat captures on the same machine showed 0 differing pixels. The single proxy capture per screen showed 2,797 to 5,336, which is above both budgets. The budgets of 97 and 486 pixels round to 0.01% and 0.05% of the 972,800-pixel viewport; the study does not record how they were chosen. The threshold used for the proxy captures is not recorded either."
+    },
+    {
+      "title": "Adding a budget reduced detection; the tolerance it buys was not measured.",
+      "body": "With no budget at 0.02, 7 of 10 faults were caught; with 97 pixels, 5; with 486 pixels, 4. The 97-pixel budget lost the misspelled heading (68 pixels on Practice) and the 1 px button radius change. The 486-pixel budget also lost the card radius change. Under the rule that a fault is caught only when flagged on every screen where it is drawn, counts are lower than under a flagged-on-any-screen rule, which would give 7 at 97 pixels and 5 at 486."
+    },
+    {
+      "title": "Three small color changes were never flagged.",
+      "body": "Muted text darkened, the light accent shifted by 4 RGB units, and the light border shifted by 2 units each produced 0 differing pixels at 0.02 on all three screens. A count of 0 means below the comparator's per-pixel threshold, not necessarily identical pixels, and no threshold below 0.02 was tested. The study does not record whether each change was applied as intended; the muted-text change has no recorded color delta. The two controls produced 2,251 to 5,219 differing pixels."
+    },
+    {
+      "title": "Two replays are a small sample, and a replay is not the original change.",
+      "body": "Each commit is applied as a transform on the current build. The select-arrow change was flagged in every setting (432 pixels at 0.2). The light-palette change was not flagged by the default setting, because only Library reached the threshold (661 pixels), but it was flagged on every screen in the other three settings. Only two commits are replayed, and the palette commit only in part."
+    }
+  ],
+  "nextSteps": [
+    {
+      "title": "Build each commit.",
+      "body": "Build and capture the app at 6cf487f, 722a9bb and their parents, then compare, instead of replaying the changes as transforms."
+    },
+    {
+      "title": "Run in Electron on macOS and CI.",
+      "body": "Repeat the same captures against the actual Electron renderer on both environments; those results are not measured here."
+    },
+    {
+      "title": "Choose budgets from measured noise.",
+      "body": "Measure repeat-render differences across environments, set budgets from them, then re-measure how many faults each budget still catches."
+    },
+    {
+      "title": "Confirm each fault was applied.",
+      "body": "Check that each injected change takes effect (for example, by reading computed styles), record the muted-text color delta, and test thresholds below 0.02."
+    },
+    {
+      "title": "Measure the cost side.",
+      "body": "Record CI run time, baseline maintenance effort, and flake rate before drawing conclusions about the operating cost."
+    },
+    {
+      "title": "Measure mutation score separately.",
+      "body": "This study did not measure mutation score; report it as its own result."
+    }
+  ],
+  "unknowns": [
+    "How closely the replays match builds of the commits themselves",
+    "Electron rendering on macOS and CI",
+    "How the 97 and 486 pixel budgets were chosen",
+    "The threshold used for the environment-proxy captures",
+    "Whether each injected fault was applied as intended",
+    "The theme used for the repeat-render captures",
+    "CI run time and flake rate",
+    "Mutation score"
+  ]
+}
+</script>
+<!-- study-data:end -->
+<script src="./app.js" defer></script>
+</head>
+<body>
+<header class="hero">
+  <div class="wide hero-grid">
+    <div>
+      <p class="eyebrow">Measured study <span aria-hidden="true">/</span> visual regression</p>
+      <h1>What does a screenshot comparison catch <span class="tail">that this UI suite misses?</span></h1>
+      <p class="lede" id="study-lede"></p>
+    </div>
+    <svg class="hero-art" viewBox="0 0 520 320" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+      <rect width="520" height="320" fill="#f2f6f7"/>
+      <path d="M60 250V120Q60 60 120 60H460" fill="none" stroke="#16222b" stroke-width="10" stroke-linecap="square"/>
+      <path d="M60 250V150Q60 60 150 60H460" fill="none" stroke="#2b7a8c" stroke-width="10" stroke-linecap="square" opacity=".85"/>
+    </svg>
+  </div>
+  <div class="wide">
+    <ul class="strip" id="hero-stats" aria-label="Study summary"></ul>
+  </div>
+</header>
+
+<div class="layout wide">
+  <nav class="rail" id="rail" aria-label="On this page">
+    <span class="ind" aria-hidden="true"></span>
+    <a href="#context">Context</a>
+    <a href="#outcome">Outcome</a>
+    <a href="#stages">Key stages</a>
+    <a href="#learning">Learning</a>
+    <a href="#next">Next steps</a>
+  </nav>
+
+  <main id="main">
+    <p class="load-status" id="load-status" role="status">Loading measured results… This page fills in its results with JavaScript. Without it, the summary is: the 27-test UI suite passed on all 10 injected faults and both real-commit replays and failed 8 tests on a navigation-break control; a pixelmatch comparison flagged 3 of 10 faults at threshold 0.2 and 7, 5 and 4 of 10 at threshold 0.02 with budgets of 0, 97 and 486 pixels. Measured in a Chromium harness, not Electron.</p>
+    <section class="section" id="context" aria-labelledby="context-heading">
+      <h2 id="context-heading">Context</h2>
+      <p id="context-copy"></p>
+      <h3>Why a visual layer at all</h3>
+      <p id="visual-rationale">The measured comparison is loading.</p>
+      <dl class="aside" id="study-settings"></dl>
+    </section>
+
+    <section class="section" id="outcome" aria-labelledby="outcome-heading">
+      <h2 id="outcome-heading">Outcome</h2>
+      <p class="lead" id="outcome-copy"></p>
+      <ul class="stats" id="outcome-stats"></ul>
+      <figure class="figure" id="corner-figure">
+        <div class="figure-trio">
+          <figure><img src="./images/corner-before.svg" alt="Card corner with a wider rounded radius"><figcaption id="corner-before-caption">Before</figcaption></figure>
+          <figure><img src="./images/corner-after.svg" alt="The same card corner with a tighter rounded radius"><figcaption id="corner-after-caption">After</figcaption></figure>
+          <figure><img src="./images/corner-changed.svg" alt="Orange marks show the changed part of the card corner"><figcaption>Changed pixels</figcaption></figure>
+        </div>
+        <figcaption id="corner-caption"></figcaption>
+      </figure>
+      <h3 class="subheading">Settings compared</h3>
+      <ul id="setting-definitions">
+        <li><strong>default:</strong> threshold 0.2, no pixel budget; any differing pixel flags.</li>
+        <li><strong>strict:</strong> threshold 0.02, no pixel budget.</li>
+        <li><strong>local:</strong> threshold 0.02, up to 97 differing pixels tolerated.</li>
+        <li><strong>CI:</strong> threshold 0.02, up to 486 differing pixels tolerated.</li>
+      </ul>
+      <p>A fault counts as caught only when it is flagged on every screen where it is drawn. The budgets of 97 and 486 pixels round to 0.01% and 0.05% of the 972,800-pixel viewport; the study does not record how they were chosen, and neither comes from the measured noise.</p>
+      <h3 class="subheading">Sensitivity by setting</h3>
+      <div class="table-wrap" id="setting-results" tabindex="0" aria-label="Sensitivity results by setting"></div>
+      <h3 class="subheading">Real commits, replayed</h3>
+      <p class="provenance" id="reconstruction-note" hidden></p>
+      <div class="table-wrap" id="reconstructed-results" tabindex="0" aria-label="Results for replays of real commits"></div>
+      <ul class="findings" id="findings"></ul>
+      <details class="matrix-details">
+        <summary id="matrix-summary">Show the full fault-by-screen matrix</summary>
+        <div class="table-wrap" id="fault-matrix" tabindex="0" aria-label="Full fault-by-screen matrix"></div>
+      </details>
+    </section>
+
+    <section class="section" id="stages" aria-labelledby="stages-heading">
+      <h2 id="stages-heading">Key stages</h2>
+      <ol class="stages" id="stage-list"></ol>
+    </section>
+
+    <section class="section" id="learning" aria-labelledby="learning-heading">
+      <h2 id="learning-heading">Learning</h2>
+      <ul class="learning" id="learning-list"></ul>
+    </section>
+
+    <section class="section" id="next" aria-labelledby="next-heading">
+      <h2 id="next-heading">Next steps</h2>
+      <ul class="next-steps" id="next-list"></ul>
+    </section>
+  </main>
+</div>
+
+<footer class="footer">
+  <div class="wide">
+    <p>Results are based on the local study data files. Fault definitions: <a href="https://github.com/hugommartins/drawing-practice-timer/blob/main/scripts/faults.ts">scripts/faults.ts</a>. <a href="../strategy.html">Test strategy</a> · <a href="../">Demo</a> · <a href="https://github.com/hugommartins/drawing-practice-timer">Source</a></p>
+  </div>
+</footer>
+</body>
+</html>
