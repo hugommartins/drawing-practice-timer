@@ -13,6 +13,10 @@ import {
 import { art, type ArtKind } from './art';
 
 const KEY = 'hatchmark-demo:v1';
+/** Real images from demo-images/<name>/, listed at build time. Empty: fall back to generated art. */
+declare const __DEMO_IMAGES__: Record<string, string[]>;
+const REAL: Record<string, string[]> = typeof __DEMO_IMAGES__ === 'undefined' ? {} : __DEMO_IMAGES__;
+
 const IMG_EXT = /\.(jpe?g|png|webp|gif|avif|bmp|svg)$/i;
 
 interface Demo {
@@ -26,7 +30,7 @@ const DEMOS: Record<string, Demo> = {
   'demo-landscape': { name: 'Landscape', kind: 'land', count: 16 },
 };
 const pad = (n: number) => String(n).padStart(2, '0');
-const demoFiles = (d: Demo) => Array.from({ length: d.count }, (_, i) => `${d.kind}-${pad(i + 1)}.svg`);
+const demoFiles = (d: Demo) => REAL[d.name]?.length ? REAL[d.name]!.slice() : Array.from({ length: d.count }, (_, i) => `${d.kind}-${pad(i + 1)}.svg`);
 const demoPath = (id: string) => `demo/${DEMOS[id]!.name}`;
 
 interface Persisted {
@@ -113,12 +117,16 @@ export function installDemoBridge(): void {
   const filesOf = (id: string): string[] => (DEMOS[id] ? demoFiles(DEMOS[id]) : own.find((o) => o.id === id)?.files ?? []);
   const info = (c: Collection): CollectionInfo => ({ ...c, count: filesOf(c.id).length, reachable: true });
 
+  /** Phones and tablets have no reliable folder picker, so there the visitor picks photos instead. */
+  const touchOnly = typeof matchMedia === 'function' && matchMedia('(pointer: coarse)').matches;
+
   function pickLocalFolder(): Promise<FileList | null> {
     return new Promise((resolve) => {
       const input = document.createElement('input');
       input.type = 'file';
       input.multiple = true;
-      input.setAttribute('webkitdirectory', '');
+      if (touchOnly) input.accept = 'image/*';
+      else input.setAttribute('webkitdirectory', '');
       input.addEventListener('change', () => resolve(input.files && input.files.length ? input.files : null));
       input.addEventListener('cancel', () => resolve(null));
       input.click();
@@ -134,7 +142,7 @@ export function installDemoBridge(): void {
       if (!files) return null;
       const images = [...files].filter((f) => IMG_EXT.test(f.name));
       if (images.length === 0) return null;
-      const root = (images[0]!.webkitRelativePath || '').split('/')[0] || 'My folder';
+      const root = (images[0]!.webkitRelativePath || '').split('/')[0] || (touchOnly ? 'My photos' : 'My folder');
       const prev = own.find((o) => o.name === root);
       if (prev) return { collection: info({ id: prev.id, name: prev.name, path: `your-folder/${prev.name}`, createdAt: '' }), existing: true };
       const o: Own = { id: `own-${own.length + 1}`, name: root, files: [], urls: new Map() };
@@ -198,19 +206,34 @@ export function installDemoBridge(): void {
     },
   };
 
-  const bridge: HatchmarkBridge = {
-    api,
-    fileUrl(abs) {
-      const parts = abs.split('/');
-      if (parts[0] === 'demo') {
-        const id = Object.keys(DEMOS).find((k) => DEMOS[k]!.name === parts[1])!;
-        const file = parts.slice(2).join('/');
-        return art(DEMOS[id]!.kind, file);
+  // Keep-awake during a running session: the browser's Screen Wake Lock, best effort. Added with Object.assign so this
+  // file builds whether or not the Api declares keepAwake yet.
+  let wake: Promise<WakeLockSentinel | null> | null = null;
+  Object.assign(api, {
+    async keepAwake(on: boolean): Promise<void> {
+      if (on) {
+        wake ??= (navigator.wakeLock?.request('screen') ?? Promise.resolve(null)).catch(() => null);
+      } else if (wake) {
+        const held = wake;
+        wake = null;
+        await (await held)?.release().catch(() => undefined);
       }
-      const o = own.find((x) => x.name === parts[1]);
-      return o?.urls.get(parts.slice(2).join('/')) ?? '';
     },
+  });
+
+  const fileUrl = (abs: string): string => {
+    const parts = abs.split('/');
+    if (parts[0] === 'demo') {
+      const id = Object.keys(DEMOS).find((k) => DEMOS[k]!.name === parts[1])!;
+      const file = parts.slice(2).join('/');
+      if (REAL[DEMOS[id]!.name]?.includes(file)) return `./images/${encodeURIComponent(DEMOS[id]!.name)}/${encodeURIComponent(file)}`;
+      return art(DEMOS[id]!.kind, file);
+    }
+    const o = own.find((x) => x.name === parts[1]);
+    return o?.urls.get(parts.slice(2).join('/')) ?? '';
   };
+  // The demo's images are already small, so previews are the images themselves.
+  const bridge: HatchmarkBridge = { api, fileUrl, thumbUrl: fileUrl };
   (window as unknown as { hatchmark: HatchmarkBridge }).hatchmark = bridge;
 
   /** Used by the "Reset demo" button. */

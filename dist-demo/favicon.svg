@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28">
+  <style>.a{stroke:#b87a12}.b{fill:#b87a12}@media (prefers-color-scheme:dark){.a{stroke:#e8b04a}.b{fill:#e8b04a}}</style>
+  <circle class="a" cx="14" cy="14" r="10.5" fill="none" stroke-width="3.5" stroke-dasharray="49 17" stroke-linecap="round" transform="rotate(-90 14 14)"/>
+  <circle class="b" cx="14" cy="14" r="4"/>
+</svg>
