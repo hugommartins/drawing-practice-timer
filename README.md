@@ -4,9 +4,10 @@ Drawing-reference practice timer for the desktop. Point it at folders of referen
 
 <div align="center">
 
-[![CI](https://github.com/hugommartins/drawing-practice-timer/actions/workflows/ci.yml/badge.svg?style=flat-square)](https://github.com/hugommartins/drawing-practice-timer/actions/workflows/ci.yml) [![Demo](https://github.com/hugommartins/drawing-practice-timer/actions/workflows/pages.yml/badge.svg?style=flat)](https://hugommartins.github.io/drawing-practice-timer/)
+[![CI](https://img.shields.io/github/actions/workflow/status/hugommartins/drawing-practice-timer/ci.yml?style=flat-square&label=CI)](https://github.com/hugommartins/drawing-practice-timer/actions/workflows/ci.yml)
+[![Demo](https://img.shields.io/github/actions/workflow/status/hugommartins/drawing-practice-timer/pages.yml?style=flat-square&label=Demo)](https://hugommartins.github.io/drawing-practice-timer/)
 
-![Electron](https://img.shields.io/badge/Electron-47848F?logo=electron&logoColor=white&style=flat-square) ![React](https://img.shields.io/badge/React_19-20232A?logo=react&logoColor=61DAFB&style=flat-square) ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white&style=flat-square) ![macOS and Windows](https://img.shields.io/badge/macOS%20%7C%20Windows-lightgrey?style=flat-square) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
+![Electron](https://img.shields.io/badge/Electron-47848F?logo=electron&logoColor=white&style=flat-square) ![React](https://img.shields.io/badge/React_19-20232A?logo=react&logoColor=61DAFB&style=flat-square) ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white&style=flat-square) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
 
 **[Try the demo in your browser](https://hugommartins.github.io/drawing-practice-timer/)**: the real interface with sample data, nothing to install.
 
