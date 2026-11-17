@@ -44,7 +44,8 @@ function table(lines) {
   const body = lines.slice(2).map(row);
   const th = head.map((h) => `<th>${inline(h)}</th>`).join('');
   const tr = body.map((r) => `<tr>${r.map((c) => `<td>${inline(c)}</td>`).join('')}</tr>`).join('');
-  return `<div class="tw"><table><thead><tr>${th}</tr></thead><tbody>${tr}</tbody></table></div>`;
+  const short = body.every((r) => (r[0] ?? '').length <= 28); // keep a short first column on one line; let a long one wrap
+  return `<div class="tw"><table${short ? ' class="nw1"' : ''}><thead><tr>${th}</tr></thead><tbody>${tr}</tbody></table></div>`;
 }
 
 const out = [];
@@ -109,12 +110,10 @@ ${tokens}
 *, *::before, *::after { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--tx); font: 15px/1.6 var(--font-sans); -webkit-font-smoothing: antialiased; }
 a { color: var(--ac); }
-.top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 28px; border-bottom: 1px solid var(--ln); position: sticky; top: 0; background: var(--bg); z-index: 5; }
-.top .brand { font-weight: 600; letter-spacing: -0.01em; color: var(--tx); text-decoration: none; }
-.top nav { display: flex; gap: 4px; }
-.top nav a { padding: 6px 14px; border-radius: 999px; color: var(--mu); text-decoration: none; font-weight: 500; }
-.top nav a:hover { color: var(--tx); }
-.top nav a[aria-current] { background: var(--sf2); color: var(--tx); }
+.top { padding: 12px 0; border-bottom: 1px solid var(--ln); position: sticky; top: 0; background: var(--bg); z-index: 5; }
+.top-in { max-width: 1080px; margin: 0 auto; padding: 0 28px; }
+.back { display: inline-block; padding: 6px 14px; border: 1px solid var(--ln); border-radius: 999px; color: var(--mu); text-decoration: none; font-weight: 500; }
+.back:hover { color: var(--tx); background: var(--sf2); }
 .wrap { max-width: 1080px; margin: 0 auto; padding: 40px 28px 96px; display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 48px; }
 .side { position: sticky; top: 76px; align-self: start; font-size: 13px; }
 .side .eyebrow { font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mu); margin-bottom: 8px; }
@@ -136,7 +135,7 @@ table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
 th { text-align: left; font-size: 11.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--mu); font-weight: 500; background: var(--sf2); }
 th, td { padding: 9px 14px; vertical-align: top; border-bottom: 1px solid var(--ln); }
 tr:last-child td { border-bottom: 0; }
-td:first-child { white-space: nowrap; }
+table.nw1 td:first-child { white-space: nowrap; }
 .layers { display: grid; gap: 6px; margin: 0 0 20px; }
 .layer { display: grid; grid-template-columns: 72px 110px 1fr 110px; gap: 14px; align-items: center; padding: 10px 16px; border-radius: 10px; border: 1px solid var(--ln); background: var(--sf); font-size: 13.5px; margin: 0 auto; width: 100%; }
 .layer.l0 { width: 70%; } .layer.l1 { width: 80%; } .layer.l2 { width: 90%; }
@@ -148,9 +147,8 @@ footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--ln); c
 @media (max-width: 860px) {
   .wrap { grid-template-columns: 1fr; gap: 0; padding: 28px 16px 72px; }
   .side { display: none; }
-  .top { padding: 10px 16px; flex-wrap: wrap; }
-  .top nav { flex-wrap: wrap; }
-  .top nav a { padding: 6px 10px; }
+  .top { padding: 10px 0; }
+  .top-in { padding: 0 16px; }
   table { display: block; max-width: 100%; overflow-x: auto; }
   .layer { grid-template-columns: 56px 1fr; } .layer .d, .layer .n { grid-column: 2; text-align: left; }
   .layer.l0, .layer.l1, .layer.l2 { width: 100%; }
@@ -158,10 +156,7 @@ footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--ln); c
 </style>
 </head>
 <body>
-<header class="top">
-  <a class="brand" href="./">${appName}</a>
-  <nav><a href="./">Demo</a><a href="./strategy.html" aria-current="page">Test strategy</a>${existsSync('study') ? '<a href="./study/">Case study</a>' : ''}<a href="${REPO}">Source</a></nav>
-</header>
+<header class="top"><div class="top-in"><a class="back" href="./">← Back to demo</a></div></header>
 <div class="wrap">
   <aside class="side"><div class="eyebrow">On this page</div>${toc.map(([id, t]) => `<a href="#${id}">${esc(t.replace(/^\d+\.\s*/, ''))}</a>`).join('')}</aside>
   <main>

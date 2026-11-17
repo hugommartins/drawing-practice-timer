@@ -49,3 +49,24 @@ These tests are marked `todo`: they run, fail today, and do not fail the run. Wh
 - A real slow or network drive is not reproduced; the unit layer only stalls the file system on purpose.
 - Frame timing in headless Chromium and on a busy machine is noisy; that is why it is baselined per machine class.
 - `app.e2e.perf.ts` reads process memory from `app.getAppMetrics()` (working set) and the renderer heap through the DevTools protocol; values differ between macOS, Windows and Linux, so compare only against the same platform's baseline.
+
+## Suspected hotspots
+
+The app reads a linked folder up front. From reading the code on 2026-11-13, these are suspected hotspots to confirm or dismiss with numbers, not findings:
+
+- Every collection is scanned recursively when the app starts, and each file list is kept in memory.
+- A scan walks one folder at a time and sorts the whole list with a locale-aware comparison. On a slow or network drive the time is dominated by round trips.
+- `collectionImages` returns the complete list to the window in one message, at every session start and every time the image picker opens.
+- The image picker draws one tile and one `<img>` per file, with no windowing, and uses the original file as its thumbnail. Toggling a tile copies the whole selection.
+- A session shows the original file at full size and does not load the next image ahead of time.
+- A rescan that finishes late can overwrite the result of a newer one (last write wins).
+
+## Findings log
+
+**What exists.** Implemented on 2026-11-13 in `tests/perf` (README there), run with `npm run perf`. Unit: scan correctness and time at 1,000 to 100,000 images (flat and nested), event-loop delay, memory held by a result, the cost of the sort alone, and the race and slow-folder cases. UI: picker open time, DOM nodes, long tasks, select all, one toggle, scroll frames, session start to first image. Electron: launch with three large collections, image list size and round trip, process and heap memory, growth over 200 image changes, 48-megapixel files in the picker and a session. Every metric except those marked info is gated by baseline plus three times its recorded noise; a miss is repeated once before it fails.
+
+**Found while writing it.** Four of the suspected hotspots are confirmed as behaviour, by tests marked `todo` that fail today and do not fail the run: a late older scan overwrites a newer one (rescan, and relink); `listCollections` waits for every folder, so one stalled drive blocks the Library and Draw pages; two requests for the same uncached folder walk it twice. Whether any of them matters at real sizes is for the first baseline to say. The other hotspots (picker without windowing, original files as thumbnails, whole list over IPC) are measured but not yet judged.
+
+**First measurements (2026-11-15, Mac, Intel i7-9750H, 16 GB, Electron).** Scanning is not the problem: 100,000 files take about 0.5 s, the event loop stays free (p99 about 1 ms), launch with three folders of 50,000 images takes 1.9 s against 1.1 s empty, and the image list over IPC is 0.8 MB and 20 ms at 50,000. The image picker was: 10,000 images opened in 0.64 s with 20,110 DOM nodes and 0.1 s to toggle one tile; 50,000 images opened in 3.5 s with 100,110 nodes, 2.5 s for Select all, 0.63 s for every single tile click, and 814 MB in the renderer. Forty 48-megapixel originals in the picker took 1.2 s to show and 1.17 GB in the renderer, because the original file is the thumbnail. Over 200 image changes the JS heap grew 0.9 MB (flat); process working set grew 107 MB (recorded only).
+
+**First fix.** The picker now draws only the rows in view, placed in pixels (`ImagePicker.tsx`), so its cost no longer depends on the folder size (about 207 DOM nodes at any size, measured in Chromium on Linux; Mac numbers come with the next baseline). Thumbnails are done too: tiles load small previews (320 px, JPEG) made once in the main process and kept in `<userData>/thumbs` (`src/main/thumbs.ts`, size-limited, safe to delete), so the picker no longer decodes the originals. The large-image figures above are from before this and are to be re-recorded; a first (cold) open now pays for making the previews, a later one does not. Not changed: the session view of a huge original still decodes it in full. Not fixed yet: the three race and stall defects above.
