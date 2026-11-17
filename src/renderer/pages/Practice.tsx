@@ -221,6 +221,11 @@ export function Practice() {
             <section className="card" aria-labelledby="last-title">
               <div className="card-head">
                 <h2 id="last-title">Last session</h2>
+                {last && (
+                  <button type="button" className="btn ghost" data-testid="last-session-clear" onClick={() => void patchSettings({ lastSession: null })}>
+                    Clear
+                  </button>
+                )}
               </div>
               {last ? (
                 <div className="stack" data-testid="last-session">
