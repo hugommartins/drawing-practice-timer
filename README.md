@@ -2,6 +2,8 @@
 
 Drawing-reference practice timer for the desktop. Point it at folders of reference images, pick a timer, draw, and watch a heatmap of the days you practiced fill in.
 
+**[Try the demo in your browser](https://hugommartins.github.io/drawing-practice-timer/)**: the real interface with sample data, nothing to install. [How it is tested](https://hugommartins.github.io/drawing-practice-timer/strategy.html).
+
 - **Local references.** Link any folder. The folder name is the drawing type ("Figure", "Hands"); subfolders are included. Nothing is copied or uploaded.
 - **Pick your images.** Use the whole folder, or choose a single image or any set of them from a thumbnail picker. The choice is remembered, and "Repeat this setup" reuses it.
 - **Timers.** Per image, whole session, or none. Adjust on the fly with ±15 s / +1 m.
@@ -43,6 +45,8 @@ On Windows: `%APPDATA%\Hatchmark\data\`
 Sessions shorter than 20 seconds are not saved. Time while the computer sleeps is not counted.
 
 ## Web demo
+
+Live: https://hugommartins.github.io/drawing-practice-timer/ (published from `main` by GitHub Actions).
 
 `npm run build:demo` builds a static copy to `dist-demo/`: the real renderer on a browser-only bridge (`src/demo/`). Reference images are generated unless `demo-images/<Gesture|Still life|Landscape>/` holds real ones (`npm run demo:images` downloads public-domain artworks from The Met's Open Access API and writes `CREDITS.md`; run it on a machine with internet and commit the result), history is seeded and kept in `localStorage`, and "Link a folder" reads a folder from your disk without uploading it. The `Demo (GitHub Pages)` workflow publishes it on every push to `main`; enable it once under Settings → Pages → Source: GitHub Actions.
 
