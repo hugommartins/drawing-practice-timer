@@ -2,7 +2,7 @@
 
 Drawing-reference practice timer for the desktop. Point it at folders of reference images, pick a timer, draw, and watch a heatmap of the days you practiced fill in.
 
-**[Try the demo in your browser](https://hugommartins.github.io/drawing-practice-timer/)**: the real interface with sample data, nothing to install. [How it is tested](https://hugommartins.github.io/drawing-practice-timer/strategy.html).
+**[Try the demo in your browser](https://hugommartins.github.io/drawing-practice-timer/)**: the real interface with sample data, nothing to install.
 
 - **Local references.** Link any folder. The folder name is the drawing type ("Figure", "Hands"); subfolders are included. Nothing is copied or uploaded.
 - **Pick your images.** Use the whole folder, or choose a single image or any set of them from a thumbnail picker. The choice is remembered, and "Repeat this setup" reuses it.
@@ -44,22 +44,7 @@ On Windows: `%APPDATA%\Hatchmark\data\`
 
 Sessions shorter than 20 seconds are not saved. Time while the computer sleeps is not counted.
 
-## Web demo
-
-Live: https://hugommartins.github.io/drawing-practice-timer/ (published from `main` by GitHub Actions).
-
-`npm run build:demo` builds a static copy to `dist-demo/`: the real renderer on a browser-only bridge (`src/demo/`). Reference images are generated unless `demo-images/<Gesture|Still life|Landscape>/` holds real ones (`npm run demo:images` downloads public-domain artworks from The Met's Open Access API and writes `CREDITS.md`; run it on a machine with internet and commit the result), history is seeded and kept in `localStorage`, and "Link a folder" reads a folder from your disk without uploading it. The `Demo (GitHub Pages)` workflow publishes it on every push to `main`; enable it once under Settings → Pages → Source: GitHub Actions.
-
-The measured case study is at `study/`. Run `npm run study:sensitivity` for the injected-fault and noise measurements, or `npm run study:reconstructed` for four examples reconstructed from descriptions in the study brief. Their referenced source patches are not available in this checkout, so these are not historical replays. Both commands write measurements as JSON under `study/data/`; the case-study page reads its reported results from those files.
-
 ## Tests
-
-```bash
-npm test                   # unit + UI
-npm run test:visual        # screenshot comparison in the real window (run test:visual:update once to create your baselines)
-npm run test:e2e           # one journey in the real Electron app
-npm run mutate             # mutation testing with Stryker
-```
 
 Layers, rationale and test hooks: [TESTING.md](TESTING.md).
 

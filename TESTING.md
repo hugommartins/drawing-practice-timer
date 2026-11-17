@@ -1,5 +1,7 @@
 # Testing
 
+The test strategy (risks, layers, principles) is in [TEST_STRATEGY.md](TEST_STRATEGY.md) and, rendered, on the [demo site](https://hugommartins.github.io/drawing-practice-timer/strategy.html).
+
 ```bash
 npm run test:unit            # 62 tests, no browser: timer, stats, storage, image-access rules, window security
 npm run test:ui              # 22 tests: every screen in Chromium, backed by the real file-handling code
