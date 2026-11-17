@@ -44,7 +44,7 @@ Sessions shorter than 20 seconds are not saved. Time while the computer sleeps i
 
 ## Web demo
 
-`npm run build:demo` builds a static copy to `dist-demo/`: the real renderer on a browser-only bridge (`src/demo/`). Reference images are generated, history is seeded and kept in `localStorage`, and "Link a folder" reads a folder from your disk without uploading it. The `Demo (GitHub Pages)` workflow publishes it on every push to `main`; enable it once under Settings → Pages → Source: GitHub Actions.
+`npm run build:demo` builds a static copy to `dist-demo/`: the real renderer on a browser-only bridge (`src/demo/`). Reference images are generated unless `demo-images/<Gesture|Still life|Landscape>/` holds real ones (`npm run demo:images` downloads public-domain artworks from The Met's Open Access API and writes `CREDITS.md`; run it on a machine with internet and commit the result), history is seeded and kept in `localStorage`, and "Link a folder" reads a folder from your disk without uploading it. The `Demo (GitHub Pages)` workflow publishes it on every push to `main`; enable it once under Settings → Pages → Source: GitHub Actions.
 
 The measured case study is at `study/`. Run `npm run study:sensitivity` for the injected-fault and noise measurements, or `npm run study:reconstructed` for four examples reconstructed from descriptions in the study brief. Their referenced source patches are not available in this checkout, so these are not historical replays. Both commands write measurements as JSON under `study/data/`; the case-study page reads its reported results from those files.
 
@@ -94,6 +94,14 @@ Data:
 Platforms:
 
 - [ ] Linux support. Electron already runs there and the app code is platform-neutral. Remaining: Linux visual baselines (`-linux`, `-linux-ci`) and a CI job under `xvfb-run`, an `install:linux` script, a check of the "Link a folder" dialog on Wayland and X11, and a Linux section in [INSTALL.md](INSTALL.md)
+
+Performance and robustness:
+
+- [ ] A scan that finishes late must not overwrite a newer one (after a rescan, or after re-linking a folder, the old folder's list can replace the new one)
+- [ ] One slow or unreachable folder must not hold up the Library and Draw pages
+- [ ] Two requests for the same folder at once (startup and a session start) share one scan instead of walking it twice
+- [ ] Show very large originals at screen size in a session instead of decoding them whole (a 48-megapixel PNG costs about 190 MB)
+- [ ] Performance baselines that allow for day-to-day variation between runs (`npm run perf:baseline` merging earlier runs)
 
 Quality:
 

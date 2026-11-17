@@ -8,6 +8,8 @@ npm run test:visual:update   # (re)create the baselines for your platform
 npm run test:e2e             # 1 journey in the real Electron app
 npm run mutate               # Stryker: mutation testing of the logic layer
 npm run mutate:ui            # Stryker: mutation testing of the renderer (slow)
+npm run perf                 # performance lane: large folders (separate from npm test, real clocks; see tests/perf/README.md)
+npm run perf:baseline        # record performance baselines for this machine
 ```
 
 Each check lives in the lowest layer that can prove it.
@@ -82,3 +84,4 @@ GitHub Actions, in `.github/workflows/`:
 - UI specs and fixtures: `tests/ui/`; the Chromium harness that serves `dist/` and backs `window.hatchmark` with the real `createApi` is `tests/helpers/harness.ts`
 - Visual: `tests/visual/screens.spec.ts`
 - E2E journey: `tests/e2e/electron.spec.ts`
+- Performance with large libraries: `tests/perf/` (README there)

@@ -1,5 +1,7 @@
 # Hatchmark test strategy
 
+**Last updated:** 2026-11-13. Added risk 7 (very large linked folders and performance) with its test plan. The performance lane for it is implemented (`tests/perf`); no baselines are recorded yet, so it measures and does not gate.
+
 ## 1. Scope and risks
 
 **Current requirements**
@@ -26,6 +28,9 @@
 | 4 | Unusable at some window size (overflow, controls off-screen, grid misaligned with the image) | R3, R8 |
 | 5 | Broken wiring between Electron processes (preload, IPC, protocol) | all |
 | 6 | Looks wrong (spacing, colour, radius, theme) | R8 |
+| 7 | Slow or unresponsive with very large linked folders (scanning, long lists, thumbnails, memory) | R1, R7 |
+
+Risk 7 was added on 2026-11-13 from reading the code, not from a measured problem. Its place in the ranking is provisional until the first measurements exist (section 3, "Performance with large libraries").
 
 ## 2. Principles
 
@@ -96,6 +101,48 @@ Visual tests catch what functional tests can't: a layout that still works but lo
 
 One journey: first run → link a folder (images load through the real protocol) → draw for real → session appears in History → theme change → files on disk are as expected → restart → everything is still there. It exists to catch wiring that no lower layer can see. The folder dialog is replaced by `HATCHMARK_TEST_FOLDER`; `HATCHMARK_USER_DATA` and `HATCHMARK` keep tests off real data.
 
+### Performance with large libraries (implemented, baselines pending)
+
+**Why.** The app reads a linked folder up front. From reading the code on 2026-11-13, these are suspected hotspots to confirm or dismiss with numbers, not findings:
+
+- Every collection is scanned recursively when the app starts, and each file list is kept in memory.
+- A scan walks one folder at a time and sorts the whole list with a locale-aware comparison. On a slow or network drive the time is dominated by round trips.
+- `collectionImages` returns the complete list to the window in one message, at every session start and every time the image picker opens.
+- The image picker draws one tile and one `<img>` per file, with no windowing, and uses the original file as its thumbnail. Toggling a tile copies the whole selection.
+- A session shows the original file at full size and does not load the next image ahead of time.
+- A rescan that finishes late can overwrite the result of a newer one (last write wins).
+
+**What "huge" means.** Test inputs, not promises: 1,000, 10,000, 50,000 and 100,000 images, flat and nested, with some non-image files mixed in; and a few very large image files (tens of megapixels). The supported limit is decided after measuring.
+
+**What to measure and where**
+
+| Measure | Layer | How |
+|---|---|---|
+| Scan time and result for N files (count, numeric ordering, no duplicates, deep nesting) | Unit | `scanImages` on a generated tree. Zero-byte files with image extensions are enough, since a scan never reads contents. |
+| Main process stays responsive while scanning | Unit | Event-loop delay (p99 and max) sampled during a scan. |
+| Overlapping scans: rescan while scanning, remove or relink while scanning | Unit | Scans with an injected delay. The final state must be the newest request's. |
+| A slow or unreachable folder does not hold up the others or the window | Unit | File-system wrapper that adds latency. Real network volumes can't be reproduced in CI. |
+| Size and round-trip time of the image list | E2E | Time from request to rendered result in the real window. |
+| Time from launch to a usable window, with several large collections | E2E | Launch with generated libraries linked. |
+| Picker: time to open, number of DOM nodes, long tasks, scrolling | UI | Playwright with a large fake list; long-task observer and node count. |
+| Session start with N images (shuffle, first image visible) | UI | Time from Start to the first image. |
+| Memory: after opening the picker, and after 200 image changes | E2E | Process memory from the app's own metrics. Growth per image change must stay flat. |
+| Very large image files: time to visible, memory, picker thumbnails | E2E | A generated large image, copied to fill a folder. |
+
+**How budgets are set.** Same method as the visual thresholds. The first deliverable is a measured baseline, on the target Mac and on the CI runner separately, with the run-to-run noise recorded. A budget is the baseline plus a margin chosen from that noise. No numbers are fixed before then.
+
+**Where it runs.** Performance checks use real clocks, an exception to principle 3, so they live in their own lane (`tests/perf`), outside the pre-commit set. Each measure is the median of several runs after a warm-up, a failing budget is re-run before it is reported, and raw numbers are kept as run artifacts. Correctness at scale (counts, ordering, races) stays deterministic and belongs in the unit layer.
+
+**What exists.** Implemented on 2026-11-13 in `tests/perf` (README there), run with `npm run perf`. Unit: scan correctness and time at 1,000 to 100,000 images (flat and nested), event-loop delay, memory held by a result, the cost of the sort alone, and the race and slow-folder cases. UI: picker open time, DOM nodes, long tasks, select all, one toggle, scroll frames, session start to first image. Electron: launch with three large collections, image list size and round trip, process and heap memory, growth over 200 image changes, 48-megapixel files in the picker and a session. Every metric except those marked info is gated by baseline plus three times its recorded noise; a miss is repeated once before it fails.
+
+**Found while writing it.** Four of the suspected hotspots are confirmed as behaviour, by tests marked `todo` that fail today and do not fail the run: a late older scan overwrites a newer one (rescan, and relink); `listCollections` waits for every folder, so one stalled drive blocks the Library and Draw pages; two requests for the same uncached folder walk it twice. Whether any of them matters at real sizes is for the first baseline to say. The other hotspots (picker without windowing, original files as thumbnails, whole list over IPC) are measured but not yet judged.
+
+**First measurements (2026-11-15, Mac, Intel i7-9750H, 16 GB, Electron).** Scanning is not the problem: 100,000 files take about 0.5 s, the event loop stays free (p99 about 1 ms), launch with three folders of 50,000 images takes 1.9 s against 1.1 s empty, and the image list over IPC is 0.8 MB and 20 ms at 50,000. The image picker was: 10,000 images opened in 0.64 s with 20,110 DOM nodes and 0.1 s to toggle one tile; 50,000 images opened in 3.5 s with 100,110 nodes, 2.5 s for Select all, 0.63 s for every single tile click, and 814 MB in the renderer. Forty 48-megapixel originals in the picker took 1.2 s to show and 1.17 GB in the renderer, because the original file is the thumbnail. Over 200 image changes the JS heap grew 0.9 MB (flat); process working set grew 107 MB (recorded only).
+
+**First fix.** The picker now draws only the rows in view, placed in pixels (`ImagePicker.tsx`), so its cost no longer depends on the folder size (about 207 DOM nodes at any size, measured in Chromium on Linux; Mac numbers come with the next baseline). Thumbnails are done too: tiles load small previews (320 px, JPEG) made once in the main process and kept in `<userData>/thumbs` (`src/main/thumbs.ts`, size-limited, safe to delete), so the picker no longer decodes the originals. The large-image figures above are from before this and are to be re-recorded; a first (cold) open now pays for making the previews, a later one does not. Not changed: the session view of a huge original still decodes it in full. Not fixed yet: the three race and stall defects above.
+
+**Done when.** Each suspected hotspot above is confirmed or dismissed by a recorded number; budgets are stored in the repo; and a deliberate slowdown (for example, an extra pass over the file list) turns the lane red.
+
 ## 4. Where each risk is covered
 
 | Risk | Unit | UI | Visual | E2E |
@@ -106,6 +153,9 @@ One journey: first run → link a folder (images load through the real protocol)
 | 4 Window behaviour | | ● overflow, restack, grid | ● narrow layouts | |
 | 5 Electron wiring | ● method parity, window flags | | | ● bridge, IPC, protocol |
 | 6 Appearance | | | ● every screen, both themes | |
+| 7 Large folders | ● scan, races (4 `todo`), slow folder | ● picker, session start | | ● startup, memory, large files |
+
+● covered today. ○ planned (not implemented). Risk 7 runs in the separate performance lane, not the pre-commit set, and its budgets exist only after baselines are recorded (`npm run perf:baseline`). The Electron part has not been run yet.
 
 ## 5. Test data and determinism
 
@@ -115,11 +165,13 @@ One journey: first run → link a folder (images load through the real protocol)
 - Every test gets a fresh temp data directory. No test shares state.
 - A test that waits on the wrong thing (starting the fake clock before the screen exists) is a flaky test; each is fixed at the cause, not retried.
 
+- Large libraries: `makeLibrary` (`tests/perf/lib.ts`) takes the number of images, flat or nested folders, depth, fan-out, non-image files and file content. Zero-byte files for scan tests; copies of one 16-pixel PNG for picker and session rendering; hard links to one 48-megapixel PNG for decode tests (so the disk holds it once). Names carry numeric suffixes so the ordering rule is exercised, and a few hidden files must be skipped. Everything lives in a temp directory and is removed afterwards.
+
 ## 6. Out of scope
 
 - Driving native OS widgets (the folder dialog, the macOS menu bar) through UI automation. Playwright can't reach them; the dialog is replaced by a test hook, and the choose-folder step is checked by hand per release. Revisit with an OS automation tool only if that step breaks in practice.
 - Cross-platform packaging; the target is macOS, built locally.
-- Performance with very large libraries, until it is a felt problem.
+- Real network and cloud-synced drives. Latency is simulated in the unit layer; the real thing can't be reproduced in CI. Performance with large local libraries is in scope (risk 7).
 - Accessibility auditing beyond the roles, labels and keyboard operation the tests already use.
 
 ## 7. Running and gating
@@ -129,6 +181,7 @@ One journey: first run → link a folder (images load through the real protocol)
 | While coding | Unit on save |
 | Before commit | Unit + UI + Visual |
 | Before release or install | All of the above + E2E on macOS |
+| Before release, and after changes to scanning or list rendering | Performance lane (`npm run perf`, section 3) |
 | Periodically | Mutation testing (section 8) |
 
 - A change is done when its risk is covered in the lowest suitable layer, and any new threshold has boundary tests on both sides.
@@ -159,3 +212,6 @@ One journey: first run → link a folder (images load through the real protocol)
 - The unsigned local app can trigger Gatekeeper prompts; the install script clears quarantine.
 - The 20-second save threshold forces one real 21-second wait in E2E. That is the only non-deterministic delay in the suite.
 - UI responsiveness is asserted by geometry; visual tests cover how it looks at the sizes they capture, not every width in between.
+- No performance baselines are recorded yet, so the lane measures and does not gate. Record them with `npm run perf:baseline` on the target Mac and on the CI runner, from a quiet machine, and commit `tests/perf/baselines.json`. The hotspots in section 3 come from reading the code, so some may turn out not to matter and others may be missing.
+- Performance numbers depend on the machine and the disk. They need a baseline per machine class, like the visual baselines.
+- Nothing limits or warns about folder size today. Whether to add a limit, paging or a warning is decided after the first measurements.
