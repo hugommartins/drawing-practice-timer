@@ -82,6 +82,24 @@ test.describe('running a session', () => {
     await expect(app.getByTestId('timer')).toHaveText('0:30');
   });
 
+  test('clearing the last session removes the card but keeps the history', async ({ app, harness, makeFolder }) => {
+    await linked(app, harness, makeFolder('Figure', 5));
+    await fakeTime(app);
+    await app.getByTestId('setup-mode-none').click();
+    await begin(app);
+    await app.clock.runFor(65_000);
+    await app.getByTestId('end-session').click();
+    await app.getByTestId('end-save').click();
+    await app.getByTestId('done-back').click();
+    await expect(app.getByTestId('last-session')).toContainText('Figure');
+    await app.getByTestId('last-session-clear').click();
+    await expect(app.getByTestId('last-session')).toHaveCount(0);
+    await expect(app.getByTestId('last-session-clear')).toHaveCount(0);
+    expect((await harness.api.listSessions()).filter((x) => x.source === 'app')).toHaveLength(1);
+    await app.reload();
+    await expect(app.getByTestId('last-session')).toHaveCount(0);
+  });
+
   test('no-timer mode counts up and saves what was drawn', async ({ app, harness, makeFolder }) => {
     await linked(app, harness, makeFolder('Figure', 5));
     await fakeTime(app);

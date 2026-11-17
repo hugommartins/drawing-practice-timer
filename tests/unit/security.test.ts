@@ -15,7 +15,7 @@ let picked: string | null;
 const enc = (p: string) => encodeURIComponent(p);
 
 beforeEach(() => {
-  tmp = mkdtempSync(path.join(tmpdir(), 'plchldr-sec-'));
+  tmp = mkdtempSync(path.join(tmpdir(), 'hatchmark-sec-'));
   folder = path.join(tmp, 'Figure');
   outside = path.join(tmp, 'private');
   makeReferenceFolder(folder, 8);
@@ -29,7 +29,7 @@ function makeApi() {
   return createApi({ dataDir: path.join(tmp, 'data'), pickFolder: async () => picked });
 }
 
-describe('image protocol gatekeeper (plchldr-img://)', () => {
+describe('image protocol gatekeeper (hatchmark-img://)', () => {
   it('serves images inside a linked folder, including subfolders', async () => {
     const api = makeApi();
     await api.linkFolder();

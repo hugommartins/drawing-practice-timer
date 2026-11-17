@@ -5,16 +5,17 @@
  *   tests/unit  timer logic, stats, storage, image-access rules, window security settings
  *   tests/ui    every screen and interaction in Chromium, backed by the real file-handling code
  *   tests/e2e   (this file) only what needs the whole thing wired together: preload bridge, IPC,
- *               plchldr-img:// protocol, files on disk, a restart
+ *               hatchmark-img:// protocol, files on disk, a restart
  *
  * Needs `npm install` (for the electron binary) and `npm run build`; `npm run test:e2e` does both.
- * The OS folder dialog can't be automated portably, so PLCHLDR_TEST_FOLDER stands in for it.
+ * The OS folder dialog can't be automated portably, so HATCHMARK_TEST_FOLDER stands in for it.
  */
 import { _electron as electron, expect, test, type ElectronApplication, type Page } from '@playwright/test';
-import { existsSync, mkdtempSync, readFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { makeReferenceFolder } from '../helpers/fixtures';
+import { readdirSync } from 'node:fs';
+import { makePng, makeReferenceFolder } from '../helpers/fixtures';
 
 const root = path.resolve(__dirname, '../..');
 
@@ -24,9 +25,9 @@ async function launch(userData: string, folder?: string): Promise<{ app: Electro
     cwd: root,
     env: {
       ...(process.env as Record<string, string>),
-      PLCHLDR_USER_DATA: userData,
-      PLCHLDR_DATA_DIR: path.join(userData, 'data'),
-      ...(folder ? { PLCHLDR_TEST_FOLDER: folder } : {}),
+      HATCHMARK_USER_DATA: userData,
+      HATCHMARK_DATA_DIR: path.join(userData, 'data'),
+      ...(folder ? { HATCHMARK_TEST_FOLDER: folder } : {}),
     },
   });
   return { app, page: await app.firstWindow() };
@@ -34,8 +35,8 @@ async function launch(userData: string, folder?: string): Promise<{ app: Electro
 
 test('journey: first run to first saved session, then a restart', async () => {
   test.setTimeout(90_000);
-  const userData = mkdtempSync(path.join(tmpdir(), 'plchldr-e2e-'));
-  const folder = path.join(mkdtempSync(path.join(tmpdir(), 'plchldr-e2e-refs-')), 'Figure');
+  const userData = mkdtempSync(path.join(tmpdir(), 'hatchmark-e2e-'));
+  const folder = path.join(mkdtempSync(path.join(tmpdir(), 'hatchmark-e2e-refs-')), 'Figure');
   makeReferenceFolder(folder, 10, 'fig');
 
   const first = await launch(userData, folder);
@@ -100,5 +101,37 @@ test('journey: first run to first saved session, then a restart', async () => {
     });
   } finally {
     await second.app.close();
+  }
+});
+
+test('picker tiles are small cached previews of large images; the session shows the original', async () => {
+  test.setTimeout(90_000);
+  const userData = mkdtempSync(path.join(tmpdir(), 'hatchmark-e2e-'));
+  const folder = path.join(mkdtempSync(path.join(tmpdir(), 'hatchmark-e2e-refs-')), 'Big');
+  mkdirSync(folder, { recursive: true });
+  for (let i = 0; i < 4; i++) writeFileSync(path.join(folder, `big_${i}.png`), makePng(3000, 2000, i + 1));
+
+  const { app, page } = await launch(userData, folder);
+  try {
+    await page.getByTestId('link-folder-cta').click();
+    await expect(page.getByTestId('flash')).toContainText('Linked "Big"');
+    await page.getByTestId('nav-practice').click();
+    await page.getByTestId('pick-open').click();
+
+    const tile = page.locator('[data-testid="pick-tile"] img').first();
+    await expect.poll(() => tile.evaluate((el: HTMLImageElement) => el.naturalWidth), { timeout: 30_000 }).toBeGreaterThan(0);
+    const w = await tile.evaluate((el: HTMLImageElement) => el.naturalWidth);
+    expect(w, 'the tile loaded the 3000-pixel original instead of a preview').toBeLessThanOrEqual(320);
+
+    const cache = path.join(userData, 'thumbs');
+    await expect.poll(() => (existsSync(cache) ? readdirSync(cache).length : 0)).toBeGreaterThan(0);
+
+    await page.getByRole('button', { name: 'Close dialog' }).click();
+    await page.getByTestId('setup-mode-none').click();
+    await page.getByTestId('start-session').click();
+    const ref = page.getByTestId('reference-image');
+    await expect.poll(() => ref.evaluate((el: HTMLImageElement) => el.naturalWidth), { timeout: 30_000 }).toBe(3000);
+  } finally {
+    await app.close();
   }
 });

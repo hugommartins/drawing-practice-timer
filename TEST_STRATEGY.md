@@ -1,4 +1,6 @@
-# plchldr test strategy
+# Hatchmark test strategy
+
+**Last updated:** 2026-11-17.
 
 ## 1. Scope and risks
 
@@ -26,6 +28,7 @@
 | 4 | Unusable at some window size (overflow, controls off-screen, grid misaligned with the image) | R3, R8 |
 | 5 | Broken wiring between Electron processes (preload, IPC, protocol) | all |
 | 6 | Looks wrong (spacing, colour, radius, theme) | R8 |
+| 7 | Slow or unresponsive with very large linked folders (scanning, long lists, thumbnails, memory) | R1, R7 |
 
 ## 2. Principles
 
@@ -69,7 +72,7 @@ Boundary rule: every threshold gets one value just inside and one just outside.
 
 ### UI (`tests/ui`, Playwright, Chromium)
 
-The built renderer is served over local HTTP. `window.plchldr` is backed by the real `createApi`, so disk behaviour is production behaviour. Only the folder picker is faked. Playwright's fake clock runs a 30-minute session in milliseconds. A test starts the clock only after the session screen is up.
+The built renderer is served over local HTTP. `window.hatchmark` is backed by the real `createApi`, so disk behaviour is production behaviour. Only the folder picker is faked. Playwright's fake clock runs a 30-minute session in milliseconds. A test starts the clock only after the session screen is up.
 
 | Group | Covers |
 |---|---|
@@ -98,7 +101,32 @@ The UI suite verifies behavior and selected layout constraints, but does not com
 
 ### E2E (`tests/e2e`, Playwright `_electron`)
 
-One journey: first run → link a folder (images load through the real protocol) → draw for real → session appears in History → theme change → files on disk are as expected → restart → everything is still there. It exists to catch wiring that no lower layer can see. The folder dialog is replaced by `PLCHLDR_TEST_FOLDER`; `PLCHLDR_USER_DATA` and `PLCHLDR_DATA_DIR` keep tests off real data.
+One journey: first run → link a folder (images load through the real protocol) → draw for real → session appears in History → theme change → files on disk are as expected → restart → everything is still there. It exists to catch wiring that no lower layer can see. The folder dialog is replaced by `HATCHMARK_TEST_FOLDER`; `HATCHMARK_USER_DATA` and `HATCHMARK` keep tests off real data.
+
+### Performance with large libraries
+
+**Why.** The app scans every linked folder on start and sends whole image lists to the window, so folder size is a risk (7). The suspected hotspots and what was measured are in `tests/perf/README.md`.
+
+**What "huge" means.** Test inputs, not promises: 1,000, 10,000, 50,000 and 100,000 images, flat and nested, with some non-image files mixed in; and a few very large image files (tens of megapixels). The supported limit is decided after measuring.
+
+**What to measure and where**
+
+| Measure | Layer | How |
+|---|---|---|
+| Scan time and result for N files (count, numeric ordering, no duplicates, deep nesting) | Unit | `scanImages` on a generated tree. Zero-byte files with image extensions are enough, since a scan never reads contents. |
+| Main process stays responsive while scanning | Unit | Event-loop delay (p99 and max) sampled during a scan. |
+| Overlapping scans: rescan while scanning, remove or relink while scanning | Unit | Scans with an injected delay. The final state must be the newest request's. |
+| A slow or unreachable folder does not hold up the others or the window | Unit | File-system wrapper that adds latency. Real network volumes can't be reproduced in CI. |
+| Size and round-trip time of the image list | E2E | Time from request to rendered result in the real window. |
+| Time from launch to a usable window, with several large collections | E2E | Launch with generated libraries linked. |
+| Picker: time to open, number of DOM nodes, long tasks, scrolling | UI | Playwright with a large fake list; long-task observer and node count. |
+| Session start with N images (shuffle, first image visible) | UI | Time from Start to the first image. |
+| Memory: after opening the picker, and after 200 image changes | E2E | Process memory from the app's own metrics. Growth per image change must stay flat. |
+| Very large image files: time to visible, memory, picker thumbnails | E2E | A generated large image, copied to fill a folder. |
+
+**How budgets are set.** Same method as the visual thresholds. The first deliverable is a measured baseline, on the target Mac and on the CI runner separately, with the run-to-run noise recorded. A budget is the baseline plus a margin chosen from that noise. No numbers are fixed before then.
+
+**Where it runs.** Performance checks use real clocks, an exception to principle 3, so they live in their own lane (`tests/perf`), outside the pre-commit set. Each measure is the median of several runs after a warm-up, a failing budget is re-run before it is reported, and raw numbers are kept as run artifacts. Correctness at scale (counts, ordering, races) stays deterministic and belongs in the unit layer. Details, status and findings: `tests/perf/README.md`.
 
 ## 4. Where each risk is covered
 
@@ -110,6 +138,9 @@ One journey: first run → link a folder (images load through the real protocol)
 | 4 Window behaviour | | ● overflow, restack, grid | ● narrow layouts | |
 | 5 Electron wiring | ● method parity, window flags | | | ● bridge, IPC, protocol |
 | 6 Appearance | | | ● every screen, both themes | |
+| 7 Large folders | ● scan, races (4 `todo`), slow folder | ● picker, session start | | ● startup, memory, large files |
+
+● covered today. ○ planned (not implemented). Risk 7 runs in the separate performance lane, not the pre-commit set.
 
 ## 5. Test data and determinism
 
@@ -119,11 +150,13 @@ One journey: first run → link a folder (images load through the real protocol)
 - Every test gets a fresh temp data directory. No test shares state.
 - A test that waits on the wrong thing (starting the fake clock before the screen exists) is a flaky test; each is fixed at the cause, not retried.
 
+- Large libraries: `makeLibrary` (`tests/perf/lib.ts`) generates them in a temp directory: zero-byte files for scans, tiny PNGs for rendering, hard links to one 48-megapixel PNG for decoding. Names carry numeric suffixes to exercise the ordering rule, and hidden files must be skipped.
+
 ## 6. Out of scope
 
 - Driving native OS widgets (the folder dialog, the macOS menu bar) through UI automation. Playwright can't reach them; the dialog is replaced by a test hook, and the choose-folder step is checked by hand per release. Revisit with an OS automation tool only if that step breaks in practice.
 - Cross-platform packaging; the target is macOS, built locally.
-- Performance with very large libraries, until it is a felt problem.
+- Real network and cloud-synced drives. Latency is simulated in the unit layer; the real thing can't be reproduced in CI. Performance with large local libraries is in scope (risk 7).
 - Accessibility auditing beyond the roles, labels and keyboard operation the tests already use.
 
 ## 7. Running and gating
@@ -134,6 +167,7 @@ One journey: first run → link a folder (images load through the real protocol)
 | Before commit | Unit + UI + Visual |
 | CI (push and pull request) | Typecheck, unit and UI on Linux; Visual and E2E on macOS |
 | Before release or install | All of the above + E2E on macOS |
+| Before release, and after changes to scanning or list rendering | Performance lane (`npm run perf`, section 3) |
 | Periodically | Mutation testing (section 8) |
 
 - A change is done when its risk is covered in the lowest suitable layer, and any new threshold has boundary tests on both sides.
@@ -157,10 +191,11 @@ One journey: first run → link a folder (images load through the real protocol)
 
 ## 9. Known gaps and risks
 
-- E2E and Visual need a real macOS run to be trusted, since the Electron binary isn't available in every environment.
-- Only macOS is exercised today. Windows and Linux are untested, and would need the e2e and visual layers run on those OSes, with baselines per OS.
-- Visual baselines must be created on each platform, and drift when the Electron version or installed fonts change. None are committed until the first run on macOS.
+- Visual and e2e run on macOS only (locally and on the CI macOS runner). Unit and UI tests also run on Linux in CI, and unit tests on Windows in the installer workflow. The Electron layers have not been run on Windows or Linux; that needs their own baselines per OS.
+- Visual baselines are per environment (`-darwin` for the Mac, `-darwin-ci` for the CI runner) and drift when the Electron version or installed fonts change. Regenerate them after an intended design change.
 - Visual and UI tests use different Chromium builds (Electron's and Playwright's). That is deliberate: UI tests prove behaviour, visual tests prove appearance in the real window.
 - The unsigned local app can trigger Gatekeeper prompts; the install script clears quarantine.
 - The 20-second save threshold forces one real 21-second wait in E2E. That is the only non-deterministic delay in the suite.
 - UI responsiveness is asserted by geometry; visual tests cover how it looks at the sizes they capture, not every width in between.
+- Performance numbers depend on the machine and the disk. They need a baseline per machine class, like the visual baselines.
+- Nothing limits or warns about folder size today. Whether to add a limit, paging or a warning is decided after the first measurements.

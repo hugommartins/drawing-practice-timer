@@ -5,7 +5,7 @@ import { useStore } from '../store';
 export type Page = 'practice' | 'history' | 'library';
 
 const NAV: { id: Page; label: string }[] = [
-  { id: 'practice', label: 'Practice' },
+  { id: 'practice', label: 'Draw' },
   { id: 'history', label: 'History' },
   { id: 'library', label: 'Library' },
 ];
@@ -23,7 +23,7 @@ export function Header({ page }: { page: Page }) {
             <circle cx="14" cy="14" r="11" fill="none" strokeWidth="2.5" strokeDasharray="52 18" strokeLinecap="round" transform="rotate(-90 14 14)" style={{ stroke: 'var(--ac)' }} />
             <circle cx="14" cy="14" r="3" style={{ fill: 'var(--ac)' }} />
           </svg>
-          <span>plchldr</span>
+          <span>hatchmark</span>
         </div>
         <nav aria-label="Main" className="nav">
           {NAV.map((n) => (

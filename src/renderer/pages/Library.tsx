@@ -27,7 +27,7 @@ function Previews({ c }: { c: CollectionInfo }) {
   return (
     <div className="tiles" data-testid="previews">
       {imgs.map((rel) => (
-        <img key={rel} className="tile" loading="lazy" decoding="async" alt="" src={bridge().fileUrl(imagePath(c.path, rel))} />
+        <img key={rel} className="tile" loading="lazy" decoding="async" alt="" src={bridge().thumbUrl(imagePath(c.path, rel))} />
       ))}
     </div>
   );
@@ -56,7 +56,7 @@ export function Library() {
       <div className="page-head">
         <div>
           <h1>Library</h1>
-          <p className="muted">Each linked folder is a drawing type. Images stay where they are; Plchldr only reads them.</p>
+          <p className="muted">Each linked folder is a drawing type. Images stay where they are; Hatchmark only reads them.</p>
         </div>
         <div className="chip-row">
           <button type="button" className="btn primary" data-testid="library-link" onClick={() => void link()}>

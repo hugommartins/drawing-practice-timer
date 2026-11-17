@@ -91,7 +91,7 @@ test.describe('library', () => {
     const col = app.getByTestId('collection').first();
     await expect(col).toContainText('12 images');
     await expect(col.getByTestId('previews').locator('img')).toHaveCount(8);
-    await expect(col.locator('img').first()).toHaveJSProperty('naturalWidth', 120);
+    await expect(col.locator('img').first()).toHaveJSProperty('naturalWidth', 8); // a preview, not the 120-pixel original
   });
 
   test('rename changes the type used for new sessions', async ({ app, harness, makeFolder }) => {

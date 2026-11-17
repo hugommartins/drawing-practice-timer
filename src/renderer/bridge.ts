@@ -1,14 +1,14 @@
-import type { PlchldrBridge } from '../shared/types';
+import type { HatchmarkBridge } from '../shared/types';
 
 declare global {
   interface Window {
-    plchldr: PlchldrBridge;
+    hatchmark: HatchmarkBridge;
   }
 }
 
-export const bridge = (): PlchldrBridge => {
-  if (!window.plchldr) throw new Error('window.plchldr is missing: the preload script did not run');
-  return window.plchldr;
+export const bridge = (): HatchmarkBridge => {
+  if (!window.hatchmark) throw new Error('window.hatchmark is missing: the preload script did not run');
+  return window.hatchmark;
 };
 
 export const api = () => bridge().api;

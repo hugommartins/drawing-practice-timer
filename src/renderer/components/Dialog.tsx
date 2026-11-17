@@ -28,7 +28,10 @@ export function Dialog({ open, title, description, onClose, children, testId, wi
       className={wide ? 'dialog wide' : 'dialog'}
       aria-labelledby={titleId}
       data-testid={testId}
-      onClose={onClose}
+      // A programmatic close() also fires this event, after the fact. Ignore it if the dialog has been opened again since.
+      onClose={() => {
+        if (!ref.current?.open) onClose();
+      }}
       onClick={(e) => {
         if (e.target === ref.current) onClose(); // click on the backdrop
       }}

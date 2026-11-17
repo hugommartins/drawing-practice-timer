@@ -1,6 +1,8 @@
-# Plchldr
+# Hatchmark
 
 Drawing-reference practice timer for the desktop. Point it at folders of reference images, pick a timer, draw, and watch a heatmap of the days you practiced fill in.
+
+**[Try the demo in your browser](https://hugommartins.github.io/drawing-practice-timer/)**: the real interface with sample data, nothing to install.
 
 - **Local references.** Link any folder. The folder name is the drawing type ("Figure", "Hands"); subfolders are included. Nothing is copied or uploaded.
 - **Pick your images.** Use the whole folder, or choose a single image or any set of them from a thumbnail picker. The choice is remembered, and "Repeat this setup" reuses it.
@@ -9,22 +11,15 @@ Drawing-reference practice timer for the desktop. Point it at folders of referen
 - **View tools.** Mirror, flip, greyscale and a grid overlay that always sits exactly on the image.
 - **Light, dark or follow the system.** The layout follows the window size.
 
-## Run it
+## Install
 
-Needs Node 20+.
+New to this? Follow **[INSTALL.md](INSTALL.md)**: step by step for macOS and Windows, with fixes for the common errors. No coding needed.
 
-```bash
-npm install
-npm start          # build + launch
-npm run dev        # rebuild on change + launch
-npm run install:mac   # build Plchldr.app into ~/Applications
-```
-
-Keyboard in a session: `space` pause · `←` `→` previous / next · `m` mirror · `f` flip · `b` greyscale · `g` grid · `h` focus (hide the controls so the image fills the window, `esc` or `h` to bring them back).
+For developers: Node 22, `npm install`, `npm start` (build and launch), `npm run dev` (rebuild on change).
 
 ## Getting references
 
-Plchldr reads folders, so any source works once its images are in one. Put them in a folder named for the drawing type and link it.
+Hatchmark reads folders, so any source works once its images are in one. Put them in a folder named for the drawing type and link it.
 
 For online collections, a downloader like [gallery-dl](https://github.com/mikf/gallery-dl) can save a whole board or gallery to a folder. It supports Pinterest boards and many other image sites (check its supported-sites list). Respect each site's terms and the artists' rights; references stay on your machine and are only used for practice.
 
@@ -38,7 +33,8 @@ Then use **Link a folder** in the Library. Re-run the command to refresh the fol
 
 Plain files, in one folder you can back up or read:
 
-On macOS: `~/Library/Application Support/Plchldr/data/`
+On macOS: `~/Library/Application Support/Hatchmark/data/`
+On Windows: `%APPDATA%\Hatchmark\data\`
 
 | File | Contents |
 |---|---|
@@ -56,20 +52,13 @@ The measured case study is at `study/`. Run `npm run study:sensitivity` for the 
 
 ## Tests
 
-```bash
-npm test                   # unit + UI
-npm run test:visual        # screenshot comparison in the real window (run test:visual:update once to create your baselines)
-npm run test:e2e           # one journey in the real Electron app
-npm run mutate             # mutation testing with Stryker
-```
-
 Layers, rationale and test hooks: [TESTING.md](TESTING.md).
 
 ## Layout
 
 ```
 src/main/       Electron main process, disk access (handlers.ts), image scanning
-src/preload/    the narrow window.plchldr bridge
+src/preload/    the narrow window.hatchmark bridge
 src/renderer/   React UI (Practice, Session, History, Library)
 src/shared/     types, stats, SessionRunner, date/format helpers (used by both sides)
 tests/          unit, ui (Chromium + harness), e2e (Electron)
@@ -96,6 +85,18 @@ Data:
 
 - [ ] Export and import all data as a single zip
 - [ ] Re-link a moved folder without losing history
+
+Platforms:
+
+- [ ] Linux support. Electron already runs there and the app code is platform-neutral. Remaining: Linux visual baselines (`-linux`, `-linux-ci`) and a CI job under `xvfb-run`, an `install:linux` script, a check of the "Link a folder" dialog on Wayland and X11, and a Linux section in [INSTALL.md](INSTALL.md)
+
+Performance and robustness:
+
+- [ ] A scan that finishes late must not overwrite a newer one (after a rescan, or after re-linking a folder, the old folder's list can replace the new one)
+- [ ] One slow or unreachable folder must not hold up the Library and Draw pages
+- [ ] Two requests for the same folder at once (startup and a session start) share one scan instead of walking it twice
+- [ ] Show very large originals at screen size in a session instead of decoding them whole (a 48-megapixel PNG costs about 190 MB)
+- [ ] Performance baselines that allow for day-to-day variation between runs (`npm run perf:baseline` merging earlier runs)
 
 Quality:
 

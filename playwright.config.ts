@@ -20,6 +20,28 @@ export default defineConfig({
       snapshotPathTemplate: `{testDir}/{testFileName}-snapshots/{arg}{-projectName}-{platform}${process.env['CI'] ? '-ci' : ''}{ext}`,
       expect: { toHaveScreenshot: { animations: 'disabled' } },
     },
+    // Performance with very large libraries. Real clocks, one worker, no Playwright retries (the budget
+    // check repeats a miss itself). Not part of `npm test`; see tests/perf/README.md.
+    {
+      name: 'perf-ui',
+      testDir: './tests/perf',
+      testMatch: '**/*.ui.perf.ts',
+      fullyParallel: false,
+      workers: 1,
+      retries: 0,
+      timeout: 300_000,
+      use: { viewport: { width: 1280, height: 860 }, trace: 'off', screenshot: 'off' },
+    },
+    {
+      name: 'perf-electron',
+      testDir: './tests/perf',
+      testMatch: '**/*.e2e.perf.ts',
+      fullyParallel: false,
+      workers: 1,
+      retries: 0,
+      timeout: 300_000,
+      use: { trace: 'off', screenshot: 'off' },
+    },
     // The packaged-style app: launches Electron itself. Needs `npm install` and `npm run build` first.
     { name: 'electron', testDir: './tests/e2e', fullyParallel: false, workers: 1, timeout: 60_000 },
   ],

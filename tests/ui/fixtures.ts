@@ -21,7 +21,7 @@ export const test = base.extend<Fixtures>({
     await h.close();
   },
   makeFolder: async ({}, use) => {
-    const root = mkdtempSync(path.join(tmpdir(), 'plchldr-refs-'));
+    const root = mkdtempSync(path.join(tmpdir(), 'hatchmark-refs-'));
     await use((name, count) => {
       const dir = path.join(root, name);
       makeReferenceFolder(dir, count, name.toLowerCase());
@@ -29,7 +29,7 @@ export const test = base.extend<Fixtures>({
     });
   },
   app: async ({ page, harness }, use) => {
-    await page.exposeFunction('__plchldrApi', async (method: string, args: unknown[]) => {
+    await page.exposeFunction('__hatchmarkApi', async (method: string, args: unknown[]) => {
       if (!(API_METHODS as readonly string[]).includes(method)) throw new Error(`unknown api method ${method}`);
       return (harness.api as unknown as Record<string, (...a: unknown[]) => unknown>)[method]!(...args);
     });

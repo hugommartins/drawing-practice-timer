@@ -47,7 +47,7 @@ async function seedData(dataDir: string, theme: Theme, seeded: boolean): Promise
   await api.saveSettings({ theme });
   if (!seeded) return;
 
-  const refs = mkdtempSync(path.join(tmpdir(), 'plchldr-visual-refs-'));
+  const refs = mkdtempSync(path.join(tmpdir(), 'hatchmark-visual-refs-'));
   for (const [name, count] of [['Figure', 14], ['Hands', 9]] as const) {
     const dir = path.join(refs, name);
     makeReferenceFolder(dir, count, name.toLowerCase());
@@ -79,14 +79,14 @@ const test = base.extend<{ launch(opts: Options): Promise<Page> }>({
   launch: async ({}, use) => {
     const apps: ElectronApplication[] = [];
     await use(async ({ theme, seeded = false, size = WIDE }) => {
-      const userData = mkdtempSync(path.join(tmpdir(), 'plchldr-visual-'));
+      const userData = mkdtempSync(path.join(tmpdir(), 'hatchmark-visual-'));
       const dataDir = path.join(userData, 'data');
       await seedData(dataDir, theme, seeded);
 
       const app = await electron.launch({
         args: [root, '--force-device-scale-factor=1', ...(process.platform === 'linux' ? ['--no-sandbox'] : [])],
         cwd: root,
-        env: { ...(process.env as Record<string, string>), PLCHLDR_USER_DATA: userData, PLCHLDR_DATA_DIR: dataDir },
+        env: { ...(process.env as Record<string, string>), HATCHMARK_USER_DATA: userData, HATCHMARK_DATA_DIR: dataDir },
       });
       apps.push(app);
       const page = await app.firstWindow();

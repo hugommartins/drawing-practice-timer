@@ -1,5 +1,7 @@
 # Testing
 
+The test strategy (risks, layers, principles) is in [TEST_STRATEGY.md](TEST_STRATEGY.md) and, rendered, on the [demo site](https://hugommartins.github.io/drawing-practice-timer/strategy.html).
+
 ```bash
 npm run test:unit            # 62 tests, no browser: timer, stats, storage, image-access rules, window security
 npm run test:ui              # 22 tests: every screen in Chromium, backed by the real file-handling code
@@ -8,18 +10,20 @@ npm run test:visual:update   # (re)create the baselines for your platform
 npm run test:e2e             # 1 journey in the real Electron app
 npm run mutate               # Stryker: mutation testing of the logic layer
 npm run mutate:ui            # Stryker: mutation testing of the renderer (slow)
+npm run perf                 # performance lane: large folders (separate from npm test, real clocks; see tests/perf/README.md)
+npm run perf:baseline        # record performance baselines for this machine
 ```
 
 Each check lives in the lowest layer that can prove it.
 
 | Layer | Proves | Needs |
 |---|---|---|
-| `tests/unit` | timer maths (injected clock), stats, JSONL storage, which files `plchldr-img://` may serve (`authorizeImage`: traversal, symlinks, sibling-prefix folders), sandbox settings, every preload method is implemented | Node |
+| `tests/unit` | timer maths (injected clock), stats, JSONL storage, which files `hatchmark-img://` may serve (`authorizeImage`: traversal, symlinks, sibling-prefix folders), sandbox settings, every preload method is implemented | Node |
 | `tests/ui` | each page and interaction, responsive layout, view tools, log-practice dialog; Playwright's `page.clock` runs a 30-minute session in milliseconds | Chromium |
 | `tests/visual` | what the screens look like in the real app window: practice, history, library, session with grid, log dialog, empty state; light and dark; wide and narrow | Electron |
 | `tests/e2e` | only what needs everything wired: preload bridge, IPC, the real protocol, files on disk, a restart | Electron |
 
-How it fits together: `src/main/handlers.ts` holds everything that touches disk and has **no Electron imports**. The Electron main process wires it to IPC; the UI and visual tests wire the same object to a page. Only the native folder picker is faked. The OS dialog can't be automated portably, so the e2e journey uses `PLCHLDR_TEST_FOLDER`; `PLCHLDR_USER_DATA` and `PLCHLDR_DATA_DIR` keep tests off your real data.
+How it fits together: `src/main/handlers.ts` holds everything that touches disk and has **no Electron imports**. The Electron main process wires it to IPC; the UI and visual tests wire the same object to a page. Only the native folder picker is faked. The OS dialog can't be automated portably, so the e2e journey uses `HATCHMARK_TEST_FOLDER`; `HATCHMARK_USER_DATA` and `HATCHMARK_DATA_DIR` keep tests off your real data.
 
 ## Visual regression
 
@@ -27,7 +31,7 @@ Playwright's `toHaveScreenshot` launches the real app (`_electron`) for each scr
 
 Use Node.js 22 for Electron tests, matching CI. Electron downloads its platform binary during installation. If npm reports that Electron's install script was blocked, approve it with `npm install-scripts approve electron`, then reinstall Electron with `npm install`. The project allows this required script for npm versions that enforce install-script approvals.
 
-How each launch is prepared: the data folder is seeded by the same `createApi` the app uses, then the app starts against it with `PLCHLDR_DATA_DIR`.
+How each launch is prepared: the data folder is seeded by the same `createApi` the app uses, then the app starts against it with `HATCHMARK_DATA_DIR`.
 
 What is pinned so the same code always renders the same pixels:
 
@@ -68,6 +72,7 @@ GitHub Actions, in `.github/workflows/`:
 |---|---|---|---|
 | `ci.yml` / checks | typecheck, unit, UI | Linux | every push to `main` and every pull request |
 | `ci.yml` / electron | visual, e2e | macOS | after checks pass |
+| `windows-installer.yml` | unit tests on Windows, then build `Hatchmark-Setup-<version>.exe` | Windows | on demand, and on `v*` tags (which also publish a release) |
 | `visual-baselines.yml` | regenerate the `-ci` visual baselines and commit them | macOS | on demand, after an intended design change |
 
 - CI compares against `-ci` baselines made on the runner. Before the first green run, and after any intended design change: Actions > **Update visual baselines** > Run workflow. It commits the new images to that branch; review them in the diff before merging. A failing visual test on CI with no code change usually means the runner image changed: run the workflow and look at what moved.
@@ -78,6 +83,7 @@ GitHub Actions, in `.github/workflows/`:
 ## Where to look
 
 - Unit: `tests/unit/*.test.ts`
-- UI specs and fixtures: `tests/ui/`; the Chromium harness that serves `dist/` and backs `window.plchldr` with the real `createApi` is `tests/helpers/harness.ts`
+- UI specs and fixtures: `tests/ui/`; the Chromium harness that serves `dist/` and backs `window.hatchmark` with the real `createApi` is `tests/helpers/harness.ts`
 - Visual: `tests/visual/screens.spec.ts`
 - E2E journey: `tests/e2e/electron.spec.ts`
+- Performance with large libraries: `tests/perf/` (README there)

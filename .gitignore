@@ -9,3 +9,4 @@ playwright-report
 reports
 dist-demo
 study/data/*.png
+tests/perf/results

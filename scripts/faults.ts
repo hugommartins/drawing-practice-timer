@@ -1,4 +1,4 @@
-export type FaultKind = 'invented' | 'stand-in' | 'real';
+export type FaultKind = 'invented' | 'stand-in' | 'reconstructed';
 export type StudyTheme = 'dark' | 'light';
 
 export interface Fault {
@@ -9,7 +9,7 @@ export interface Fault {
   css?: string;
   js?: string;
   screens: string[];
-  sourceCommit?: string;
+  briefReference?: string;
   transform?: string;
   rgbDelta?: number;
 }
@@ -120,45 +120,45 @@ export const controls: Fault[] = [
   },
 ];
 
-export const realFaults: Fault[] = [
+export const reconstructedFaults: Fault[] = [
   {
-    id: 'real-select-chevron',
+    id: 'reconstructed-select-chevron',
     name: 'Select chevron inset',
-    kind: 'real',
+    kind: 'reconstructed',
     theme: 'dark',
     css: "[data-testid='ref-select'] { background-position: calc(100% - 22px) calc(50% - 1px), calc(100% - 17px) calc(50% - 1px) !important; }",
     screens: ['Practice'],
-    sourceCommit: '8f59799',
+    briefReference: '8f59799',
     transform: 'Move the custom select chevron 3 px inward on Practice.',
   },
   {
-    id: 'real-light-accent',
+    id: 'reconstructed-light-accent',
     name: 'Light accent change',
-    kind: 'real',
+    kind: 'reconstructed',
     theme: 'light',
     css: ":root[data-theme='light'] { --ac: #c18b35 !important; --l4: #c18b35 !important; --ln: #e7e1d6 !important; --ln2: #d5c9b0 !important; }",
     screens: [...screens],
-    sourceCommit: '053ee43',
+    briefReference: '053ee43',
     transform: 'Warm the light-theme accent and border colors, including the strongest heatmap accent.',
   },
   {
-    id: 'real-light-palette',
+    id: 'reconstructed-light-palette',
     name: 'Light palette change',
-    kind: 'real',
+    kind: 'reconstructed',
     theme: 'light',
     css: ":root[data-theme='light'] { --bg: #f6f4ef !important; --sf: #ffffff !important; --sf2: #efece5 !important; --ln: #e2ded4 !important; --ln2: #cfc9bb !important; --tx: #1d1b17 !important; --mu: #6b675d !important; --ink: #ffffff !important; --l0: #ebe7dc !important; --l1: #f0d9a4 !important; --l2: #e2b45c !important; --l3: #cf9230 !important; --l4: #b87a12 !important; }",
     screens: [...screens],
-    sourceCommit: '78fbfa1',
+    briefReference: '78fbfa1',
     transform: 'Restore the earlier warm light-theme palette values.',
   },
   {
-    id: 'real-rename',
+    id: 'reconstructed-rename',
     name: 'App-name casing change',
-    kind: 'real',
+    kind: 'reconstructed',
     theme: 'dark',
-    js: "const brand = document.querySelector('.brand span'); if (brand) brand.textContent = 'Plchldr';",
+    js: "const brand = document.querySelector('.brand span'); if (brand) brand.textContent = 'Hatchmark';",
     screens: [...screens],
-    sourceCommit: '58fdceb',
-    transform: 'Change the rendered app name from plchldr to Plchldr.',
+    briefReference: '58fdceb',
+    transform: 'Change the rendered app name from hatchmark to Hatchmark.',
   },
 ];

@@ -39,7 +39,7 @@ function copyStatic() {
 function copyFonts() {
   const faces = [];
   mkdirSync('dist/renderer/fonts', { recursive: true });
-  for (const [pkg, family] of [['dm-sans', 'DM Sans'], ['dm-mono', 'DM Mono']]) {
+  for (const [pkg, family] of [['inconsolata', 'Inconsolata']]) {
     let dir;
     try {
       dir = join(dirname(require.resolve(`@fontsource/${pkg}/package.json`)), 'files');

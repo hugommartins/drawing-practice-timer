@@ -6,7 +6,7 @@ export function windowOptions(preloadPath: string) {
     minWidth: 560,
     minHeight: 480,
     backgroundColor: '#121314',
-    title: 'Plchldr',
+    title: 'Hatchmark',
     webPreferences: {
       preload: preloadPath,
       contextIsolation: true,

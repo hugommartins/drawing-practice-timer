@@ -1,0 +1,382 @@
+{
+  "darwin": {
+    "ipc.1000.collectionImages.ms": {
+      "value": 0.8000001907348633,
+      "noise": 0.10000014305114746,
+      "unit": "ms",
+      "n": 15
+    },
+    "ipc.1000.listBytes": {
+      "value": 14294,
+      "noise": 714.7,
+      "unit": "bytes",
+      "n": 5
+    },
+    "ipc.10000.collectionImages.ms": {
+      "value": 2.9000000953674316,
+      "noise": 0.39999985694885254,
+      "unit": "ms",
+      "n": 15
+    },
+    "ipc.10000.listBytes": {
+      "value": 152895,
+      "noise": 7644.75,
+      "unit": "bytes",
+      "n": 5
+    },
+    "ipc.50000.collectionImages.ms": {
+      "value": 15.399999856948853,
+      "noise": 1.2000000476837158,
+      "unit": "ms",
+      "n": 15
+    },
+    "ipc.50000.listBytes": {
+      "value": 808895,
+      "noise": 40444.75,
+      "unit": "bytes",
+      "n": 5
+    },
+    "launch.3x1000.toLibraryCount.ms": {
+      "value": 854,
+      "noise": 65,
+      "unit": "ms",
+      "n": 15
+    },
+    "launch.3x10000.toLibraryCount.ms": {
+      "value": 955,
+      "noise": 74,
+      "unit": "ms",
+      "n": 15
+    },
+    "launch.3x50000.toLibraryCount.ms": {
+      "value": 1504,
+      "noise": 75.2,
+      "unit": "ms",
+      "n": 15
+    },
+    "launch.empty.ms": {
+      "value": 843,
+      "noise": 84,
+      "unit": "ms",
+      "n": 15
+    },
+    "memory.1000.main.afterLaunch.MB": {
+      "value": 103.39453125,
+      "noise": 5.1697265625,
+      "unit": "MB",
+      "n": 15
+    },
+    "memory.1000.renderer.afterLaunch.MB": {
+      "value": 68.15234375,
+      "noise": 3.4076171875,
+      "unit": "MB",
+      "n": 15
+    },
+    "memory.1000.renderer.afterPicker.MB": {
+      "value": 84.28515625,
+      "noise": 4.2142578125000005,
+      "unit": "MB",
+      "n": 15
+    },
+    "memory.10000.main.afterLaunch.MB": {
+      "value": 110.33203125,
+      "noise": 5.5166015625,
+      "unit": "MB",
+      "n": 15
+    },
+    "memory.10000.renderer.afterLaunch.MB": {
+      "value": 74.91015625,
+      "noise": 8.9921875,
+      "unit": "MB",
+      "n": 15
+    },
+    "memory.10000.renderer.afterPicker.MB": {
+      "value": 86.25390625,
+      "noise": 4.3126953125,
+      "unit": "MB",
+      "n": 15
+    },
+    "memory.200changes.heapGrowth.MB": {
+      "value": 0.8839836120605469,
+      "noise": 0.04419918060302735,
+      "unit": "MB",
+      "n": 15
+    },
+    "memory.50000.main.afterLaunch.MB": {
+      "value": 122.4921875,
+      "noise": 6.124609375,
+      "unit": "MB",
+      "n": 15
+    },
+    "memory.50000.renderer.afterLaunch.MB": {
+      "value": 75.46484375,
+      "noise": 3.7732421875,
+      "unit": "MB",
+      "n": 15
+    },
+    "memory.50000.renderer.afterPicker.MB": {
+      "value": 102.59375,
+      "noise": 5.1296875,
+      "unit": "MB",
+      "n": 15
+    },
+    "picker.1000.domNodes": {
+      "value": 207,
+      "noise": 0,
+      "unit": "count",
+      "n": 5
+    },
+    "picker.1000.open.ms": {
+      "value": 23,
+      "noise": 2.4000000953674316,
+      "unit": "ms",
+      "n": 25
+    },
+    "picker.1000.scrollP95Frame.ms": {
+      "value": 17.40000009536743,
+      "noise": 0.8700000047683716,
+      "unit": "ms",
+      "n": 15
+    },
+    "picker.1000.selectAll.ms": {
+      "value": 25.600000143051147,
+      "noise": 2.9000000953674316,
+      "unit": "ms",
+      "n": 15
+    },
+    "picker.1000.toggleOne.ms": {
+      "value": 31.600000143051147,
+      "noise": 1.5800000071525575,
+      "unit": "ms",
+      "n": 25
+    },
+    "picker.10000.domNodes": {
+      "value": 207,
+      "noise": 0,
+      "unit": "count",
+      "n": 5
+    },
+    "picker.10000.open.ms": {
+      "value": 25.5,
+      "noise": 1.3000001907348633,
+      "unit": "ms",
+      "n": 25
+    },
+    "picker.10000.scrollP95Frame.ms": {
+      "value": 17.299999952316284,
+      "noise": 0.8649999976158143,
+      "unit": "ms",
+      "n": 15
+    },
+    "picker.10000.selectAll.ms": {
+      "value": 27.40000009536743,
+      "noise": 1.3700000047683716,
+      "unit": "ms",
+      "n": 15
+    },
+    "picker.10000.toggleOne.ms": {
+      "value": 31.90000009536743,
+      "noise": 1.5950000047683717,
+      "unit": "ms",
+      "n": 25
+    },
+    "picker.50000.domNodes": {
+      "value": 207,
+      "noise": 0,
+      "unit": "count",
+      "n": 5
+    },
+    "picker.50000.open.ms": {
+      "value": 24.299999952316284,
+      "noise": 5.300000190734863,
+      "unit": "ms",
+      "n": 15
+    },
+    "picker.50000.scrollP95Frame.ms": {
+      "value": 17.40000009536743,
+      "noise": 0.8700000047683716,
+      "unit": "ms",
+      "n": 15
+    },
+    "picker.50000.selectAll.ms": {
+      "value": 27.5,
+      "noise": 1.6000001430511475,
+      "unit": "ms",
+      "n": 15
+    },
+    "picker.50000.toggleOne.ms": {
+      "value": 31.899999856948853,
+      "noise": 1.5949999928474428,
+      "unit": "ms",
+      "n": 25
+    },
+    "scan.flat.1000.loopP99.ms": {
+      "value": 1.288191,
+      "noise": 0.10137599999999991,
+      "unit": "ms",
+      "n": 15
+    },
+    "scan.flat.1000.ms": {
+      "value": 4.5763560000000325,
+      "noise": 0.7546300000000201,
+      "unit": "ms",
+      "n": 25
+    },
+    "scan.flat.10000.heldMB": {
+      "value": 0.07715606689453125,
+      "noise": 0.0038578033447265628,
+      "unit": "MB",
+      "n": 15
+    },
+    "scan.flat.10000.loopP99.ms": {
+      "value": 1.297407,
+      "noise": 0.10342399999999996,
+      "unit": "ms",
+      "n": 15
+    },
+    "scan.flat.10000.ms": {
+      "value": 42.886205000000245,
+      "noise": 2.4632990000000063,
+      "unit": "ms",
+      "n": 25
+    },
+    "scan.flat.100000.heldMB": {
+      "value": 0.8739166259765625,
+      "noise": 0.043695831298828126,
+      "unit": "MB",
+      "n": 15
+    },
+    "scan.flat.100000.loopP99.ms": {
+      "value": 1.241087,
+      "noise": 0.1832959999999999,
+      "unit": "ms",
+      "n": 15
+    },
+    "scan.flat.100000.ms": {
+      "value": 521.3515789999947,
+      "noise": 87.08325299999706,
+      "unit": "ms",
+      "n": 15
+    },
+    "scan.flat.50000.heldMB": {
+      "value": 0.38866424560546875,
+      "noise": 0.019433212280273438,
+      "unit": "MB",
+      "n": 15
+    },
+    "scan.flat.50000.loopP99.ms": {
+      "value": 1.266687,
+      "noise": 0.274432,
+      "unit": "ms",
+      "n": 15
+    },
+    "scan.flat.50000.ms": {
+      "value": 237.48002599999745,
+      "noise": 15.117753000000448,
+      "unit": "ms",
+      "n": 15
+    },
+    "scan.nested.1000.loopP99.ms": {
+      "value": 1.202175,
+      "noise": 0.18944000000000005,
+      "unit": "ms",
+      "n": 15
+    },
+    "scan.nested.1000.ms": {
+      "value": 63.68837000000349,
+      "noise": 20.22208700000192,
+      "unit": "ms",
+      "n": 25
+    },
+    "scan.nested.10000.heldMB": {
+      "value": 0.9061279296875,
+      "noise": 0.045306396484375004,
+      "unit": "MB",
+      "n": 15
+    },
+    "scan.nested.10000.loopP99.ms": {
+      "value": 1.301503,
+      "noise": 0.17408,
+      "unit": "ms",
+      "n": 15
+    },
+    "scan.nested.10000.ms": {
+      "value": 129.6107800000027,
+      "noise": 44.254438000003574,
+      "unit": "ms",
+      "n": 25
+    },
+    "scan.nested.100000.heldMB": {
+      "value": 9.530776977539062,
+      "noise": 0.47653884887695314,
+      "unit": "MB",
+      "n": 15
+    },
+    "scan.nested.100000.loopP99.ms": {
+      "value": 1.822719,
+      "noise": 0.567296,
+      "unit": "ms",
+      "n": 15
+    },
+    "scan.nested.100000.ms": {
+      "value": 536.6449110000103,
+      "noise": 26.83224555000052,
+      "unit": "ms",
+      "n": 15
+    },
+    "scan.nested.50000.heldMB": {
+      "value": 4.696754455566406,
+      "noise": 0.23483772277832032,
+      "unit": "MB",
+      "n": 15
+    },
+    "scan.nested.50000.loopP99.ms": {
+      "value": 1.514495,
+      "noise": 0.3921919999999999,
+      "unit": "ms",
+      "n": 15
+    },
+    "scan.nested.50000.ms": {
+      "value": 311.74955999999656,
+      "noise": 43.46691400000418,
+      "unit": "ms",
+      "n": 15
+    },
+    "session.1000.nextImage.ms": {
+      "value": 15.299999952316284,
+      "noise": 0.7649999976158143,
+      "unit": "ms",
+      "n": 25
+    },
+    "session.1000.startToFirstImage.ms": {
+      "value": 23.600000143051147,
+      "noise": 11.200000047683716,
+      "unit": "ms",
+      "n": 25
+    },
+    "session.10000.nextImage.ms": {
+      "value": 15.299999952316284,
+      "noise": 0.7649999976158143,
+      "unit": "ms",
+      "n": 25
+    },
+    "session.10000.startToFirstImage.ms": {
+      "value": 64.59999990463257,
+      "noise": 4.5,
+      "unit": "ms",
+      "n": 25
+    },
+    "session.50000.nextImage.ms": {
+      "value": 15.400000095367432,
+      "noise": 0.7700000047683716,
+      "unit": "ms",
+      "n": 25
+    },
+    "session.50000.startToFirstImage.ms": {
+      "value": 264.89999985694885,
+      "noise": 13.244999992847443,
+      "unit": "ms",
+      "n": 15
+    }
+  }
+}
