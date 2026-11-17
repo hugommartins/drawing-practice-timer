@@ -44,12 +44,6 @@ On Windows: `%APPDATA%\Hatchmark\data\`
 
 Sessions shorter than 20 seconds are not saved. Time while the computer sleeps is not counted.
 
-## Web demo
-
-`npm run build:demo` builds a static copy to `dist-demo/`: the real renderer on a browser-only bridge (`src/demo/`). Reference images are generated, history is seeded and kept in `localStorage`, and "Link a folder" reads a folder from your disk without uploading it. The `Demo (GitHub Pages)` workflow publishes it on every push to `main`; enable it once under Settings → Pages → Source: GitHub Actions.
-
-The measured case study is at `study/`. Run `npm run study:sensitivity` for the injected-fault and noise measurements, or `npm run study:real` for the four historical-change replays. Both write their measurements as JSON under `study/data/`; rendering claims on the case-study page are read from those files.
-
 ## Tests
 
 Layers, rationale and test hooks: [TESTING.md](TESTING.md).
