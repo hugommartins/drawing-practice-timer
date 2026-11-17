@@ -64,7 +64,7 @@ for (let i = 0; i < lines.length; ) {
     continue;
   }
   let m;
-  if ((m = /^(#{1,3}) (.*)/.exec(l))) {
+  if ((m = /^(#{1,4}) (.*)/.exec(l))) {
     const lvl = m[1].length;
     const text = m[2];
     if (lvl === 1) title = text;
@@ -90,8 +90,8 @@ for (let i = 0; i < lines.length; ) {
     out.push(`<${tag}>${items.map((x) => `<li>${inline(x)}</li>`).join('')}</${tag}>`);
     continue;
   }
-  const buf = [];
-  while (i < lines.length && lines[i].trim() && !/^(#|\||```|- |\d+\. )/.test(lines[i])) buf.push(lines[i++]);
+  const buf = [lines[i++]]; // always consume the current line, so an unrecognised block can't loop forever
+  while (i < lines.length && lines[i].trim() && !/^(#{1,4} |\||```|- |\d+\. )/.test(lines[i])) buf.push(lines[i++]);
   out.push(`<p>${inline(buf.join(' '))}</p>`);
 }
 
@@ -124,6 +124,7 @@ h1 { font-size: 32px; letter-spacing: -0.02em; margin: 0 0 8px; }
 .lede { color: var(--mu); margin: 0 0 8px; }
 h2 { font-size: 20px; margin: 48px 0 12px; padding-top: 24px; border-top: 1px solid var(--ln); letter-spacing: -0.01em; scroll-margin-top: 72px; }
 h3 { font-size: 15px; margin: 28px 0 8px; scroll-margin-top: 72px; }
+h4 { font-size: 14px; margin: 22px 0 6px; color: var(--mu); scroll-margin-top: 72px; }
 p, ul, ol { margin: 0 0 14px; }
 ul, ol { padding-left: 22px; }
 li { margin-bottom: 6px; }
