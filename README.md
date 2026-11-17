@@ -2,14 +2,30 @@
 
 Drawing-reference practice timer for the desktop. Point it at folders of reference images, pick a timer, draw, and watch a heatmap of the days you practiced fill in.
 
+<div align="center">
+
+[![CI](https://github.com/hugommartins/drawing-practice-timer/actions/workflows/ci.yml/badge.svg?style=flat-square)](https://github.com/hugommartins/drawing-practice-timer/actions/workflows/ci.yml) [![Demo](https://github.com/hugommartins/drawing-practice-timer/actions/workflows/pages.yml/badge.svg?style=flat)](https://hugommartins.github.io/drawing-practice-timer/)
+
+![Electron](https://img.shields.io/badge/Electron-47848F?logo=electron&logoColor=white&style=flat-square) ![React](https://img.shields.io/badge/React_19-20232A?logo=react&logoColor=61DAFB&style=flat-square) ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white&style=flat-square) ![macOS and Windows](https://img.shields.io/badge/macOS%20%7C%20Windows-lightgrey?style=flat-square) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
+
 **[Try the demo in your browser](https://hugommartins.github.io/drawing-practice-timer/)**: the real interface with sample data, nothing to install.
 
-- **Local references.** Link any folder. The folder name is the drawing type ("Figure", "Hands"); subfolders are included. Nothing is copied or uploaded.
-- **Pick your images.** Use the whole folder, or choose a single image or any set of them from a thumbnail picker. The choice is remembered, and "Repeat this setup" reuses it.
-- **Timers.** Per image, whole session, or none. Adjust on the fly with ±15 s / +1 m.
-- **Tracking.** Heatmap by month × day, past year or any single year, with streaks and per-type totals. Log practice you did away from the app.
-- **View tools.** Mirror, flip, greyscale and a grid overlay that always sits exactly on the image.
-- **Light, dark or follow the system.** The layout follows the window size.
+[Features](#features) · [Install](#install) <br>
+[Getting references](#getting-references) · [Your data](#your-data) <br>
+[Testing](#testing) · [Roadmap](#roadmap)
+
+</div>
+
+## Features
+
+| | |
+|---|---|
+| **Local references** | Link any folder. The folder name is the drawing type ("Figure", "Hands"); subfolders are included. Nothing is copied or uploaded. |
+| **Pick your images** | Use the whole folder, or choose a single image or any set of them from a thumbnail picker. The choice is remembered, and "Repeat this setup" reuses it. |
+| **Timers** | Per image, whole session, or none. Adjust on the fly with ±15 s / +1 m. |
+| **Tracking** | Heatmap by month × day, past year or any single year, with streaks and per-type totals. Log practice you did away from the app. |
+| **View tools** | Mirror, flip, greyscale and a grid overlay that always sits exactly on the image. |
+| **Light, dark or follow the system** | The layout follows the window size. |
 
 ## Install
 
@@ -48,31 +64,19 @@ Sessions shorter than 20 seconds are not saved. Time while the computer sleeps i
 
 Layers, rationale and test hooks: [TESTING.md](TESTING.md).
 
-## Layout
-
-```
-src/main/       Electron main process, disk access (handlers.ts), image scanning
-src/preload/    the narrow window.hatchmark bridge
-src/renderer/   React UI (Practice, Session, History, Library)
-src/shared/     types, stats, SessionRunner, date/format helpers (used by both sides)
-tests/          unit, ui (Chromium + harness), e2e (Electron)
-```
-
 ## Roadmap
 
 Next up:
 
 - [ ] Keyboard shortcuts: space to pause, arrows for previous/next, `M` mirror, `G` grid
 - [ ] No-repeat shuffle: don't repeat an image until the folder is exhausted, remembered across sessions
-- [ ] Sound or flash when an image's time is up
+- [ ] Sound when an image's time is up
 - [ ] Skip or hide a reference permanently
 - [ ] Resume an interrupted session after the app closes
 
 Practice:
 
 - [ ] Daily and weekly goals per drawing type, shown on the heatmap and Practice page
-- [ ] One-line notes per session, visible in History
-- [ ] Zoom and pan on the reference
 - [ ] Always-on-top floating reference window
 
 Data:

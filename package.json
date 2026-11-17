@@ -2,6 +2,7 @@
   "name": "drawing-practice-timer",
   "productName": "Hatchmark",
   "version": "0.1.0",
+  "license": "MIT",
   "description": "Drawing-reference practice timer. Local folders, per-type tracking, a heatmap of when you practiced.",
   "private": true,
   "main": "dist/main/index.cjs",
