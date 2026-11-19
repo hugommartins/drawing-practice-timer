@@ -32,7 +32,9 @@ Drawing-reference practice timer for the desktop. Point it at folders of referen
 
 ## Screenshots
 <div align="center">
+
 ![Choosing a timer and images, then starting a session](docs/setup.gif)
+
 </div>
 
 | Practice | Picking images |
