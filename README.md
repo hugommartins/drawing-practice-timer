@@ -15,6 +15,8 @@ Drawing-reference practice timer for the desktop. Point it at folders of referen
 [Getting references](#getting-references) · [Your data](#your-data) <br>
 [Testing](#testing) · [Roadmap](#roadmap)
 
+![Hatchmark in a session: grid, mirror, greyscale and focus mode](docs/session.gif)
+
 </div>
 
 ## Features
@@ -27,6 +29,17 @@ Drawing-reference practice timer for the desktop. Point it at folders of referen
 | **Tracking** | Heatmap by month × day, past year or any single year, with streaks and per-type totals. Log practice you did away from the app. |
 | **View tools** | Mirror, flip, greyscale and a grid overlay that always sits exactly on the image. |
 | **Light, dark or follow the system** | The layout follows the window size. |
+
+## Screenshots
+<div align="center">
+![Choosing a timer and images, then starting a session](docs/setup.gif)
+</div>
+
+| Practice | Picking images |
+|---|---|
+| ![Practice page](docs/practice.png) | ![Image picker](docs/picker.png) |
+| **History** | **History, dark theme** |
+| ![History page](docs/history.png) | ![History page, dark theme](docs/history-dark.png) |
 
 ## Timer modes
 
@@ -183,6 +196,6 @@ Performance and robustness:
 Quality:
 
 - [ ] Accessibility checks (axe-core) in the UI test layer
-- [ ] README screenshot and demo GIF
+- [x] README screenshots and demo GIFs
 
 Not planned: cloud sync, accounts, a mobile app.
